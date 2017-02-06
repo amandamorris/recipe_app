@@ -52,23 +52,56 @@ class Recipe(db.Model):
         return "<Recipe recipe_name=%s recipe_id=%s>" % (self.recipe_name,
                                                          self.recipe_id)
 
-# class Category(db.Model):
-#     """A recipe category"""
 
-#     __tablename__ = "categories"
-#     pass
+class Category(db.Model):
+    """A recipe category"""
 
-# class Unit(db.Model):
-#     """An ingredient unit"""
+    __tablename__ = "categories"
 
-#     __tablename__ = "units"
-#     pass
+    category_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    category_name = db.Column(db.String(100))
 
-# class StarredRecipe(db.Model):
-#     """A recipe starred by a user"""
+    def __repr__(self):
+        """Provide helpful representation when printed."""
 
-#     __tablename__ = "starred_recipes"
-#     pass
+        return "<Category category_name=%s category_id=%s>" % (self.category_name,
+                                                               self.category_id)
+
+
+class Unit(db.Model):
+    """An ingredient unit"""
+
+    __tablename__ = "units"
+
+    unit_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    unit_name = db.Column(db.String(64))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Unit unit_name=%s unit_id=%s>" % (self.unit_name,
+                                                   self.unit_id)
+
+
+class StarredRecipe(db.Model):
+    """A recipe starred by a user"""
+
+    __tablename__ = "starred_recipes"
+
+    star_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    private = db.Column(db.Boolean)
+    rating = db.Column(db.Integer, nullable=True)
+    notes = db.Column(db.String(500), nullable=True)
+    has_made = db.Column(db.Boolean)
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<StarredRecipe id=%s user_id=%s recipe_id=%s>" % (self.star_id,
+                                                                  self.user_id,
+                                                                  self.recipe_id)
 
 # class Hashtag(db.Model):
 #     """A user-defined hashtag"""

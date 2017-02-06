@@ -103,29 +103,78 @@ class StarredRecipe(db.Model):
                                                                   self.user_id,
                                                                   self.recipe_id)
 
-# class Hashtag(db.Model):
-#     """A user-defined hashtag"""
 
-#     __tablename__ = "hashtags"
-#     pass
+class Hashtag(db.Model):
+    """A user-defined hashtag"""
 
-# class RecipeIngredient(db.Model):
-#     """A recipe+ingredient pairing"""
+    __tablename__ = "hashtags"
 
-#     __tablename__ = "recipes_ingredients"
-#     pass
+    hashtag_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    hashtag_name = db.Column(db.String(64))
 
-# class RecipeCategory(db.Model):
-#     """A recipe+category pairing"""
+    def __repr__(self):
+        """Provide helpful representation when printed."""
 
-#     __tablename__ = "recipes_categories"
-#     pass
+        return "<Hashtag hashtag_name=%s user_id=%s>" % (self.hashtag_name,
+                                                         self.user_id,
+                                                         )
 
-# class Hashtagization(db.Model):
-#     """A hashtag+recipe pairing"""
 
-#     __tablename__ = "hashtagizations"
-#     pass
+class RecipeIngredient(db.Model):
+    """A recipe+ingredient pairing"""
+
+    __tablename__ = "recipes_ingredients"
+
+    rec_ingr_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"))
+    ingredient_id = db.Column(db.Integer, db.ForeignKey("ingredients.ingredient_id"))
+    quantity = db.Column(db.Float)
+    unit_id = db.Column(db.Integer, db.ForeignKey("units.unit_id"))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<RecipeIngredient rec_ingr_id=%s recipe_id=%s ingredient_id=%s>" % (self.rec_ingr_id,
+                                                                                    self.recipe_id,
+                                                                                    self.ingredient_id
+                                                                                    )
+
+
+class RecipeCategory(db.Model):
+    """A recipe+category pairing"""
+
+    __tablename__ = "recipes_categories"
+
+    rec_cat_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"))
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.category_id"))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<RecipeCategory rec_cat_id=%s recipe_id=%s category_id=%s>" % (self.rec_cat_id,
+                                                                               self.recipe_id,
+                                                                               self.category_id
+                                                                               )
+
+
+class Hashtagization(db.Model):
+    """A hashtag+recipe pairing"""
+
+    __tablename__ = "hashtagizations"
+
+    hashtagization_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    hashtag_id = db.Column(db.Integer, db.ForeignKey("hashtags.hashtag_id"))
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<#-ization #-ization_id=%s #_id=%s recipe_id=%s>" % (self.hashtagization_id,
+                                                                     self.hashtag_id,
+                                                                     self.recipe_id,
+                                                                     )
 
 
 ##### Helper functions #####

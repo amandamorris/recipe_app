@@ -21,6 +21,14 @@ def index():
 
     return "This is Amanda's recipeapp homepage"
 
+# # These code snippets use an open-source library.
+# response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/479101/information?includeNutrition=false",
+#   headers={
+#     "X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
+#     "Accept": "application/json"
+#   }
+# )
+
 if __name__ == "__main__":
     # Set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension

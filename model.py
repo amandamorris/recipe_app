@@ -52,6 +52,7 @@ class Recipe(db.Model):
     recipe_id = db.Column(db.Integer, primary_key=True)
     recipe_name = db.Column(db.Unicode(150), nullable=False)
     recipe_steps = db.Column(db.UnicodeText, nullable=False)
+    recipe_time = db.Column(db.Integer, nullable=False)
 
     users = db.relationship("User", secondary="starrings")
     categories = db.relationship("Category", secondary="recipes_categories")

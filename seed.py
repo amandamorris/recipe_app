@@ -2,7 +2,7 @@
 
 from model import connect_to_db, db
 from model import User, Ingredient, Recipe, Category, Unit, Hashtag
-from model import StarredRecipe, RecipeIngredient, RecipeCategory
+from model import Starring, RecipeIngredient, RecipeCategory
 from model import Hashtagization
 from server import app
 

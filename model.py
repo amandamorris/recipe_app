@@ -15,8 +15,8 @@ class User(db.Model):
     username = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
 
-    starredrec = db.relationship("StarredRecipe")
-    hashtag = db.relationship("Hashtag")
+    starrings = db.relationship("Starring")
+    hashtags = db.relationship("Hashtag")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -32,7 +32,7 @@ class Ingredient(db.Model):
     ingredient_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     ingredient_name = db.Column(db.Unicode(64), nullable=False)
 
-    recingr = db.relationship("RecipeIngredient")
+    recipes = db.relationship("Recipe", secondary="recipes_ingredients")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -53,19 +53,24 @@ class Recipe(db.Model):
     recipe_name = db.Column(db.Unicode(150), nullable=False)
     recipe_steps = db.Column(db.UnicodeText, nullable=False)
 
-    starredrec = db.relationship("StarredRecipe")
-    category = db.relationship("Category", secondary="recipes_categories")
-    recingr = db.relationship("RecipeIngredient")
-    hashtag = db.relationship("Hashtag", secondary="hashtagizations")
-    # reccat = db.relationship("RecipeCategory")
-    # hashtagization = db.relationship("Hashtagization")
-    # ingredient = db.relationship("Ingredient", secondary="recipes_ingredients")
+    users = db.relationship("User", secondary="starred_recipes")
+    categories = db.relationship("Category", secondary="recipes_categories")
+    ingredients = db.relationship("Ingredient", secondary="recipes_ingredients")
+    hashtags = db.relationship("Hashtag", secondary="hashtagizations")
+    starrings = db.relationship("Starring")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
         return "<Recipe recipe_name=%s recipe_id=%s>" % (self.recipe_name,
                                                          self.recipe_id)
+
+    def get_ingredients_and_quantiities(self):
+        """Write a function to get a list of ingredients with quantities,
+        for a recipe
+        #TODO
+        """
+        pass
 
 
 class Category(db.Model):
@@ -76,8 +81,7 @@ class Category(db.Model):
     category_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     category_name = db.Column(db.String(100), nullable=False)
 
-    recipe = db.relationship("Recipe", secondary='recipes_categories')
-    # reccat = db.relationship("RecipeCategory")
+    recipes = db.relationship("Recipe", secondary='recipes_categories')
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -95,8 +99,6 @@ class Unit(db.Model):
 
     unit_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     unit_name = db.Column(db.String(64), nullable=False)
-
-    recingr = db.relationship("RecipeIngredient")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -118,8 +120,7 @@ class Hashtag(db.Model):
     hashtag_name = db.Column(db.String(64), nullable=False)
 
     user = db.relationship("User")
-    recipe = db.relationship("Recipe", secondary="hashtagizations")
-    # hashtagization = db.relationship("Hashtagization")
+    recipes = db.relationship("Recipe", secondary="hashtagizations")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -129,10 +130,10 @@ class Hashtag(db.Model):
                                                          )
 
 
-class StarredRecipe(db.Model):
-    """A recipe starred by a user"""
+class Starring(db.Model):
+    """A starring of a recipe by a user"""
 
-    __tablename__ = "starred_recipes"
+    __tablename__ = "starrings"
 
     star_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     recipe_id = db.Column(db.Integer,
@@ -148,13 +149,10 @@ class StarredRecipe(db.Model):
     notes = db.Column(db.UnicodeText, nullable=True)
     has_made = db.Column(db.Boolean, default=False, nullable=False)
 
-    user = db.relationship("User")
-    recipe = db.relationship("Recipe")
-
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return ("<StarredRecipe id=%s user_id=%s recipe_id=%s>" %
+        return ("<Starring id=%s user_id=%s recipe_id=%s>" %
                 (self.star_id,
                  self.user_id,
                  self.recipe_id
@@ -177,10 +175,6 @@ class RecipeIngredient(db.Model):
                               )
     quantity = db.Column(db.Float)
     unit_id = db.Column(db.Integer, db.ForeignKey("units.unit_id"))
-
-    recipe = db.relationship("Recipe")
-    ingredient = db.relationship("Ingredient")
-    unit = db.relationship("Unit")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -206,9 +200,6 @@ class RecipeCategory(db.Model):
                             db.ForeignKey("categories.category_id"),
                             nullable=False
                             )
-
-    recipe = db.relationship("Recipe")
-    category = db.relationship("Category")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -237,9 +228,6 @@ class Hashtagization(db.Model):
                           db.ForeignKey("recipes.recipe_id"),
                           nullable=False
                           )
-
-    hashtag = db.relationship("Hashtag")
-    recipe = db.relationship("Recipe")
 
     def __repr__(self):
         """Provide helpful representation when printed."""

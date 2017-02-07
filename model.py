@@ -53,7 +53,7 @@ class Recipe(db.Model):
     recipe_name = db.Column(db.Unicode(150), nullable=False)
     recipe_steps = db.Column(db.UnicodeText, nullable=False)
 
-    users = db.relationship("User", secondary="starred_recipes")
+    users = db.relationship("User", secondary="starrings")
     categories = db.relationship("Category", secondary="recipes_categories")
     ingredients = db.relationship("Ingredient", secondary="recipes_ingredients")
     hashtags = db.relationship("Hashtag", secondary="hashtagizations")
@@ -70,6 +70,9 @@ class Recipe(db.Model):
         for a recipe
         #TODO
         """
+
+#         >>> db.session.query(Ingredient, RecipeIngredient.quantity, Unit.unit_name).join(RecipeIngredient).join(Unit).filter(RecipeIngredient.recipe_id==recipe.recipe_id).all()
+# [(<Ingredient ingredient_name=lettuce ingredient_id=3>, 3.0, u'cup'), (<Ingredient ingredient_name=pasta ingredient_id=1>, 0.5, u'ounce'), (<Ingredient ingredient_name=cheese ingredient_id=2>, 4.0, u'pound')]
         pass
 
 

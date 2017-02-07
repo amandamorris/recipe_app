@@ -41,7 +41,8 @@ def load_recipes():
     Recipe.query.delete()
 
     db.session.add_all([Recipe(recipe_id=1, recipe_name='macaroni and cheese', recipe_steps="mix mac and cheese"),
-                        Recipe(recipe_id=2, recipe_name='salad', recipe_steps="toss lettuce with vinegar")
+                        Recipe(recipe_id=2, recipe_name='salad', recipe_steps="toss lettuce with vinegar"),
+                        Recipe(recipe_id=3, recipe_name='icewater', recipe_steps="take water, add ice")
                         ])
     db.session.commit()
 
@@ -81,17 +82,76 @@ def load_hashtags():
     Hashtag.query.delete()
 
     db.session.add_all([Hashtag(hashtag_name='thanksgiving', user_id=1),
-                        Hashtag(hashtag_name='thanksgiving', user_id=1),
+                        Hashtag(hashtag_name='thanksgiving', user_id=2),
                         Hashtag(hashtag_name='potluck', user_id=3),
                         Hashtag(hashtag_name='yas', user_id=1)
                         ])
     db.session.commit()
 
 
-def load_starred_recipes():
+def load_starrings():
     """Load some sample recipe starrings into database."""
-    pass
 
+    # delete all rows in the table
+    Starring.query.delete()
+
+    db.session.add_all([Starring(recipe_id=1, user_id=2),
+                        Starring(recipe_id=2, user_id=2),
+                        Starring(recipe_id=2, user_id=3),
+                        Starring(recipe_id=2, user_id=1)
+                        ])
+    db.session.commit()
+
+
+def load_recipes_ingredients():
+    """Load some sample recipe-ingredients into database."""
+
+    # delete all rows in the table
+    RecipeIngredient.query.delete()
+
+    db.session.add_all([RecipeIngredient(recipe_id=1,
+                                         ingredient_id=3,
+                                         quantity=3.0,
+                                         unit_id=1
+                                         ),
+                        RecipeIngredient(recipe_id=2,
+                                         ingredient_id=1,
+                                         quantity=0.5,
+                                         unit_id=2
+                                         ),
+                        RecipeIngredient(recipe_id=1,
+                                         ingredient_id=2,
+                                         quantity=4,
+                                         unit_id=3
+                                         )
+                        ])
+
+
+def load_recipes_categories():
+    """Load some sample recipe-categorizations into database."""
+
+    # delete all rows in the table
+    RecipeCategory.query.delete()
+
+    db.session.add_all([RecipeCategory(recipe_id=2, category_id=1),
+                        RecipeCategory(recipe_id=1, category_id=1),
+                        RecipeCategory(recipe_id=1, category_id=3),
+                        RecipeCategory(recipe_id=1, category_id=4)
+                        ])
+    db.session.commit()
+
+
+def load_hashtagizations():
+    """Load some sample hashtagizations into database."""
+
+    # delete all rows in the table
+    Hashtagization.query.delete()
+
+    db.session.add_all([Hashtagization(hashtag_id=1, recipe_id=2),
+                        Hashtagization(hashtag_id=2, recipe_id=2),
+                        Hashtagization(hashtag_id=3, recipe_id=1)
+                        ])
+    db.session.commit()
 
 if __name__ == "__main__":
     connect_to_db(app)
@@ -104,3 +164,7 @@ if __name__ == "__main__":
     load_categories()
     load_units()
     load_hashtags()
+    load_starrings()
+    load_recipes_ingredients()
+    load_recipes_categories()
+    load_hashtagizations()

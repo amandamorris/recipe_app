@@ -12,8 +12,8 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    username = db.Column(db.String(64))
-    password = db.Column(db.String(64))
+    username = db.Column(db.String(64), nullable=False)
+    password = db.Column(db.String(64), nullable=False)
 
     starredrec = db.relationship("StarredRecipe")
     hashtag = db.relationship("Hashtag")
@@ -30,7 +30,7 @@ class Ingredient(db.Model):
     __tablename__ = "ingredients"
 
     ingredient_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    ingredient_name = db.Column(db.Unicode(64))
+    ingredient_name = db.Column(db.Unicode(64), nullable=False)
 
     recingr = db.relationship("RecipeIngredient")
 
@@ -50,13 +50,16 @@ class Recipe(db.Model):
 
 # TODO: check spoonacular's API to see what type the recipe ids are
     recipe_id = db.Column(db.Integer, primary_key=True)
-    recipe_name = db.Column(db.Unicode(150))
-    recipe_steps = db.Column(db.UnicodeText)
+    recipe_name = db.Column(db.Unicode(150), nullable=False)
+    recipe_steps = db.Column(db.UnicodeText, nullable=False)
 
     starredrec = db.relationship("StarredRecipe")
+    category = db.relationship("Category", secondary="recipes_categories")
     recingr = db.relationship("RecipeIngredient")
-    reccat = db.relationship("RecipeCategory")
-    hashtagization = db.relationship("Hashtagization")
+    hashtag = db.relationship("Hashtag", secondary="hashtagizations")
+    # reccat = db.relationship("RecipeCategory")
+    # hashtagization = db.relationship("Hashtagization")
+    # ingredient = db.relationship("Ingredient", secondary="recipes_ingredients")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -71,9 +74,10 @@ class Category(db.Model):
     __tablename__ = "categories"
 
     category_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    category_name = db.Column(db.String(100))
+    category_name = db.Column(db.String(100), nullable=False)
 
-    reccat = db.relationship("RecipeCategory")
+    recipe = db.relationship("Recipe", secondary='recipes_categories')
+    # reccat = db.relationship("RecipeCategory")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -90,7 +94,7 @@ class Unit(db.Model):
     __tablename__ = "units"
 
     unit_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    unit_name = db.Column(db.String(64))
+    unit_name = db.Column(db.String(64), nullable=False)
 
     recingr = db.relationship("RecipeIngredient")
 
@@ -107,11 +111,15 @@ class Hashtag(db.Model):
     __tablename__ = "hashtags"
 
     hashtag_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-    hashtag_name = db.Column(db.String(64))
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey("users.user_id"),
+                        nullable=False
+                        )
+    hashtag_name = db.Column(db.String(64), nullable=False)
 
     user = db.relationship("User")
-    hashtagization = db.relationship("Hashtagization")
+    recipe = db.relationship("Recipe", secondary="hashtagizations")
+    # hashtagization = db.relationship("Hashtagization")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -127,12 +135,18 @@ class StarredRecipe(db.Model):
     __tablename__ = "starred_recipes"
 
     star_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"))
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-    private = db.Column(db.Boolean, default=True)
+    recipe_id = db.Column(db.Integer,
+                          db.ForeignKey("recipes.recipe_id"),
+                          nullable=False
+                          )
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey("users.user_id"),
+                        nullable=False
+                        )
+    private = db.Column(db.Boolean, default=True, nullable=False)
     rating = db.Column(db.Integer, nullable=True)
     notes = db.Column(db.UnicodeText, nullable=True)
-    has_made = db.Column(db.Boolean, default=False)
+    has_made = db.Column(db.Boolean, default=False, nullable=False)
 
     user = db.relationship("User")
     recipe = db.relationship("Recipe")
@@ -153,8 +167,14 @@ class RecipeIngredient(db.Model):
     __tablename__ = "recipes_ingredients"
 
     rec_ingr_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"))
-    ingredient_id = db.Column(db.Integer, db.ForeignKey("ingredients.ingredient_id"))
+    recipe_id = db.Column(db.Integer,
+                          db.ForeignKey("recipes.recipe_id"),
+                          nullable=False
+                          )
+    ingredient_id = db.Column(db.Integer,
+                              db.ForeignKey("ingredients.ingredient_id"),
+                              nullable=False
+                              )
     quantity = db.Column(db.Float)
     unit_id = db.Column(db.Integer, db.ForeignKey("units.unit_id"))
 
@@ -178,8 +198,14 @@ class RecipeCategory(db.Model):
     __tablename__ = "recipes_categories"
 
     rec_cat_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"))
-    category_id = db.Column(db.Integer, db.ForeignKey("categories.category_id"))
+    recipe_id = db.Column(db.Integer,
+                          db.ForeignKey("recipes.recipe_id"),
+                          nullable=False
+                          )
+    category_id = db.Column(db.Integer,
+                            db.ForeignKey("categories.category_id"),
+                            nullable=False
+                            )
 
     recipe = db.relationship("Recipe")
     category = db.relationship("Category")
@@ -199,9 +225,18 @@ class Hashtagization(db.Model):
 
     __tablename__ = "hashtagizations"
 
-    hashtagization_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    hashtag_id = db.Column(db.Integer, db.ForeignKey("hashtags.hashtag_id"))
-    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"))
+    hashtagization_id = db.Column(db.Integer,
+                                  autoincrement=True,
+                                  primary_key=True
+                                  )
+    hashtag_id = db.Column(db.Integer,
+                           db.ForeignKey("hashtags.hashtag_id"),
+                           nullable=False
+                           )
+    recipe_id = db.Column(db.Integer,
+                          db.ForeignKey("recipes.recipe_id"),
+                          nullable=False
+                          )
 
     hashtag = db.relationship("Hashtag")
     recipe = db.relationship("Recipe")

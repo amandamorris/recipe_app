@@ -7,6 +7,7 @@ from model import Hashtagization
 from server import app
 import json
 
+
 def get_response():
     response = {
       "servings": 10,
@@ -215,6 +216,22 @@ def add_recipe(response):
     db.session.commit()
 
 
+def add_category(response):
+    """Add category to db if not already there"""
+    pass
+
+
+def add_units(response):
+    """Add units to db if not already there"""
+
+    ingreds = response["extendedIngredients"]  # get the list of ingredient dictionaries from response
+    for ingredient_dict in ingreds:
+        # if not Unit.query.get(ingredient_dict['unit']):  # if the unit isn't in the db, add it
+        if ingredient_dict['unit'] and not Unit.query.filter(Unit.unit_name == ingredient_dict['unit']).first():
+            new_unit = Unit(unit_name=ingredient_dict['unit'])
+            db.session.add(new_unit)
+    db.session.commit()
+
 
 def load_users():
     """Load some sample users into database."""
@@ -372,6 +389,7 @@ if __name__ == "__main__":
     response = get_response()
     # add_ingredients(response)
     add_recipe(response)
+    add_units(response)
 
     # load_users()
     # load_ingredients()

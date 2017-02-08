@@ -29,7 +29,7 @@ class Ingredient(db.Model):
 
     __tablename__ = "ingredients"
 
-    ingredient_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    ingredient_id = db.Column(db.Integer, primary_key=True)
     ingredient_name = db.Column(db.Unicode(64), nullable=False)
 
     recipes = db.relationship("Recipe", secondary="recipes_ingredients")

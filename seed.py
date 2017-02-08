@@ -7,7 +7,7 @@ from model import Hashtagization
 from server import app
 import json
 
-def parse_spoonacular_response():
+def get_response():
     response = {
       "servings": 10,
       "sourceUrl": "http://www.epicurious.com/recipes/food/views/Char-Grilled-Beef-Tenderloin-with-Three-Herb-Chimichurri-235342",
@@ -159,6 +159,20 @@ def parse_spoonacular_response():
           "metaInformation": [
             "smoked"
           ]
+        },
+        {
+          "id": 5,
+          "aisle": "Spices and Seasonings",
+          "image": "https://spoonacular.com/cdn/ingredients_100x100/paprika.jpg",
+          "name": "my made up ingredient",
+          "amount": 1,
+          "unit": "tablespoon",
+          "unitShort": "T",
+          "unitLong": "tablespoon",
+          "originalString": "1 tablespoon sweet smoked paprika*",
+          "metaInformation": [
+            "smoked"
+          ]
         }
       ],
       "id": 156992,
@@ -168,11 +182,38 @@ def parse_spoonacular_response():
       "imageType": "jpg",
       "instructions": "PreparationFor spice rub:                                        Combine all ingredients in small bowl.                                                                            Do ahead: Can be made 2 days ahead. Store airtight at room temperature.                                    For chimichurri sauce:                                        Combine first 8 ingredients in blender; blend until almost smooth. Add 1/4 of parsley, 1/4 of cilantro, and 1/4 of mint; blend until incorporated. Add remaining herbs in 3 more additions, pureeing until almost smooth after each addition.                                                                            Do ahead: Can be made 3 hours ahead. Cover; chill.                                    For beef tenderloin:                                        Let beef stand at room temperature 1 hour.                                                                            Prepare barbecue (high heat). Pat beef dry with paper towels; brush with oil. Sprinkle all over with spice rub, using all of mixture (coating will be thick). Place beef on grill; sear 2 minutes on each side. Reduce heat to medium-high. Grill uncovered until instant-read thermometer inserted into thickest part of beef registers 130F for medium-rare, moving beef to cooler part of grill as needed to prevent burning, and turning occasionally, about 40 minutes. Transfer to platter; cover loosely with foil and let rest 15 minutes. Thinly slice beef crosswise. Serve with chimichurri sauce.                                                                            *Available at specialty foods stores and from tienda.com."
     }
-    response = json.loads(response)
-    resp_id = response['id']
-    title = response['title']
+    return response
 
-    print resp_id, title
+
+def add_ingredients(response):
+    """Parse a spoonacular json response and add ingredients to db if not already there"""
+    # response = json.loads(response)
+
+    ingreds = response["extendedIngredients"]  # get the list of ingredient dictionaries from response
+
+    for ingredient_dict in ingreds:
+        if not Ingredient.query.get(ingredient_dict['id']):  # if the ingredient isn't in the db, add it
+            new_ingredient = Ingredient(ingredient_id=ingredient_dict['id'],
+                                        ingredient_name=ingredient_dict['name']
+                                        )
+            db.session.add(new_ingredient)
+    db.session.commit()
+
+
+def add_recipe(response):
+    recipe_id = response['id']  # get recipe id from response
+    recipe_name = response['title']  # get recipe name from response
+    recipe_steps = response['instructions']  # get recipe instructions/steps
+    recipe_time = response['readyInMinutes']  # get cook time from response
+
+    recipe = Recipe(recipe_id=recipe_id,
+                    recipe_name=recipe_name,
+                    recipe_steps=recipe_steps,
+                    recipe_time=recipe_time
+                    )
+    db.session.add(recipe)
+    db.session.commit()
+
 
 
 def load_users():
@@ -194,10 +235,11 @@ def load_ingredients():
     # delete all rows in the table
     Ingredient.query.delete()
 
-    db.session.add_all([Ingredient(ingredient_name='pasta'),
-                        Ingredient(ingredient_name='cheese'),
-                        Ingredient(ingredient_name='lettuce'),
-                        Ingredient(ingredient_name='vinegar')
+    db.session.add_all([Ingredient(ingredient_name='pasta', ingredient_id=1),
+                        Ingredient(ingredient_name='cheese', ingredient_id=2),
+                        Ingredient(ingredient_name='lettuce', ingredient_id=3),
+                        Ingredient(ingredient_name='vinegar', ingredient_id=4),
+                        Ingredient(ingredient_name='broccoli', ingredient_id=6)
                         ])
     db.session.commit()
 
@@ -327,14 +369,17 @@ if __name__ == "__main__":
     # In case tables haven't been created, create them
     db.create_all()
 
-    # parse_spoonacular_response()
-    load_users()
-    load_ingredients()
-    load_recipes()
-    load_categories()
-    load_units()
-    load_hashtags()
-    load_starrings()
-    load_recipes_ingredients()
-    load_recipes_categories()
-    load_hashtagizations()
+    response = get_response()
+    # add_ingredients(response)
+    add_recipe(response)
+
+    # load_users()
+    # load_ingredients()
+    # load_recipes()
+    # load_categories()
+    # load_units()
+    # load_hashtags()
+    # load_starrings()
+    # load_recipes_ingredients()
+    # load_recipes_categories()
+    # load_hashtagizations()

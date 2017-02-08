@@ -11,8 +11,8 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    username = db.Column(db.String(64), nullable=False)
+    username = db.Column(db.String(64), primary_key=True)
+    # username = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
 
     starrings = db.relationship("Starring")
@@ -21,7 +21,7 @@ class User(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<User user_id=%s username=%s>" % (self.user_id, self.username)
+        return "<User username=%s>" % (self.username)
 
 
 class Ingredient(db.Model):
@@ -101,14 +101,13 @@ class Unit(db.Model):
 
     __tablename__ = "units"
 
-    unit_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    unit_name = db.Column(db.String(64), nullable=False)
+    unit_name = db.Column(db.String(64), primary_key=True)
+    # unit_name = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Unit unit_name=%s unit_id=%s>" % (self.unit_name,
-                                                   self.unit_id)
+        return "<Unit unit_name=%s>" % (self.unit_name)
 
 
 class Hashtag(db.Model):
@@ -117,10 +116,10 @@ class Hashtag(db.Model):
     __tablename__ = "hashtags"
 
     hashtag_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer,
-                        db.ForeignKey("users.user_id"),
-                        nullable=False
-                        )
+    username = db.Column(db.String(64),
+                         db.ForeignKey("users.username"),
+                         nullable=False
+                         )
     hashtag_name = db.Column(db.String(64), nullable=False)
 
     user = db.relationship("User")
@@ -129,8 +128,8 @@ class Hashtag(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Hashtag hashtag_name=%s user_id=%s>" % (self.hashtag_name,
-                                                         self.user_id,
+        return "<Hashtag hashtag_name=%s username=%s>" % (self.hashtag_name,
+                                                         self.username,
                                                          )
 
 
@@ -144,10 +143,10 @@ class Starring(db.Model):
                           db.ForeignKey("recipes.recipe_id"),
                           nullable=False
                           )
-    user_id = db.Column(db.Integer,
-                        db.ForeignKey("users.user_id"),
-                        nullable=False
-                        )
+    username = db.Column(db.String(64),
+                         db.ForeignKey("users.username"),
+                         nullable=False
+                         )
     private = db.Column(db.Boolean, default=True, nullable=False)
     rating = db.Column(db.Integer, nullable=True)
     notes = db.Column(db.UnicodeText, nullable=True)
@@ -156,9 +155,9 @@ class Starring(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return ("<Starring id=%s user_id=%s recipe_id=%s>" %
+        return ("<Starring id=%s username=%s recipe_id=%s>" %
                 (self.star_id,
-                 self.user_id,
+                 self.username,
                  self.recipe_id
                  ))
 
@@ -178,7 +177,7 @@ class RecipeIngredient(db.Model):
                               nullable=False
                               )
     quantity = db.Column(db.Float)
-    unit_id = db.Column(db.Integer, db.ForeignKey("units.unit_id"))
+    unit_name = db.Column(db.String(64), db.ForeignKey("units.unit_name"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""

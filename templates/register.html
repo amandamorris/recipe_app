@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<p>To create a new account, please provide a username and password.</p>
+
+<form action="/process_registration" method= "post">
+<p>Username:</p>
+<input type="text" name="username"><br>
+<p>Password:</p>
+<input type="password" name="password"><br>
+<input type="submit" value="Register">
+</form>
+
+{% endblock %}

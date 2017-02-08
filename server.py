@@ -19,7 +19,7 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage."""
 
-    return "This is Amanda's recipeapp homepage"
+    return render_template("homepage.html")
 
 # # These code snippets use an open-source library.
 # response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/479101/information?includeNutrition=false",
@@ -28,6 +28,24 @@ def index():
 #     "Accept": "application/json"
 #   }
 # )
+
+
+@app.route('/login')
+def login():
+    """Login"""
+    pass
+
+
+@app.route('/register')
+def register():
+    """Register"""
+    return render_template("register.html")
+
+
+@app.route('/process_registration')
+def process_registration():
+    """Check if the given username is in the database, and if not, add it"""
+    pass
 
 if __name__ == "__main__":
     # Set debug=True here, since it has to be True at the

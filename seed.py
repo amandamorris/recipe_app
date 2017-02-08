@@ -226,8 +226,8 @@ def add_units(response):
 
     ingreds = response["extendedIngredients"]  # get the list of ingredient dictionaries from response
     for ingredient_dict in ingreds:
-        # if not Unit.query.get(ingredient_dict['unit']):  # if the unit isn't in the db, add it
-        if ingredient_dict['unit'] and not Unit.query.filter(Unit.unit_name == ingredient_dict['unit']).first():
+        if ingredient_dict['unit'] and not Unit.query.get(ingredient_dict['unit']):  # if the unit isn't in the db, add it
+        # if ingredient_dict['unit'] and not Unit.query.filter(Unit.unit_name == ingredient_dict['unit']).first():
             new_unit = Unit(unit_name=ingredient_dict['unit'])
             db.session.add(new_unit)
     db.session.commit()
@@ -242,12 +242,16 @@ def add_recipe_ingredients(response):
     for ingredient_dict in ingreds:  # loop through ingredient dictionaries, and grab
         quantity = ingredient_dict['amount']  # quantity
         ingredient_id = ingredient_dict['id']  # ingredient id
-        unit_id = db.session.query(Unit.unit_id).filter(Unit.unit_name == ingredient_dict['unit']).first()  # unit_id
+        if ingredient_dict['unit']:
+            unit_name = ingredient_dict['unit']
+        else:
+            unit_name = None
+        # unit_id = db.session.query(Unit.unit_id).filter(Unit.unit_name == ingredient_dict['unit']).first()  # unit_id
 
         my_rec_ingr = RecipeIngredient(recipe_id=recipe_id,
                                        ingredient_id=ingredient_id,
                                        quantity=quantity,
-                                       unit_id=unit_id
+                                       unit_name=unit_name
                                        )
         db.session.add(my_rec_ingr)
     db.session.commit()
@@ -322,56 +326,61 @@ def load_units():
                         ])
 
 
-def load_hashtags():
-    """Load some sample hashtags into database."""
+# def load_hashtags():
+#     # TODO: need to tweak this so it's compatible with new unit_name primary key
 
-    # delete all rows in the table
-    Hashtag.query.delete()
+#     """Load some sample hashtags into database."""
 
-    db.session.add_all([Hashtag(hashtag_name='thanksgiving', user_id=1),
-                        Hashtag(hashtag_name='thanksgiving', user_id=2),
-                        Hashtag(hashtag_name='potluck', user_id=3),
-                        Hashtag(hashtag_name='yas', user_id=1)
-                        ])
-    db.session.commit()
+#     # delete all rows in the table
+#     Hashtag.query.delete()
 
-
-def load_starrings():
-    """Load some sample recipe starrings into database."""
-
-    # delete all rows in the table
-    Starring.query.delete()
-
-    db.session.add_all([Starring(recipe_id=1, user_id=2),
-                        Starring(recipe_id=2, user_id=2),
-                        Starring(recipe_id=2, user_id=3),
-                        Starring(recipe_id=2, user_id=1)
-                        ])
-    db.session.commit()
+#     db.session.add_all([Hashtag(hashtag_name='thanksgiving', user_id=1),
+#                         Hashtag(hashtag_name='thanksgiving', user_id=2),
+#                         Hashtag(hashtag_name='potluck', user_id=3),
+#                         Hashtag(hashtag_name='yas', user_id=1)
+#                         ])
+#     db.session.commit()
 
 
-def load_recipes_ingredients():
-    """Load some sample recipe-ingredients into database."""
+# def load_starrings():
+#     # TODO: need to tweak this so it's compatible with new unit_name primary key
 
-    # delete all rows in the table
-    RecipeIngredient.query.delete()
+#     """Load some sample recipe starrings into database."""
 
-    db.session.add_all([RecipeIngredient(recipe_id=1,
-                                         ingredient_id=3,
-                                         quantity=3.0,
-                                         unit_id=1
-                                         ),
-                        RecipeIngredient(recipe_id=2,
-                                         ingredient_id=1,
-                                         quantity=0.5,
-                                         unit_id=2
-                                         ),
-                        RecipeIngredient(recipe_id=1,
-                                         ingredient_id=2,
-                                         quantity=4,
-                                         unit_id=3
-                                         )
-                        ])
+#     # delete all rows in the table
+#     Starring.query.delete()
+
+#     db.session.add_all([Starring(recipe_id=1, user_id=2),
+#                         Starring(recipe_id=2, user_id=2),
+#                         Starring(recipe_id=2, user_id=3),
+#                         Starring(recipe_id=2, user_id=1)
+#                         ])
+#     db.session.commit()
+
+
+# def load_recipes_ingredients():
+# # TODO: need to tweak this so it's compatible with new unit_name primary key
+#     """Load some sample recipe-ingredients into database."""
+
+#     # delete all rows in the table
+#     RecipeIngredient.query.delete()
+
+#     db.session.add_all([RecipeIngredient(recipe_id=1,
+#                                          ingredient_id=3,
+#                                          quantity=3.0,
+#                                          unit_id=1
+#                                          ),
+#                         RecipeIngredient(recipe_id=2,
+#                                          ingredient_id=1,
+#                                          quantity=0.5,
+#                                          unit_id=2
+#                                          ),
+#                         RecipeIngredient(recipe_id=1,
+#                                          ingredient_id=2,
+#                                          quantity=4,
+#                                          unit_id=3
+#                                          )
+#                         ])
 
 
 def load_recipes_categories():

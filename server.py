@@ -65,6 +65,7 @@ def users(username):
 def logout():
     """Logout - remove user from session and redirect to homepage"""
     del session['user']
+    flash("You have successfully logged out")
 
     return redirect('/')
 

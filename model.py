@@ -152,6 +152,8 @@ class Starring(db.Model):
     notes = db.Column(db.UnicodeText, nullable=True)
     has_made = db.Column(db.Boolean, default=False, nullable=False)
 
+    recipe = db.relationship("Recipe")
+
     def __repr__(self):
         """Provide helpful representation when printed."""
 

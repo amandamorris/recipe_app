@@ -261,11 +261,14 @@ def load_users():
     """Load some sample users into database."""
 
     # delete all rows in the table
-    User.query.delete()
+    # User.query.delete()
 
     db.session.add_all([User(username='amanda', password='hi'),
                         User(username='balloon', password='icorn'),
-                        User(username='honey', password='dew')
+                        User(username='honey', password='dew'),
+                        User(username='me', password='i'),
+                        User(username='me2', password='i2'),
+                        User(username='me3', password='i3')
                         ])
     db.session.commit()
 
@@ -274,7 +277,7 @@ def load_ingredients():
     """Load some sample ingredients into database."""
 
     # delete all rows in the table
-    Ingredient.query.delete()
+    # Ingredient.query.delete()
 
     db.session.add_all([Ingredient(ingredient_name='pasta', ingredient_id=1),
                         Ingredient(ingredient_name='cheese', ingredient_id=2),
@@ -289,7 +292,7 @@ def load_recipes():
     """Load some sample recipes into database."""
 
     # delete all rows in the table
-    Recipe.query.delete()
+    # Recipe.query.delete()
 
     db.session.add_all([Recipe(recipe_id=1, recipe_name='macaroni and cheese', recipe_steps="mix mac and cheese", recipe_time=30),
                         Recipe(recipe_id=2, recipe_name='salad', recipe_steps="toss lettuce with vinegar", recipe_time=10),
@@ -302,7 +305,7 @@ def load_categories():
     """Load some sample categories into database."""
 
     # delete all rows in the table
-    Category.query.delete()
+    # Category.query.delete()
 
     db.session.add_all([Category(category_name='appetizer'),
                         Category(category_name='entree'),
@@ -316,78 +319,73 @@ def load_units():
     """Load some sample ingredient units into database."""
 
     # delete all rows in the table
-    Unit.query.delete()
+    # Unit.query.delete()
 
-    db.session.add_all([Unit(unit_name='cup'),
-                        Unit(unit_name='ounce'),
-                        Unit(unit_name='pound'),
-                        Unit(unit_name='can'),
-                        Unit(unit_name='dash'),
+    db.session.add_all([Unit(unit_name='tad'),
+                        Unit(unit_name='smidgen'),
+                        Unit(unit_name='plethora'),
+                        Unit(unit_name='tidbit'),
+                        Unit(unit_name='morsels'),
                         ])
 
 
-# def load_hashtags():
-#     # TODO: need to tweak this so it's compatible with new unit_name primary key
+def load_hashtags():
+    """Load some sample hashtags into database."""
 
-#     """Load some sample hashtags into database."""
+    # delete all rows in the table
+    # Hashtag.query.delete()
 
-#     # delete all rows in the table
-#     Hashtag.query.delete()
-
-#     db.session.add_all([Hashtag(hashtag_name='thanksgiving', user_id=1),
-#                         Hashtag(hashtag_name='thanksgiving', user_id=2),
-#                         Hashtag(hashtag_name='potluck', user_id=3),
-#                         Hashtag(hashtag_name='yas', user_id=1)
-#                         ])
-#     db.session.commit()
+    db.session.add_all([Hashtag(hashtag_name='thanksgiving', username='me'),
+                        Hashtag(hashtag_name='thanksgiving', username='me2'),
+                        Hashtag(hashtag_name='potluck', username='me3'),
+                        Hashtag(hashtag_name='yas', username='me')
+                        ])
+    db.session.commit()
 
 
-# def load_starrings():
-#     # TODO: need to tweak this so it's compatible with new unit_name primary key
+def load_starrings():
+    """Load some sample recipe starrings into database."""
 
-#     """Load some sample recipe starrings into database."""
+    # delete all rows in the table
+    # Starring.query.delete()
 
-#     # delete all rows in the table
-#     Starring.query.delete()
-
-#     db.session.add_all([Starring(recipe_id=1, user_id=2),
-#                         Starring(recipe_id=2, user_id=2),
-#                         Starring(recipe_id=2, user_id=3),
-#                         Starring(recipe_id=2, user_id=1)
-#                         ])
-#     db.session.commit()
+    db.session.add_all([Starring(recipe_id=1, username='me2'),
+                        Starring(recipe_id=2, username='me2'),
+                        Starring(recipe_id=2, username='me'),
+                        Starring(recipe_id=2, username='me3')
+                        ])
+    db.session.commit()
 
 
-# def load_recipes_ingredients():
-# # TODO: need to tweak this so it's compatible with new unit_name primary key
-#     """Load some sample recipe-ingredients into database."""
+def load_recipes_ingredients():
+    """Load some sample recipe-ingredients into database."""
 
-#     # delete all rows in the table
-#     RecipeIngredient.query.delete()
+    # delete all rows in the table
+    # RecipeIngredient.query.delete()
 
-#     db.session.add_all([RecipeIngredient(recipe_id=1,
-#                                          ingredient_id=3,
-#                                          quantity=3.0,
-#                                          unit_id=1
-#                                          ),
-#                         RecipeIngredient(recipe_id=2,
-#                                          ingredient_id=1,
-#                                          quantity=0.5,
-#                                          unit_id=2
-#                                          ),
-#                         RecipeIngredient(recipe_id=1,
-#                                          ingredient_id=2,
-#                                          quantity=4,
-#                                          unit_id=3
-#                                          )
-#                         ])
+    db.session.add_all([RecipeIngredient(recipe_id=1,
+                                         ingredient_id=3,
+                                         quantity=3.0,
+                                         unit_name='tad'
+                                         ),
+                        RecipeIngredient(recipe_id=2,
+                                         ingredient_id=1,
+                                         quantity=0.5,
+                                         unit_name='tad'
+                                         ),
+                        RecipeIngredient(recipe_id=1,
+                                         ingredient_id=2,
+                                         quantity=4,
+                                         unit_name='smidgen'
+                                         )
+                        ])
 
 
 def load_recipes_categories():
     """Load some sample recipe-categorizations into database."""
 
     # delete all rows in the table
-    RecipeCategory.query.delete()
+    # RecipeCategory.query.delete()
 
     db.session.add_all([RecipeCategory(recipe_id=2, category_id=1),
                         RecipeCategory(recipe_id=1, category_id=1),
@@ -401,11 +399,15 @@ def load_hashtagizations():
     """Load some sample hashtagizations into database."""
 
     # delete all rows in the table
-    Hashtagization.query.delete()
+    # Hashtagization.query.delete()
 
     db.session.add_all([Hashtagization(hashtag_id=1, recipe_id=2),
                         Hashtagization(hashtag_id=2, recipe_id=2),
-                        Hashtagization(hashtag_id=3, recipe_id=1)
+                        Hashtagization(hashtag_id=3, recipe_id=1),
+                        Hashtagization(hashtag_id=1, recipe_id=1),
+                        Hashtagization(hashtag_id=1, recipe_id=2),
+                        Hashtagization(hashtag_id=4, recipe_id=3),
+                        Hashtagization(hashtag_id=3, recipe_id=2)
                         ])
     db.session.commit()
 
@@ -421,13 +423,13 @@ if __name__ == "__main__":
     add_units(response)
     add_recipe_ingredients(response)
 
-    # load_users()
-    # load_ingredients()
-    # load_recipes()
-    # load_categories()
-    # load_units()
-    # load_hashtags()
-    # load_starrings()
-    # load_recipes_ingredients()
-    # load_recipes_categories()
-    # load_hashtagizations()
+    load_users()
+    load_ingredients()
+    load_recipes()
+    load_categories()
+    load_units()
+    load_hashtags()
+    load_starrings()
+    load_recipes_ingredients()
+    load_recipes_categories()
+    load_hashtagizations()

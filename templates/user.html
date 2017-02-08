@@ -4,7 +4,17 @@
 <h2>Hello {{ user.username }}!</h2>
 
 <p>Your starred recipes:</p>
+<ul>
+{% for starring in user.starrings %}
+    <li>{{ starring.recipe.recipe_name }}
+{% endfor %}
+</ul>
 
 <p>Your Hashtags:</p>
+<ul>
+{% for hashtag in user.hashtags %}
+    <li>{{ hashtag.hashtag_name }}</li>
+{% endfor %}
+</ul>
 
 {% endblock %}

@@ -48,10 +48,17 @@ def process_login():
     if user and user.password == password:
         session['user'] = username
         flash("You have successfully logged in")
-        return redirect('/')
+        return redirect("/users/" + str(user.username))
     else:
         flash("Incorrect username/password combination.  Please try again or Register to create a new account")
         return redirect('/login')
+
+
+@app.route('/users/<username>')
+def users(username):
+    """A user's info page"""
+    user = User.query.get(username)
+    return render_template("user.html", user=user)
 
 
 @app.route('/logout')

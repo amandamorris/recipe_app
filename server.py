@@ -33,7 +33,33 @@ def index():
 @app.route('/login')
 def login():
     """Login"""
-    pass
+    return render_template("login.html")
+
+
+@app.route('/process_login', methods=['POST'])
+def process_login():
+    """Check if username/password combo is valid, and if so, login"""
+
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    user = User.query.filter(User.username == username).first()
+
+    if user and user.password == password:
+        session['user'] = username
+        flash("You have successfully logged in")
+        return redirect('/')
+    else:
+        flash("Incorrect username/password combination.  Please try again or Register to create a new account")
+        return redirect('/login')
+
+
+@app.route('/logout')
+def logout():
+    """Logout - remove user from session and redirect to homepage"""
+    del session['user']
+
+    return redirect('/')
 
 
 @app.route('/register')

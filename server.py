@@ -1,7 +1,7 @@
 from flask import (Flask, jsonify, render_template, redirect, request, flash,
                    session)
 from jinja2 import StrictUndefined
-from model import connect_to_db
+from model import connect_to_db, db
 from model import User, Recipe, Ingredient
 import sqlalchemy
 
@@ -42,10 +42,24 @@ def register():
     return render_template("register.html")
 
 
-@app.route('/process_registration')
+@app.route('/process_registration', methods=['POST'])
 def process_registration():
     """Check if the given username is in the database, and if not, add it"""
-    pass
+
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    if User.query.filter(User.username == username).first():
+        flash("User already exists - please login or try a different username")
+    else:
+        user = User(username=username, password=password)
+        db.session.add(user)
+        db.session.commit()
+
+        session['user'] = username
+        flash("You have successfully created an account and are now logged in")
+
+    return redirect('/')
 
 if __name__ == "__main__":
     # Set debug=True here, since it has to be True at the

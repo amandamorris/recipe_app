@@ -233,6 +233,26 @@ def add_units(response):
     db.session.commit()
 
 
+def add_recipe_ingredients(response):
+    """Add recipe-ingredient pairings to the database"""
+
+    ingreds = response["extendedIngredients"]  # get list of ingredients dictionaries
+    recipe_id = response['id']  # get recipe id
+
+    for ingredient_dict in ingreds:  # loop through ingredient dictionaries, and grab
+        quantity = ingredient_dict['amount']  # quantity
+        ingredient_id = ingredient_dict['id']  # ingredient id
+        unit_id = db.session.query(Unit.unit_id).filter(Unit.unit_name == ingredient_dict['unit']).first()  # unit_id
+
+        my_rec_ingr = RecipeIngredient(recipe_id=recipe_id,
+                                       ingredient_id=ingredient_id,
+                                       quantity=quantity,
+                                       unit_id=unit_id
+                                       )
+        db.session.add(my_rec_ingr)
+    db.session.commit()
+
+
 def load_users():
     """Load some sample users into database."""
 
@@ -387,9 +407,10 @@ if __name__ == "__main__":
     db.create_all()
 
     response = get_response()
-    # add_ingredients(response)
+    add_ingredients(response)
     add_recipe(response)
     add_units(response)
+    add_recipe_ingredients(response)
 
     # load_users()
     # load_ingredients()

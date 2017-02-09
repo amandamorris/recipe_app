@@ -61,6 +61,21 @@ def users(username):
     return render_template("user.html", user=user)
 
 
+@app.route('/user-hashtag-recipes.json')
+def user_hashtag():
+    """Recipes <username> tagged with <hashtag_name>"""
+    # do request.args.get to get username and hashtag#
+    user = User.query.get(username)
+    recipes = user.recipes
+
+    recipe_info = []
+    # list of dictionaries, but need a method in my class for getting a dictionary-like thing for a recipe
+    # for recipe in recipes:
+    #     recipe_info.add(recipe.recipe_name)
+
+    return jsonify(recipe_info)
+
+
 @app.route('/logout')
 def logout():
     """Logout - remove user from session and redirect to homepage"""

@@ -15,7 +15,7 @@ class User(db.Model):
     # username = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(64), nullable=False)
 
-    starrings = db.relationship("Starring")
+    recipes = db.relationship("Recipe", secondary="starrings")  # look at this to doublecheck
     hashtags = db.relationship("Hashtag")
 
     def __repr__(self):
@@ -66,15 +66,38 @@ class Recipe(db.Model):
         return "<Recipe recipe_name=%s recipe_id=%s>" % (self.recipe_name,
                                                          self.recipe_id)
 
-    def get_ingredients_and_quantiities(self):
-        """Write a function to get a list of ingredients with quantities,
-        for a recipe
-        #TODO
+    def get_ingredient_list(self):
+        """Write a function to get a list of ingredients with quantities and
+        units, for a recipe
         """
+        rec_ingrs_info = []
+        for ingredient in self.ingredients:
+            ingr_info = {}
+            ingr_info['ingredient_id'] = ingredient.ingredient_id
+            ingr_info['ingredient_name'] = ingredient.ingredient_name
+            qty = db.session.query(RecipeIngredient.quantity).filter(
+                (RecipeIngredient.recipe_id == self.recipe_id) & (RecipeIngredient.ingredient_id == ingredient.ingredient_id)).first()
+            ingr_info['quantity'] = qty[0]
+            unit = db.session.query(RecipeIngredient.unit_name).filter(
+                (RecipeIngredient.recipe_id == self.recipe_id) & (RecipeIngredient.ingredient_id == ingredient.ingredient_id)).first()
+            ingr_info['unit'] = unit[0]
+            rec_ingrs_info.append(ingr_info)
+        return rec_ingrs_info
 
-#         >>> db.session.query(Ingredient, RecipeIngredient.quantity, Unit.unit_name).join(RecipeIngredient).join(Unit).filter(RecipeIngredient.recipe_id==recipe.recipe_id).all()
-# [(<Ingredient ingredient_name=lettuce ingredient_id=3>, 3.0, u'cup'), (<Ingredient ingredient_name=pasta ingredient_id=1>, 0.5, u'ounce'), (<Ingredient ingredient_name=cheese ingredient_id=2>, 4.0, u'pound')]
-        pass
+    def create_recipe_dictionary(self):
+        """Create a dictionary of recipe+ingredient info, for jsonification"""
+
+        recipe = {}
+
+        recipe['recipe_id'] = self.recipe_id
+        recipe['recipe_name'] = self.recipe_name
+        recipe['steps'] = self.recipe_steps
+        recipe['time'] = self.recipe_time
+        recipe['ingredients'] = []
+        ingrs = self.get_ingredient_list()
+        recipe['ingredients'] = ingrs
+
+        return recipe
 
 
 class Category(db.Model):
@@ -152,7 +175,7 @@ class Starring(db.Model):
     notes = db.Column(db.UnicodeText, nullable=True)
     has_made = db.Column(db.Boolean, default=False, nullable=False)
 
-    recipe = db.relationship("Recipe")
+    # recipe = db.relationship("Recipe")
 
     def __repr__(self):
         """Provide helpful representation when printed."""

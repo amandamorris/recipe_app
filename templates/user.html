@@ -5,16 +5,37 @@
 
 <p>Your starred recipes:</p>
 <ul>
-{% for starring in user.starrings %}
-    <li>{{ starring.recipe.recipe_name }}
+{% for recipe in user.recipes %}
+    <li>{{ recipe.recipe_name }}
 {% endfor %}
 </ul>
 
 <p>Your Hashtags:</p>
 <ul>
 {% for hashtag in user.hashtags %}
-    <li>{{ hashtag.hashtag_name }}</li>
+    <!-- <li><a href="/users/{{ user.username }}/{{ hashtag.hashtag_name }}">{{ hashtag.hashtag_name }}</a></li> -->
+    <li class="hashtag_bullet" data-hashtag-name="{{ hashtag.hashtag_name }}">{{ hashtag.hashtag_name }}</li>
+    <div class="hashtag_list"> </div>
 {% endfor %}
 </ul>
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script>
+  "use strict";
+
+function showHashRecipes(results){
+    donsole.dir(results);
+}
+
+function getHashRecipes(evt){
+    // Do I need this next line?
+    // evt.preventDefault();
+
+    $.get('/user-hashtag-recipes.json', showHashRecipes);
+    console.log("got a result");
+}
+$('#hashtag_bullet').on('click', getHashRecipes);
+
+</script>
 
 {% endblock %}

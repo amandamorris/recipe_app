@@ -70,12 +70,17 @@ def user_hashtag():
 
     # user = User.query.get(user)  # the user object
     hashtag = db.session.query(Hashtag).filter((Hashtag.hashtag_name == my_hash) & (Hashtag.username == username)).first()
-    print "try2 %s %s" % (username, hashtag)
+    # print "try2 %s %s" % (username, hashtag)
     recipes = hashtag.recipes
-    print recipes
-    recipes_info = []
+    # print recipes
+    recipes_info = {}
     for recipe in recipes:
-        recipes_info.append(recipe.create_recipe_dictionary())
+        recipe_dict = recipe.create_recipe_dictionary()
+        recipes_info[recipe.recipe_name] = recipe_dict
+        recipes_info[recipe.recipe_name]["hashtag"] = my_hash
+        # recipes_info.append(recipe.create_recipe_dictionary())
+        # recipes_info["hashtag"] = my_hash
+        print recipes_info
 
     # list of dictionaries, but need a method in my class for getting a dictionary-like thing for a recipe
     # for recipe in recipes:

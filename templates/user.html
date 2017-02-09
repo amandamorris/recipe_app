@@ -15,7 +15,7 @@
 {% for hashtag in user.hashtags %}
     <!-- <li><a href="/users/{{ user.username }}/{{ hashtag.hashtag_name }}">{{ hashtag.hashtag_name }}</a></li> -->
     <li class="hashtag_bullet" data-hashtag-name="{{ hashtag.hashtag_name }}" data-username="{{ user.username }}">{{ hashtag.hashtag_name }}</li>
-    <div class="hashtag_list"> </div>
+    <div class="hashtag_list" id="{{ hashtag.hashtag_name }}"></div>
 {% endfor %}
 </ul>
 
@@ -24,7 +24,16 @@
   "use strict";
 
 function showHashRecipes(results){
-    console.dir(results);
+    // console.log(results["macaroni and cheese"])
+    // console.log(results["macaroni and cheese"]["hashtag"])
+
+    for (var recipe in results) {
+        console.log(recipe);
+        var hashtag = results[recipe]["hashtag"];
+        $('#' + hashtag).append("<h3>" + recipe + "</h3>");
+    }
+
+    // console.log(results);
 }
 
 function getHashRecipes(evt){

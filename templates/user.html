@@ -14,7 +14,7 @@
 <ul>
 {% for hashtag in user.hashtags %}
     <!-- <li><a href="/users/{{ user.username }}/{{ hashtag.hashtag_name }}">{{ hashtag.hashtag_name }}</a></li> -->
-    <li class="hashtag_bullet" data-hashtag-name="{{ hashtag.hashtag_name }}">{{ hashtag.hashtag_name }}</li>
+    <li class="hashtag_bullet" data-hashtag-name="{{ hashtag.hashtag_name }}" data-username="{{ user.username }}">{{ hashtag.hashtag_name }}</li>
     <div class="hashtag_list"> </div>
 {% endfor %}
 </ul>
@@ -24,17 +24,21 @@
   "use strict";
 
 function showHashRecipes(results){
-    donsole.dir(results);
+    console.dir(results);
 }
 
 function getHashRecipes(evt){
     // Do I need this next line?
     // evt.preventDefault();
+    var hashtag = $(this).data("hashtag-name")
+    var username = $(this).data("username")
+    var params = {"username": username, "hashtag": hashtag}
+    // console.log(params)
 
-    $.get('/user-hashtag-recipes.json', showHashRecipes);
+    $.get('/user-hashtag-recipes.json', params, showHashRecipes);
     console.log("got a result");
 }
-$('#hashtag_bullet').on('click', getHashRecipes);
+$('.hashtag_bullet').on('click', getHashRecipes);
 
 </script>
 

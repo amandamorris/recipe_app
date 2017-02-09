@@ -2,7 +2,7 @@ from flask import (Flask, jsonify, render_template, redirect, request, flash,
                    session)
 from jinja2 import StrictUndefined
 from model import connect_to_db, db
-from model import User, Recipe, Ingredient
+from model import User, Recipe, Ingredient, Hashtag, Category, Unit
 import sqlalchemy
 
 
@@ -65,15 +65,23 @@ def users(username):
 def user_hashtag():
     """Recipes <username> tagged with <hashtag_name>"""
     # do request.args.get to get username and hashtag#
-    user = User.query.get(username)
-    recipes = user.recipes
+    username = request.args.get("username")  # the username
+    my_hash = request.args.get("hashtag")  # the hashtag
 
-    recipe_info = []
+    # user = User.query.get(user)  # the user object
+    hashtag = db.session.query(Hashtag).filter((Hashtag.hashtag_name == my_hash) & (Hashtag.username == username)).first()
+    print "try2 %s %s" % (username, hashtag)
+    recipes = hashtag.recipes
+    print recipes
+    recipes_info = []
+    for recipe in recipes:
+        recipes_info.append(recipe.create_recipe_dictionary())
+
     # list of dictionaries, but need a method in my class for getting a dictionary-like thing for a recipe
     # for recipe in recipes:
     #     recipe_info.add(recipe.recipe_name)
 
-    return jsonify(recipe_info)
+    return jsonify(recipes_info)
 
 
 @app.route('/logout')

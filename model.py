@@ -152,8 +152,8 @@ class Hashtag(db.Model):
         """Provide helpful representation when printed."""
 
         return "<Hashtag hashtag_name=%s username=%s>" % (self.hashtag_name,
-                                                         self.username,
-                                                         )
+                                                          self.username,
+                                                          )
 
 
 class Starring(db.Model):

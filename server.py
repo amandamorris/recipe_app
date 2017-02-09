@@ -4,6 +4,8 @@ from jinja2 import StrictUndefined
 from model import connect_to_db, db
 from model import User, Recipe, Ingredient, Hashtag, Category, Unit
 import sqlalchemy
+import unirest
+import os
 
 
 app = Flask(__name__)
@@ -13,21 +15,15 @@ app.secret_key = "mysecretkey"
 
 # If I use an undefined variable in Jinja2, raise an error.
 app.jinja_env.undefined = StrictUndefined
+MASHAPE_KEY = os.environ["MASHAPE_KEY"]
 
 
 @app.route('/')
 def index():
     """Homepage."""
 
+    # These code snippets use an open-source library. http://unirest.io/python
     return render_template("homepage.html")
-
-# # These code snippets use an open-source library.
-# response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/479101/information?includeNutrition=false",
-#   headers={
-#     "X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
-#     "Accept": "application/json"
-#   }
-# )
 
 
 @app.route('/login')
@@ -58,6 +54,7 @@ def process_login():
 def users(username):
     """A user's info page"""
     user = User.query.get(username)
+
     return render_template("user.html", user=user)
 
 
@@ -122,6 +119,35 @@ def process_registration():
         flash("You have successfully created an account and are now logged in")
 
     return redirect('/')
+
+
+@app.route('/search_recipes')
+def search_recipes():
+    """Search recipes using keywords"""
+
+    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&instructionsRequired=false&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=kale&type=main+course",
+                           headers={
+                               "X-Mashape-Key": MASHAPE_KEY,
+                               "Accept": "application/json"
+                               }
+                           )
+    results = response.body
+    print results
+    return redirect('/')
+
+
+@app.route('/show_recipe')
+def show_recipe():
+    """Display a recipe"""
+    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/479101/information?includeNutrition=false",
+                           headers={
+                               "X-Mashape-Key": MASHAPE_KEY,
+                               "Accept": "application/json"
+                               }
+                           )
+    recipe = response.body
+    return redirect('/')
+
 
 if __name__ == "__main__":
     # Set debug=True here, since it has to be True at the

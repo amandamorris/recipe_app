@@ -33,11 +33,14 @@ function showHashRecipes(results){
         var hashtag = rec["hashtag"];
         $('#' + hashtag).append("<h3>" + recipe + "</h3>");
         $('#' + hashtag).append("<p>Total time required: " + rec["time"] + " minutes</p>");
+        $('#' + hashtag).append("<p>Ingredients:</p>");
         for (var ingredient of rec["ingredients"]) {
-            // console.log(ingredient);
+            console.log(ingredient);
             // console.log(ingredient["ingredient_name"]);
-            $('#' + hashtag).append("<p>" + ingredient["ingredient_name"] + "</p>");
+            $('#' + hashtag).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
         }
+        $('#' + hashtag).append("<p>Instructions:</p>");
+        $('#' + hashtag).append(rec["steps"]);
     }
 
     // console.log(results);

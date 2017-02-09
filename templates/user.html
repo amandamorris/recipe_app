@@ -28,9 +28,16 @@ function showHashRecipes(results){
     // console.log(results["macaroni and cheese"]["hashtag"])
 
     for (var recipe in results) {
-        console.log(recipe);
-        var hashtag = results[recipe]["hashtag"];
+        var rec = results[recipe];
+        // console.log(rec);
+        var hashtag = rec["hashtag"];
         $('#' + hashtag).append("<h3>" + recipe + "</h3>");
+        $('#' + hashtag).append("<p>Total time required: " + rec["time"] + " minutes</p>");
+        for (var ingredient of rec["ingredients"]) {
+            // console.log(ingredient);
+            // console.log(ingredient["ingredient_name"]);
+            $('#' + hashtag).append("<p>" + ingredient["ingredient_name"] + "</p>");
+        }
     }
 
     // console.log(results);

@@ -59,6 +59,7 @@ class Recipe(db.Model):
     ingredients = db.relationship("Ingredient", secondary="recipes_ingredients")
     hashtags = db.relationship("Hashtag", secondary="hashtagizations")
     starrings = db.relationship("Starring")
+    images = db.relationship("Image")
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -154,6 +155,64 @@ class Hashtag(db.Model):
         return "<Hashtag hashtag_name=%s username=%s>" % (self.hashtag_name,
                                                           self.username,
                                                           )
+
+
+class Image(db.Model):
+    """A recipe image"""
+
+    __tablename__ = "images"
+
+    image_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    recipe_id = db.Column(db.Integer,
+                          db.ForeignKey("recipes.recipe_id"),
+                          nullable=False
+                          )
+    image_url = db.Column(db.UnicodeText)
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Image image_id=%s recipe_id=%s" % (self.image_id,
+                                                    self.recipe_id
+                                                    )
+
+
+class Cuisine(db.Model):
+    """A recipe cuisine"""
+
+    __tablename__ = "cuisines"
+
+    cuisine_name = db.Column(db.UnicodeText, primary_key=True)
+
+    def __repr__(self):
+        """Provide helpful representation when printed"""
+
+        return "<Cuisine cuisine_name=%s" % (self.cuisine_name)
+
+
+class RecipeCuisine(db.Model):
+    """Association table for recipe+cuisine pairing"""
+
+    __tablename__ = "recipes_cuisines"
+
+    recipe_cuisine_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    recipe_id = db.Column(db.Integer,
+                          db.ForeignKey("recipes.recipe_id"),
+                          nullable=False
+                          )
+    cuisine_name = db.Column(db.UnicodeText,
+                             db.ForeignKey("cuisines.cuisine_name"),
+                             nullable=False
+                             )
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return ("<RecipeCuisine recipe_cuisine=%s recipe_id=%s cuisine_id=%s>" %
+                (self.recipe_cuisine_id,
+                 self.recipe_id,
+                 self.cuisine_id
+                 ))
 
 
 class Starring(db.Model):

@@ -175,6 +175,26 @@ class Image(db.Model):
                                                     )
 
 
+class DietType(db.Model):
+    """Dietary restrictions"""
+
+    __tablename__ = "diet_types"
+
+    diet_name = db.Column(db.UnicodeText, primary_key=True)
+
+    def __repr__(self):
+        """Provide helpful representation when printed"""
+
+        return "<DietType diet_name=%s" % (self.diet_name)
+
+
+# TODO: finish this class
+# class RecipeDietType(db.Model):
+#     """Middle table for recipe+diet type pairings"""
+
+#     __tablename__ = "recipes_diet_types"
+
+
 class Cuisine(db.Model):
     """A recipe cuisine"""
 

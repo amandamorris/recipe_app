@@ -56,7 +56,7 @@ class Recipe(db.Model):
     recipe_total_time = db.Column(db.Integer, nullable=False)
 
     users = db.relationship("User", secondary="starrings")
-    categories = db.relationship("Category", secondary="recipes_categories")
+    dish_types = db.relationship("DishType", secondary="recipes_dish_types")
     ingredients = db.relationship("Ingredient", secondary="recipes_ingredients")
     hashtags = db.relationship("Hashtag", secondary="hashtagizations")
     starrings = db.relationship("Starring")
@@ -103,23 +103,19 @@ class Recipe(db.Model):
         return recipe
 
 
-class Category(db.Model):
-    """A recipe category"""
+class DishType(db.Model):
+    """A recipe dish type"""
 
-    __tablename__ = "categories"
+    __tablename__ = "dish_types"
 
-    category_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    category_name = db.Column(db.String(100), nullable=False)
+    dish_type_name = db.Column(db.String(100), primary_key=True)
 
-    recipes = db.relationship("Recipe", secondary='recipes_categories')
+    recipes = db.relationship("Recipe", secondary='recipes_dish_types')
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return ("<Category category_name=%s category_id=%s>" %
-                (self.category_name,
-                 self.category_id
-                 ))
+        return ("<Dish Type dish_type_name=%s >" % (self.dish_type_name))
 
 
 class Unit(db.Model):
@@ -275,28 +271,27 @@ class RecipeIngredient(db.Model):
                  ))
 
 
-class RecipeCategory(db.Model):
-    """Association table for recipe+category pairings"""
+class RecipeDishType(db.Model):
+    """Association table for recipe+dish type pairings"""
 
-    __tablename__ = "recipes_categories"
-
-    rec_cat_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    __tablename__ = "recipes_dish_types"
+    rec_dish_type_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     recipe_id = db.Column(db.Integer,
                           db.ForeignKey("recipes.recipe_id"),
                           nullable=False
                           )
-    category_id = db.Column(db.Integer,
-                            db.ForeignKey("categories.category_id"),
-                            nullable=False
-                            )
+    dish_type_name = db.Column(db.UnicodeText,
+                               db.ForeignKey("dish_types.dish_type_name"),
+                               nullable=False
+                               )
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return ("<RecipeCategory rec_cat_id=%s recipe_id=%s category_id=%s>" %
-                (self.rec_cat_id,
+        return ("<RecipeDishType rec_dish_type_id=%s recipe_id=%s dish_type_id=%s>" %
+                (self.rec_dish_type_id,
                  self.recipe_id,
-                 self.category_id
+                 self.dish_type_id
                  ))
 
 

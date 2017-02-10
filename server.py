@@ -2,7 +2,7 @@ from flask import (Flask, jsonify, render_template, redirect, request, flash,
                    session)
 from jinja2 import StrictUndefined
 from model import connect_to_db, db
-from model import User, Recipe, Ingredient, Hashtag, Category, Unit
+from model import User, Recipe, Ingredient, Hashtag, DishType, Unit
 import sqlalchemy
 import unirest
 import os

@@ -1,8 +1,8 @@
 """Utility file to seed recipeapp database"""
 
 from model import connect_to_db, db
-from model import User, Ingredient, Recipe, Category, Unit, Hashtag
-from model import Starring, RecipeIngredient, RecipeCategory
+from model import User, Ingredient, Recipe, DishType, Unit, Hashtag
+from model import Starring, RecipeIngredient, RecipeDishType
 from model import Hashtagization
 from server import app
 import json
@@ -216,8 +216,8 @@ def add_recipe(response):
     db.session.commit()
 
 
-def add_category(response):
-    """Add category to db if not already there"""
+def add_dish_type(response):
+    """Add dish type to db if not already there"""
     pass
 
 
@@ -317,16 +317,17 @@ def load_recipes():
     db.session.commit()
 
 
-def load_categories():
-    """Load some sample categories into database."""
+def load_dish_types():
+    """Load some sample dish types into database."""
 
     # delete all rows in the table
     # Category.query.delete()
 
-    db.session.add_all([Category(category_name='appetizer'),
-                        Category(category_name='entree'),
-                        Category(category_name='dessert'),
-                        Category(category_name='vegetarian')
+    db.session.add_all([DishType(dish_type_name='appetizer'),
+                        DishType(dish_type_name='entree'),
+                        DishType(dish_type_name='dessert'),
+                        DishType(dish_type_name='side'),
+                        DishType(dish_type_name='salad')
                         ])
     db.session.commit()
 
@@ -397,16 +398,16 @@ def load_recipes_ingredients():
                         ])
 
 
-def load_recipes_categories():
-    """Load some sample recipe-categorizations into database."""
+def load_recipes_dish_types():
+    """Load some sample recipe-dish-types into database."""
 
     # delete all rows in the table
     # RecipeCategory.query.delete()
 
-    db.session.add_all([RecipeCategory(recipe_id=2, category_id=1),
-                        RecipeCategory(recipe_id=1, category_id=1),
-                        RecipeCategory(recipe_id=1, category_id=3),
-                        RecipeCategory(recipe_id=1, category_id=4)
+    db.session.add_all([RecipeDishType(recipe_id=2, dish_type_name="appetizer"),
+                        RecipeDishType(recipe_id=1, dish_type_name="entree"),
+                        RecipeDishType(recipe_id=1, dish_type_name="side"),
+                        RecipeDishType(recipe_id=2, dish_type_name="salad")
                         ])
     db.session.commit()
 
@@ -442,10 +443,10 @@ if __name__ == "__main__":
     load_users()
     load_ingredients()
     load_recipes()
-    load_categories()
+    load_dish_types()
     load_units()
     load_hashtags()
     load_starrings()
     load_recipes_ingredients()
-    load_recipes_categories()
+    load_recipes_dish_types()
     load_hashtagizations()

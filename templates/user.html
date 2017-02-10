@@ -27,41 +27,31 @@
   "use strict";
 
 function showHashRecipes(results){
-    // console.log(results["macaroni and cheese"])
-    // console.log(results["macaroni and cheese"]["hashtag"])
     // console.log(results);
-    //     for (var recipe in results) {
-    //         var rec = results[recipe];
-    //         // console.log(rec);
-    //         var hashtag = rec["hashtag"];
-    //         $('#' + hashtag).append("<h3>" + recipe + "</h3>");
-    //         $('#' + hashtag).append("<p>Total time required: " + rec["time"] + " minutes</p>");
-    //         $('#' + hashtag).append("<p>Ingredients:</p>");
-    //         for (var ingredient of rec["ingredients"]) {
+    for (var hashtag in results) {
+        var hashrecipes = results[hashtag];
+        for (var recipe_name in hashrecipes) {
+            var recipe = hashrecipes[recipe_name]
+            console.log(hashtag);
+            console.log(recipe_name);
+            $('#' + hashtag).append("<h4>" + recipe_name + "</h4>");
+            $('#' + hashtag).append("<p>Total time required: " + recipe["time"] + " minutes</p>");
+            $('#' + hashtag).append("<p>Ingredients:</p>");
+            for (var ingredient of recipe["ingredients"]) {
     //             // console.log(ingredient);
     //             // console.log(ingredient["ingredient_name"]);
-    //             $('#' + hashtag).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
-    //         }
-    //         $('#' + hashtag).append("<p>Instructions:</p>");
-    //         $('#' + hashtag).append(rec["steps"]);
-    //     }
-    // console.log(results);
+                $('#' + hashtag).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
+            $('#' + hashtag).append("<p>Instructions:</p>");
+            $('#' + hashtag).append(recipe["steps"]);
+
+            }
+
+        }
     }
+    
+}
 
 $.get('/user-hashtag-recipes.json', showHashRecipes);
-
-// function getHashRecipes(evt){
-//     // Do I need this next line?
-//     // evt.preventDefault();
-//     // var hashtag = $(this).data("hashtag-name")
-//     // var username = $(this).data("username")
-//     // var params = {"username": username, "hashtag": hashtag}
-    
-//     $.load('/user-hashtag-recipes.json', showHashRecipes);
-
-//     // (this).data("recipes-showing")
-// }
-// $('.hashtag_bullet').on('click', getHashRecipes);
 
 </script>
 

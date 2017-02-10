@@ -144,13 +144,15 @@ def search_recipes():
 @app.route('/show_recipe')
 def show_recipe():
     """Display a recipe"""
-    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/479101/information?includeNutrition=false",
+    recipe_id = request.args.get("recipe_id")
+    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + recipe_id + "/information?includeNutrition=false",
                            headers={
                                "X-Mashape-Key": MASHAPE_KEY,
                                "Accept": "application/json"
                                }
                            )
     recipe = response.body
+    print recipe
     return redirect('/')
 
 

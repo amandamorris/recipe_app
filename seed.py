@@ -205,7 +205,7 @@ def add_recipe(response):
     recipe_id = response['id']  # get recipe id from response
     recipe_name = response['title']  # get recipe name from response
     recipe_steps = response['instructions']  # get recipe instructions/steps
-    recipe_time = response['readyInMinutes']  # get cook time from response
+    recipe_total_time = response['readyInMinutes']  # get cook time from response
 
     recipe = Recipe(recipe_id=recipe_id,
                     recipe_name=recipe_name,
@@ -283,7 +283,8 @@ def load_ingredients():
                         Ingredient(ingredient_name='cheese', ingredient_id=2),
                         Ingredient(ingredient_name='lettuce', ingredient_id=3),
                         Ingredient(ingredient_name='vinegar', ingredient_id=4),
-                        Ingredient(ingredient_name='broccoli', ingredient_id=6)
+                        Ingredient(ingredient_name='broccoli', ingredient_id=6),
+                        Ingredient(ingredient_name='water', ingredient_id=7)
                         ])
     db.session.commit()
 
@@ -294,9 +295,24 @@ def load_recipes():
     # delete all rows in the table
     # Recipe.query.delete()
 
-    db.session.add_all([Recipe(recipe_id=1, recipe_name='macaroni and cheese', recipe_steps="mix mac and cheese", recipe_time=30),
-                        Recipe(recipe_id=2, recipe_name='salad', recipe_steps="toss lettuce with vinegar", recipe_time=10),
-                        Recipe(recipe_id=3, recipe_name='icewater', recipe_steps="take water, add ice", recipe_time=2)
+    db.session.add_all([Recipe(recipe_id=1,
+                               recipe_name='macaroni and cheese',
+                               recipe_steps="mix mac and cheese",
+                               recipe_active_time=30,
+                               recipe_total_time=60
+                               ),
+                        Recipe(recipe_id=2,
+                               recipe_name='salad',
+                               recipe_steps="toss lettuce with vinegar",
+                               recipe_active_time=10,
+                               recipe_total_time=25
+                               ),
+                        Recipe(recipe_id=3,
+                               recipe_name='icewater',
+                               recipe_steps="take water, add ice",
+                               recipe_active_time=2,
+                               recipe_total_time=15
+                               )
                         ])
     db.session.commit()
 
@@ -364,12 +380,12 @@ def load_recipes_ingredients():
     # RecipeIngredient.query.delete()
 
     db.session.add_all([RecipeIngredient(recipe_id=1,
-                                         ingredient_id=3,
+                                         ingredient_id=1,
                                          quantity=3.0,
                                          unit_name='tad'
                                          ),
                         RecipeIngredient(recipe_id=2,
-                                         ingredient_id=1,
+                                         ingredient_id=3,
                                          quantity=0.5,
                                          unit_name='tad'
                                          ),
@@ -417,11 +433,11 @@ if __name__ == "__main__":
     # In case tables haven't been created, create them
     db.create_all()
 
-    response = get_response()
-    add_ingredients(response)
-    add_recipe(response)
-    add_units(response)
-    add_recipe_ingredients(response)
+    # response = get_response()
+    # add_ingredients(response)
+    # add_recipe(response)
+    # add_units(response)
+    # add_recipe_ingredients(response)
 
     load_users()
     load_ingredients()

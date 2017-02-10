@@ -52,7 +52,8 @@ class Recipe(db.Model):
     recipe_id = db.Column(db.Integer, primary_key=True)
     recipe_name = db.Column(db.Unicode(150), nullable=False)
     recipe_steps = db.Column(db.UnicodeText, nullable=False)
-    recipe_time = db.Column(db.Integer, nullable=False)
+    recipe_active_time = db.Column(db.Integer, nullable=False)
+    recipe_total_time = db.Column(db.Integer, nullable=False)
 
     users = db.relationship("User", secondary="starrings")
     categories = db.relationship("Category", secondary="recipes_categories")
@@ -93,7 +94,8 @@ class Recipe(db.Model):
         recipe['recipe_id'] = self.recipe_id
         recipe['recipe_name'] = self.recipe_name
         recipe['steps'] = self.recipe_steps
-        recipe['time'] = self.recipe_time
+        recipe['active_time'] = self.recipe_active_time
+        recipe['total_time'] = self.recipe_total_time
         recipe['ingredients'] = []
         ingrs = self.get_ingredient_list()
         recipe['ingredients'] = ingrs

@@ -299,19 +299,25 @@ def load_recipes():
                                recipe_name='macaroni and cheese',
                                recipe_steps="mix mac and cheese",
                                recipe_active_time=30,
-                               recipe_total_time=60
+                               recipe_total_time=60,
+                               recipe_servings=4,
+                               healthscore=50
                                ),
                         Recipe(recipe_id=2,
                                recipe_name='salad',
                                recipe_steps="toss lettuce with vinegar",
                                recipe_active_time=10,
-                               recipe_total_time=25
+                               recipe_total_time=25,
+                               recipe_servings=2,
+                               healthscore=95
                                ),
                         Recipe(recipe_id=3,
                                recipe_name='icewater',
                                recipe_steps="take water, add ice",
                                recipe_active_time=2,
-                               recipe_total_time=15
+                               recipe_total_time=15,
+                               recipe_servings=1,
+                               healthscore=100
                                )
                         ])
     db.session.commit()

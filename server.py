@@ -18,6 +18,20 @@ app.jinja_env.undefined = StrictUndefined
 MASHAPE_KEY = os.environ["MASHAPE_KEY"]
 
 
+def parse_recipe_keywords(keyword_string):
+    return keyword_string.replace(" ", "+")
+
+
+def parse_recipe_searchlist(searchlist):
+    mystring = ""
+    if len(searchlist):
+        mystring = searchlist[0]
+        for element in searchlist[1:]:
+            mystring += "%2C+" + element
+            # mystring += element
+    return mystring
+
+
 @app.route('/')
 def index():
     """Homepage."""
@@ -96,23 +110,17 @@ def search_recipe():
     """Parse html recipe search form to create request to search api for recipes"""
     # player = request.args.get("person")
     # print "keywords"
-    keyword = request.args.get("keywords")
-    recipe_attributes = request.args.getlist("recipe_attribute")
+    keywords = request.args.get("keywords")
+    # recipe_attributes = request.args.getlist("recipe_attribute")
     diet_type = request.args.get("diet_type")
     cuisine_types = request.args.getlist("cuisine")
     intolerances = request.args.getlist("intolerance")
     dishtype = request.args.getlist("dish_type")
     # print recipe_attributes, diet_type, cuisine_types, intolerances
-# https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&instructionsRequired=false&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=burger&type=main+course
-#     diet
-#     excludeIngredients
-#     intolerances
-#     query
-#     type
 
-    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=3&query=" + keyword  # + "&diet=" + diet_type + "&intolerances=" + intolerances[0] + "&type=" + dishtype[0]
+    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=3&query=" + parse_recipe_keywords(keywords) + "&intolerances=" + parse_recipe_searchlist(intolerances)  # + "&diet=" + diet_type + "&intolerances=" + intolerances[0] + "&type=" + dishtype[0]
     print url
-    response = unirest.get("" + url + "",
+    response = unirest.get(url,
                            headers={
                                "X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
                                "Accept": "application/json"

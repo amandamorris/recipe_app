@@ -19,10 +19,13 @@ MASHAPE_KEY = os.environ["MASHAPE_KEY"]
 
 
 def parse_recipe_keywords(keyword_string):
+    """Replace whitespace with + for recipe search api request"""
     return keyword_string.replace(" ", "+")
 
 
 def parse_recipe_searchlist(searchlist):
+    """Iterate through a list of search parameters and create a string to pass
+    in the api request"""
     mystring = ""
     if len(searchlist):
         mystring = searchlist[0]
@@ -115,11 +118,23 @@ def search_recipe():
     diet_type = request.args.get("diet_type")
     cuisine_types = request.args.getlist("cuisine")
     intolerances = request.args.getlist("intolerance")
-    dishtype = request.args.getlist("dish_type")
+    dish_type = request.args.get("dish_type")
     # print recipe_attributes, diet_type, cuisine_types, intolerances
 
-    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=3&query=" + parse_recipe_keywords(keywords) + "&intolerances=" + parse_recipe_searchlist(intolerances)  # + "&diet=" + diet_type + "&intolerances=" + intolerances[0] + "&type=" + dishtype[0]
+    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=3"
+
+    if keywords:
+        url += "&query=" + parse_recipe_keywords(keywords)
+    if intolerances:
+        url += "&intolerances=" + parse_recipe_searchlist(intolerances)
+    if cuisine_types:
+        url += "&cuisine=" + parse_recipe_searchlist(cuisine_types)
+    if diet_type:
+        url += "&diet=" + diet_type
+    if dish_type:
+        url += "&type=" + dish_type
     print url
+
     response = unirest.get(url,
                            headers={
                                "X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",

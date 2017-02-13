@@ -6,32 +6,27 @@
 <h2>Search, save, rate, comment</h2>
 
 <p>Search a recipe</p>
-<form>
+<form action="/recipe_search" method="GET">
     <p><input type="text" name="keywords"></p>
     <div>
     <p>Recipe type</p>
-    <input type="checkbox" name="recipe_attribute" value="cheap">Cheap
+<!--     <input type="checkbox" name="recipe_attribute" value="cheap">Cheap
     <input type="checkbox" name="recipe_attribute" value="dairy_free">Dairy Free
     <input type="checkbox" name="recipe_attribute" value="gluten_free">Gluten Free
     <input type="checkbox" name="recipe_attribute" value="ketogenic">Ketogenic
     <input type="checkbox" name="recipe_attribute" value="low_fodmap">Low Fodmap
-    <input type="checkbox" name="recipe_attribute" value="sustainable">Sustainable
-    <input type="checkbox" name="recipe_attribute" value="vegan">Vegan
-    <input type="checkbox" name="recipe_attribute" value="vegetarian">Vegetarian
-    <input type="checkbox" name="recipe_attribute" value="very_healthy">Very Healthy
+    <input type="checkbox" name="recipe_attribute" value="sustainable">Sustainable -->
+    <input type="radio" name="diet_type" value="pescatarian">Pescatarian
+    <input type="radio" name="diet_type" value="vegan">Vegan
+    <input type="radio" name="diet_type" value="vegetarian">Vegetarian
+<!--     <input type="checkbox" name="recipe_attribute" value="very_healthy">Very Healthy
     <input type="checkbox" name="recipe_attribute" value="very_popular">Very Popular
-    <input type="checkbox" name="recipe_attribute" value="whole30">Whole30
-    </div>
-
-    <div>
-    <p>Meal type</p>
-    <input type="checkbox" name="dish_type" value="breakfast">Breakfast
-    <input type="checkbox" name="dish_type" value="lunch">Lunch
-    <input type="checkbox" name="dish_type" value="dinner">Dinner
+    <input type="checkbox" name="recipe_attribute" value="whole30">Whole30 -->
     </div>
 
     <div>
     <p>Dish type</p>
+    <input type="checkbox" name="dish_type" value="breakfast">Breakfast
     <input type="checkbox" name="dish_type" value="appetizer">Appetizer
     <input type="checkbox" name="dish_type" value="salad">Salad
     <input type="checkbox" name="dish_type" value="soup">Soup

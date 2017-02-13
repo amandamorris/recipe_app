@@ -91,6 +91,38 @@ def user_hashtag():
     return jsonify(recipes_by_hashtag)
 
 
+@app.route('/recipe_search', methods=['GET'])
+def search_recipe():
+    """Parse html recipe search form to create request to search api for recipes"""
+    # player = request.args.get("person")
+    # print "keywords"
+    keyword = request.args.get("keywords")
+    recipe_attributes = request.args.getlist("recipe_attribute")
+    diet_type = request.args.get("diet_type")
+    cuisine_types = request.args.getlist("cuisine")
+    intolerances = request.args.getlist("intolerance")
+    dishtype = request.args.getlist("dish_type")
+    # print recipe_attributes, diet_type, cuisine_types, intolerances
+# https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&instructionsRequired=false&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=burger&type=main+course
+#     diet
+#     excludeIngredients
+#     intolerances
+#     query
+#     type
+
+    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=3&query=" + keyword  # + "&diet=" + diet_type + "&intolerances=" + intolerances[0] + "&type=" + dishtype[0]
+    print url
+    response = unirest.get("" + url + "",
+                           headers={
+                               "X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
+                               "Accept": "application/json"
+                               }
+                           )
+    print response.body
+    return render_template("search_results.html", response=response.body)
+    # return redirect("/")
+
+
 @app.route('/logout')
 def logout():
     """Logout - remove user from session and redirect to homepage"""

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+The search results!
+
+<ul>
+{% for result in response['results'] %}
+<li>{{ result['title'] }}</li>
+    <ul>
+        <li> Recipe Id: {{ result['id'] }}</li>
+        <li> Ready in {{ result['readyInMinutes'] }} minutes</li>
+        <li> Image URL: {{ response['baseUri'] }}{{ result['image'] }}</li>
+    </ul>
+{% endfor %}
+</ul>
+
+{% endblock %}

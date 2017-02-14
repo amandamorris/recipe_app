@@ -85,16 +85,36 @@ def add_recipe_cuisines_to_db(json_response):
 #             print ingredient
 
 def add_ingredients_to_db(json_response):
-    """Check for ingredients in db, and if not there, add them"""
-    for ingredient_dict in json_response['extendedIngredients']:
-        ingredient = Ingredient.query.get(ingredient_dict['id'])
-        if not ingredient:
-            new_ingredient = Ingredient(ingredient_id=ingredient_dict['id'],
-                                        ingredient_name=ingredient_dict['name']
+    """Check for ingredient_id, unit, recipe_ingredient in db, and add any that
+    are not there"""
+
+    for ingredient in json_response['extendedIngredients']:
+        # check to see if ingredient is in db, and if not, add it
+        db_ingredient = Ingredient.query.get(ingredient['id'])
+        if not db_ingredient:
+            new_ingredient = Ingredient(ingredient_id=ingredient['id'],
+                                        ingredient_name=ingredient['name']
                                         )
             db.session.add(new_ingredient)
-    db.session.commit()
+            db.session.commit()
 
+        # check to see if unit is in the db, and if not, add it
+        db_unit = Unit.query.get(ingredient['unitLong'])
+        if ingredient['unitLong'] and not db_unit:
+            new_unit = Unit(unit_name=ingredient['unitLong'])
+            db.session.add(new_unit)
+            db.session.commit()
+
+        # check to see if recipeingredient is in the db, and if not, add it
+        db_recipe_ingredient = RecipeIngredient.query.filter_by(recipe_id=json_response['id'], ingredient_id=ingredient['id']).first()
+        if not db_recipe_ingredient:
+            new_recipe_ingredient = RecipeIngredient(recipe_id=json_response['id'],
+                                                     ingredient_id=ingredient['id'],
+                                                     quantity=ingredient['amount'],
+                                                     unit_name=ingredient['unitLong']
+                                                     )
+            db.session.add(new_recipe_ingredient)
+            db.session.commit()
 # def add_recipe_ingredients_to_db(json_response):
 #     """Add recipe ingredients to database"""
 #     pass

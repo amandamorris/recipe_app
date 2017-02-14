@@ -47,8 +47,6 @@ def add_recipe_to_db(json_response):
     very_popular = json_response['veryPopular']
     whole30 = json_response['whole30']
 
-    # recipe_steps = json_response['instructions']
-
     recipe = Recipe(recipe_id=recipe_id,
                     recipe_name=recipe_name,
                     recipe_steps=recipe_steps,
@@ -70,3 +68,33 @@ def add_recipe_to_db(json_response):
                     )
     db.session.add(recipe)
     db.session.commit()
+
+
+def add_recipe_cuisines_to_db(json_response):
+    """Add recipe cuisines to database"""
+    pass
+
+
+# def add_ingredients_to_db(json_response):
+#     """Check for ingredients in db, and if not there, add them"""
+#     for ingredient_dict in json_response['extendedIngredients']:
+#         ingredient = Ingredient.query.filter_by(ingredient_name=ingredient_dict['name']).first()
+#         if not ingredient:
+#             print 'ingredient %s not in db' % (ingredient_dict['name'])
+#         else:
+#             print ingredient
+
+def add_ingredients_to_db(json_response):
+    """Check for ingredients in db, and if not there, add them"""
+    for ingredient_dict in json_response['extendedIngredients']:
+        ingredient = Ingredient.query.get(ingredient_dict['id'])
+        if not ingredient:
+            new_ingredient = Ingredient(ingredient_id=ingredient_dict['id'],
+                                        ingredient_name=ingredient_dict['name']
+                                        )
+            db.session.add(new_ingredient)
+    db.session.commit()
+
+# def add_recipe_ingredients_to_db(json_response):
+#     """Add recipe ingredients to database"""
+#     pass

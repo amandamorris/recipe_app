@@ -126,6 +126,7 @@ def search_recipes():
 
 @app.route('/recipes/<recipe_id>', methods=['GET'])
 def recipe_details(recipe_id):
+    """Check db for recipe, if not there, add it, and either way, display it"""
     recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
     if not recipe:
         response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
@@ -137,6 +138,7 @@ def recipe_details(recipe_id):
         recipe_json = response.body
         print recipe_json
         add_recipe_to_db(recipe_json)
+        add_ingredients_to_db(recipe_json)
         recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
         # recipe_id = recipe_json['id']
         # recipe_name = recipe_json['title']

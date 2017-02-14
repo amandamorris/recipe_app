@@ -73,9 +73,9 @@ def add_recipe_to_db(json_response):
 def add_recipe_properties_to_db(json_response):
     """Add recipe cuisines, dish types, images, to db"""
     recipe_id = json_response['id']
-    dish_types = json_response['dishTypes']
     # if the recipe lists dish types...
-    if dish_types:
+    if 'dishTypes' in json_response:
+        dish_types = json_response['dishTypes']
         # check to see if the dish type is in the db, and if not, add it
         for dish_type in dish_types:
             if not DishType.query.get(dish_type):
@@ -88,6 +88,31 @@ def add_recipe_properties_to_db(json_response):
                                               )
             db.session.add(recipe_dish_type)
             db.session.commit()
+    # if the recipe lists cuisines...
+    if 'cuisines' in json_response:
+        cuisines = json_response['cuisines']
+        # check to see if each cuisine is in the db, and if not, add it
+        for cuisine in cuisines:
+            if not Cuisine.query.get(cuisine):
+                new_cuisine = Cuisine(cuisine_name=cuisine)
+                db.session.add(new_cuisine)
+                db.session.commit()
+            # add a new recipe_cuisine pairing for each cuisine
+            recipe_cuisine = RecipeCuisine(recipe_id=recipe_id,
+                                           cuisine_name=cuisine
+                                           )
+            db.session.add(recipe_cuisine)
+            db.session.commit()
+    # if the recipe contains images, see if they're in the db and if not, add
+    if 'image' in json_response:
+        image_url = json_response['image']
+        if not Image.query.filter_by(recipe_id=recipe_id, image_url=image_url).first():
+            new_image = Image(recipe_id=recipe_id,
+                              image_url=image_url
+                              )
+            db.session.add(new_image)
+            db.session.commit()
+
 
 
 # def add_ingredients_to_db(json_response):

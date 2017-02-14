@@ -181,20 +181,6 @@ def process_registration():
     return redirect('/')
 
 
-@app.route('/show_recipe')
-def show_recipe():
-    """Display a recipe"""
-    recipe_id = request.args.get("recipe_id")
-    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + recipe_id + "/information?includeNutrition=false",
-                           headers={
-                               "X-Mashape-Key": MASHAPE_KEY,
-                               "Accept": "application/json"
-                               }
-                           )
-    recipe = response.body
-    print recipe
-    return redirect('/')
-
 
 if __name__ == "__main__":
     # Set debug=True here, since it has to be True at the

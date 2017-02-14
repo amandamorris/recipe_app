@@ -109,17 +109,14 @@ def user_hashtag():
 
 
 @app.route('/recipe_search', methods=['GET'])
-def search_recipe():
+def search_recipes():
     """Parse html recipe search form to create request to search api for recipes"""
-    # player = request.args.get("person")
-    # print "keywords"
+
     keywords = request.args.get("keywords")
-    # recipe_attributes = request.args.getlist("recipe_attribute")
     diet_type = request.args.get("diet_type")
     cuisine_types = request.args.getlist("cuisine")
     intolerances = request.args.getlist("intolerance")
     dish_type = request.args.get("dish_type")
-    # print recipe_attributes, diet_type, cuisine_types, intolerances
 
     url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=3"
 
@@ -133,7 +130,6 @@ def search_recipe():
         url += "&diet=" + diet_type
     if dish_type:
         url += "&type=" + dish_type
-    print url
 
     response = unirest.get(url,
                            headers={
@@ -141,9 +137,22 @@ def search_recipe():
                                "Accept": "application/json"
                                }
                            )
-    print response.body
     return render_template("search_results.html", response=response.body)
-    # return redirect("/")
+
+
+@app.route('/recipe/<recipe_id>')
+def display_recipe(recipe_id):
+    recipe = Recipe.query.filter(recipe_id=recipe_id)
+    if not recipe:
+        response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
+                               + recipe_id + "/information?includeNutrition=false",
+                               headers={"X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
+                                        "Accept": "application/json"
+                                        }
+                               )
+        recipe_json = response.body
+        
+
 
 
 @app.route('/logout')
@@ -181,19 +190,19 @@ def process_registration():
     return redirect('/')
 
 
-@app.route('/search_recipes')
-def search_recipes():
-    """Search recipes using keywords"""
+# @app.route('/search_recipes')
+# def search_recipes():
+#     """Search recipes using keywords"""
 
-    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&instructionsRequired=false&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=kale&type=main+course",
-                           headers={
-                               "X-Mashape-Key": MASHAPE_KEY,
-                               "Accept": "application/json"
-                               }
-                           )
-    results = response.body
-    print results
-    return redirect('/')
+#     response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&instructionsRequired=false&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=kale&type=main+course",
+#                            headers={
+#                                "X-Mashape-Key": MASHAPE_KEY,
+#                                "Accept": "application/json"
+#                                }
+#                            )
+#     results = response.body
+#     print results
+#     return redirect('/')
 
 
 @app.route('/show_recipe')

@@ -2,7 +2,7 @@
 
 from model import connect_to_db, db
 from model import User, Ingredient, Recipe, DishType, Unit, Hashtag
-from model import Starring, RecipeIngredient, RecipeDishType
+from model import Starring, RecipeIngredient, RecipeDishType, Cuisine
 from model import Hashtagization
 from server import app
 import json
@@ -257,6 +257,37 @@ def add_recipe_ingredients(response):
     db.session.commit()
 
 
+def add_cuisines():
+    """Add cuisine list"""
+
+    db.session.add_all([Cuisine(cuisine_name='african'),
+                        Cuisine(cuisine_name='chinese'),
+                        Cuisine(cuisine_name='japanese'),
+                        Cuisine(cuisine_name='korean'),
+                        Cuisine(cuisine_name='vietnamese'),
+                        Cuisine(cuisine_name='thai'),
+                        Cuisine(cuisine_name='indian'),
+                        Cuisine(cuisine_name='british'),
+                        Cuisine(cuisine_name='irish'),
+                        Cuisine(cuisine_name='french'),
+                        Cuisine(cuisine_name='italian'),
+                        Cuisine(cuisine_name='mexican'),
+                        Cuisine(cuisine_name='spanish'),
+                        Cuisine(cuisine_name='middle eastern'),
+                        Cuisine(cuisine_name='jewish'),
+                        Cuisine(cuisine_name='american'),
+                        Cuisine(cuisine_name='cajun'),
+                        Cuisine(cuisine_name='southern'),
+                        Cuisine(cuisine_name='greek'),
+                        Cuisine(cuisine_name='german'),
+                        Cuisine(cuisine_name='nordic'),
+                        Cuisine(cuisine_name='eastern european'),
+                        Cuisine(cuisine_name='caribbean'),
+                        Cuisine(cuisine_name='latin american')
+                        ])
+    db.session.commit()
+
+
 def load_users():
     """Load some sample users into database."""
 
@@ -380,6 +411,7 @@ def load_starrings():
     db.session.commit()
 
 
+
 def load_recipes_ingredients():
     """Load some sample recipe-ingredients into database."""
 
@@ -456,3 +488,4 @@ if __name__ == "__main__":
     load_recipes_ingredients()
     load_recipes_dish_types()
     load_hashtagizations()
+    add_cuisines()

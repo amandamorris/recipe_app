@@ -201,21 +201,6 @@ def add_ingredients(response):
     db.session.commit()
 
 
-def add_recipe(response):
-    recipe_id = response['id']  # get recipe id from response
-    recipe_name = response['title']  # get recipe name from response
-    recipe_steps = response['instructions']  # get recipe instructions/steps
-    recipe_total_time = response['readyInMinutes']  # get cook time from response
-
-    recipe = Recipe(recipe_id=recipe_id,
-                    recipe_name=recipe_name,
-                    recipe_steps=recipe_steps,
-                    recipe_time=recipe_time
-                    )
-    db.session.add(recipe)
-    db.session.commit()
-
-
 def add_dish_type(response):
     """Add dish type to db if not already there"""
     pass

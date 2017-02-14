@@ -5,7 +5,7 @@ The search results!
 
 <ul>
 {% for result in response['results'] %}
-<li>{{ result['title'] }}</li>
+<li><a href="/recipes/{{ result['id'] }}">{{ result['title'] }}</a></li>
     <ul>
         <li> Recipe Id: {{ result['id'] }}</li>
         <li> Ready in {{ result['readyInMinutes'] }} minutes</li>

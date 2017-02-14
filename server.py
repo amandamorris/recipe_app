@@ -3,6 +3,7 @@ from flask import (Flask, jsonify, render_template, redirect, request, flash,
 from jinja2 import StrictUndefined
 from model import connect_to_db, db
 from model import User, Recipe, Ingredient, Hashtag, DishType, Unit
+from helpers import *
 import sqlalchemy
 import unirest
 import os
@@ -16,23 +17,6 @@ app.secret_key = "mysecretkey"
 # If I use an undefined variable in Jinja2, raise an error.
 app.jinja_env.undefined = StrictUndefined
 MASHAPE_KEY = os.environ["MASHAPE_KEY"]
-
-
-def parse_recipe_keywords(keyword_string):
-    """Replace whitespace with + for recipe search api request"""
-    return keyword_string.replace(" ", "+")
-
-
-def parse_recipe_searchlist(searchlist):
-    """Iterate through a list of search parameters and create a string to pass
-    in the api request"""
-    mystring = ""
-    if len(searchlist):
-        mystring = searchlist[0]
-        for element in searchlist[1:]:
-            mystring += "%2C+" + element
-            # mystring += element
-    return mystring
 
 
 @app.route('/')
@@ -108,7 +92,7 @@ def user_hashtag():
     return jsonify(recipes_by_hashtag)
 
 
-@app.route('/recipe_search', methods=['GET'])
+@app.route('/recipe_search')
 def search_recipes():
     """Parse html recipe search form to create request to search api for recipes"""
 
@@ -140,9 +124,9 @@ def search_recipes():
     return render_template("search_results.html", response=response.body)
 
 
-@app.route('/recipe/<recipe_id>')
-def display_recipe(recipe_id):
-    recipe = Recipe.query.filter(recipe_id=recipe_id)
+@app.route('/recipes/<recipe_id>', methods=['GET'])
+def recipe_details(recipe_id):
+    recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
     if not recipe:
         response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
                                + recipe_id + "/information?includeNutrition=false",
@@ -151,8 +135,15 @@ def display_recipe(recipe_id):
                                         }
                                )
         recipe_json = response.body
-        
+        print recipe_json
+        add_recipe_to_db(recipe_json)
+        recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
+        # recipe_id = recipe_json['id']
+        # recipe_name = recipe_json['title']
+        # recipe_image = recipe_json['image']
 
+        # print recipe_name, recipe_id, recipe_image
+    return render_template("recipe_info.html", recipe=recipe)
 
 
 @app.route('/logout')
@@ -188,21 +179,6 @@ def process_registration():
         flash("You have successfully created an account and are now logged in")
 
     return redirect('/')
-
-
-# @app.route('/search_recipes')
-# def search_recipes():
-#     """Search recipes using keywords"""
-
-#     response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&instructionsRequired=false&intolerances=egg%2C+gluten&limitLicense=false&number=10&offset=0&query=kale&type=main+course",
-#                            headers={
-#                                "X-Mashape-Key": MASHAPE_KEY,
-#                                "Accept": "application/json"
-#                                }
-#                            )
-#     results = response.body
-#     print results
-#     return redirect('/')
 
 
 @app.route('/show_recipe')

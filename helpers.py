@@ -70,9 +70,24 @@ def add_recipe_to_db(json_response):
     db.session.commit()
 
 
-def add_recipe_cuisines_to_db(json_response):
-    """Add recipe cuisines to database"""
-    pass
+def add_recipe_properties_to_db(json_response):
+    """Add recipe cuisines, dish types, images, to db"""
+    recipe_id = json_response['id']
+    dish_types = json_response['dishTypes']
+    # if the recipe lists dish types...
+    if dish_types:
+        # check to see if the dish type is in the db, and if not, add it
+        for dish_type in dish_types:
+            if not DishType.query.get(dish_type):
+                new_dish_type = DishType(dish_type_name=dish_type)
+                db.session.add(new_dish_type)
+                db.session.commit()
+            # add a new recipe_dish_type for this recipe
+            recipe_dish_type = RecipeDishType(recipe_id=recipe_id,
+                                              dish_type_name=dish_type
+                                              )
+            db.session.add(recipe_dish_type)
+            db.session.commit()
 
 
 # def add_ingredients_to_db(json_response):
@@ -99,11 +114,14 @@ def add_ingredients_to_db(json_response):
             db.session.commit()
 
         # check to see if unit is in the db, and if not, add it
-        db_unit = Unit.query.get(ingredient['unitLong'])
-        if ingredient['unitLong'] and not db_unit:
-            new_unit = Unit(unit_name=ingredient['unitLong'])
+        ingredient_unit = ingredient['unitLong']
+        db_unit = Unit.query.get(ingredient_unit)
+        if ingredient_unit and not db_unit:
+            new_unit = Unit(unit_name=ingredient_unit)
             db.session.add(new_unit)
             db.session.commit()
+        elif not ingredient_unit:
+            ingredient_unit = None
 
         # check to see if recipeingredient is in the db, and if not, add it
         db_recipe_ingredient = RecipeIngredient.query.filter_by(recipe_id=json_response['id'], ingredient_id=ingredient['id']).first()
@@ -111,7 +129,7 @@ def add_ingredients_to_db(json_response):
             new_recipe_ingredient = RecipeIngredient(recipe_id=json_response['id'],
                                                      ingredient_id=ingredient['id'],
                                                      quantity=ingredient['amount'],
-                                                     unit_name=ingredient['unitLong']
+                                                     unit_name=ingredient_unit
                                                      )
             db.session.add(new_recipe_ingredient)
             db.session.commit()

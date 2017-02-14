@@ -139,6 +139,7 @@ def recipe_details(recipe_id):
         print recipe_json
         add_recipe_to_db(recipe_json)
         add_ingredients_to_db(recipe_json)
+        add_recipe_properties_to_db(recipe_json)
         recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
         # recipe_id = recipe_json['id']
         # recipe_name = recipe_json['title']

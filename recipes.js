@@ -1,30 +1,4 @@
-{% extends 'base.html' %}
-{% block content %}
-
-<h2>Hello {{ user.username }}!</h2>
-
-<p>Your starred recipes:</p>
-<ul>
-{% for recipe in user.recipes %}
-    <li>{{ recipe.recipe_name }}
-{% endfor %}
-</ul>
-
-<p>Your Hashtags:</p>
-<ul>
-{% for hashtag in user.hashtags %}
-    <!-- <li><a href="/users/{{ user.username }}/{{ hashtag.hashtag_name }}">{{ hashtag.hashtag_name }}</a></li> -->
-    <li class="hashtag_bullet" data-hashtag-name="{{ hashtag.hashtag_name }}"
-        data-username="{{ user.username }}" data-recipes-showing="false">
-            {{ hashtag.hashtag_name }}
-        </li>
-    <div class="hashtag_list" id="{{ hashtag.hashtag_name }}"></div>
-{% endfor %}
-</ul>
-
-<!-- <script src="https://code.jquery.com/jquery.js"></script>
-<script>
-  "use strict";
+"use strict";
 
 function showHashRecipes(results){
     // console.log(results);
@@ -54,6 +28,3 @@ function showHashRecipes(results){
 
 $.get('/user-hashtag-recipes.json', showHashRecipes);
 
-</script>
- -->
-{% endblock %}

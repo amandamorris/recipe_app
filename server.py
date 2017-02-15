@@ -135,12 +135,15 @@ def recipe_details(recipe_id):
                                         }
                                )
         recipe_json = response.body
-        print recipe_json
+        # print recipe_json
         # add all recipe info to database
         add_recipe_to_db(recipe_json)
         add_ingredients_to_db(recipe_json)
         add_recipe_properties_to_db(recipe_json)
         recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
+        # print recipe
+        recipe = recipe.create_recipe_dictionary()
+        # print recipe
         # recipe_id = recipe_json['id']
         # recipe_name = recipe_json['title']
         # recipe_image = recipe_json['image']

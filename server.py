@@ -119,30 +119,6 @@ def search_recipes():
     return render_template("search_results.html", response=response.body)
 
 
-@app.route('/recipes/<recipe_id>', methods=['GET'])
-def recipe_details(recipe_id):
-    """Check db for recipe, if not there, add it, and either way, display it"""
-    recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
-    if not recipe:
-        response = get_recipe_details_from_api(recipe_id)
-        recipe_json = response.body
-        # print recipe_json
-        # add all recipe info to database
-        add_recipe_to_db(recipe_json)
-        add_ingredients_to_db(recipe_json)
-        add_recipe_properties_to_db(recipe_json)
-        recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
-        # print recipe
-        recipe = recipe.create_recipe_dictionary()
-        # print recipe
-        # recipe_id = recipe_json['id']
-        # recipe_name = recipe_json['title']
-        # recipe_image = recipe_json['image']
-
-        # print recipe_name, recipe_id, recipe_image
-    return render_template("recipe_info.html", recipe=recipe)
-
-
 @app.route('/view_recipe.json', methods=['POST'])
 def view_recipe():
     """Check if a recipe is in the db, and if not, add it,

@@ -143,6 +143,28 @@ def recipe_details(recipe_id):
     return render_template("recipe_info.html", recipe=recipe)
 
 
+@app.route('/view_recipe.json', methods=['POST'])
+def view_recipe():
+    """Check if a recipe is in the db, and if not, add it,
+    and either way, then display info from db"""
+
+    recipe_id = request.form.get("recipe_id")
+    recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
+    if not recipe:
+        response = get_recipe_details_from_api(recipe_id)
+        recipe_json = response.body
+        # print recipe_json
+        # add all recipe info to database
+        add_recipe_to_db(recipe_json)
+        add_ingredients_to_db(recipe_json)
+        add_recipe_properties_to_db(recipe_json)
+        recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
+    recipe = recipe.create_recipe_dictionary()
+
+    return jsonify(recipe)
+
+
+
 @app.route('/recipe.json')
 def create_recipe_json(recipe_id):
     """"""

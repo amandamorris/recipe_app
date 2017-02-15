@@ -109,7 +109,7 @@ class Recipe(db.Model):
         recipe['steps'] = self.recipe_steps
         recipe['active_time'] = self.recipe_active_time
         recipe['total_time'] = self.recipe_total_time
-        recipe['ingredients'] = []
+        # recipe['ingredients'] = []
         ingrs = self.get_ingredient_list()
         recipe['ingredients'] = ingrs
 

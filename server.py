@@ -140,17 +140,6 @@ def view_recipe():
     return jsonify(recipe)
 
 
-
-@app.route('/recipe.json')
-def create_recipe_json(recipe_id):
-    """"""
-    recipe_id = request.args.get("recipe_id")
-    db_recipe = Recipe.query.get(recipe_id)
-    recipe = db_recipe.create_recipe_dictionary()
-
-    return jsonify(recipe)
-
-
 @app.route('/logout')
 def logout():
     """Logout - remove user from session and redirect to homepage"""

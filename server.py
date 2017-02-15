@@ -43,7 +43,7 @@ def process_login():
     user = User.query.filter(User.username == username).first()
 
     if user and user.password == password:
-        session['user'] = username
+        session['username'] = username
         flash("You have successfully logged in")
         return redirect("/users/" + str(user.username))
     else:
@@ -65,7 +65,7 @@ def user_hashtag():
     # do request.args.get to get username and hashtag#
     # username = request.args.get("username")  # the username
     # my_hash = request.args.get("hashtag")  # the hashtag
-    username = session['user']
+    username = session['username']
     hashtag_list = User.query.get(username).hashtags
 
     # user = User.query.get(user)  # the user object
@@ -74,7 +74,6 @@ def user_hashtag():
     recipes_by_hashtag = {}
     for hashtag in hashtag_list:
         recipes = hashtag.recipes
-    # print recipes
         recipes_info = {}
         for recipe in recipes:
             recipe_dict = recipe.create_recipe_dictionary()
@@ -137,6 +136,7 @@ def recipe_details(recipe_id):
                                )
         recipe_json = response.body
         print recipe_json
+        # add all recipe info to database
         add_recipe_to_db(recipe_json)
         add_ingredients_to_db(recipe_json)
         add_recipe_properties_to_db(recipe_json)
@@ -152,7 +152,7 @@ def recipe_details(recipe_id):
 @app.route('/logout')
 def logout():
     """Logout - remove user from session and redirect to homepage"""
-    del session['user']
+    del session['username']
     flash("You have successfully logged out")
 
     return redirect('/')

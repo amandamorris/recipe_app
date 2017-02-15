@@ -114,16 +114,6 @@ def add_recipe_properties_to_db(json_response):
             db.session.commit()
 
 
-
-# def add_ingredients_to_db(json_response):
-#     """Check for ingredients in db, and if not there, add them"""
-#     for ingredient_dict in json_response['extendedIngredients']:
-#         ingredient = Ingredient.query.filter_by(ingredient_name=ingredient_dict['name']).first()
-#         if not ingredient:
-#             print 'ingredient %s not in db' % (ingredient_dict['name'])
-#         else:
-#             print ingredient
-
 def add_ingredients_to_db(json_response):
     """Check for ingredient_id, unit, recipe_ingredient in db, and add any that
     are not there"""
@@ -158,6 +148,3 @@ def add_ingredients_to_db(json_response):
                                                      )
             db.session.add(new_recipe_ingredient)
             db.session.commit()
-# def add_recipe_ingredients_to_db(json_response):
-#     """Add recipe ingredients to database"""
-#     pass

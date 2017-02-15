@@ -23,8 +23,8 @@ $.get('/user-hashtag-recipes.json', showHashRecipes);
 
 function showRecipe(result) {
     var recipe_id = result["recipe_id"];
-    $('#div-' + recipe_id).empty();
-     $('#div-' + recipe_id).append("<h4>" + result["recipe_name"] + "</h4>");
+    $('#summary-' + recipe_id).empty();
+     // $('#div-' + recipe_id).append("<div class='recipe_name'> <h4>" + result["recipe_name"] + "</h4> <p>Star this recipe </p> </div>");
             $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
             $('#div-' + recipe_id).append("<p>Ingredients:</p>");
             for (var ingredient of result["ingredients"]) {

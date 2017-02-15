@@ -7,12 +7,16 @@ The search results!
 {% for result in response['results'] %}
 <div class='recipe' id='div-{{ result['id'] }}'>
     <!-- <div class='recipe' id='div2-{{ result['id'] }}'> -->
-    <li class='recipe_name' id="{{ result['id'] }}">{{ result['title'] }}</li>
-    <ul>
-        <li> Recipe Id: {{ result['id'] }}</li>
-        <li> Ready in {{ result['readyInMinutes'] }} minutes</li>
-        <li> Image URL: {{ response['baseUri'] }}{{ result['image'] }}</li>
-    </ul>
+    <li class='recipe_name' id="{{ result['id'] }}">{{ result['title'] }}
+    <button type="button">Star this recipe</button>
+    </li>
+    <div class='recipe_summary' id='summary-{{ result['id'] }}'>
+        <ul>
+            <li> Recipe Id: {{ result['id'] }}</li>
+            <li> Ready in {{ result['readyInMinutes'] }} minutes</li>
+            <li> Image URL: {{ response['baseUri'] }}{{ result['image'] }}</li>
+        </ul>
+    </div>
     <!-- </div> -->
 </div>
 {% endfor %}

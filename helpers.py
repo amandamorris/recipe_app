@@ -1,4 +1,29 @@
 from model import *
+import unirest
+
+
+def get_recipe_briefs_from_api(url):
+    """Make an API call to Spoonacular to see recipe search results"""
+
+    response = unirest.get(url,
+                           headers={
+                               "X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
+                               "Accept": "application/json"
+                               }
+                           )
+    return response
+
+
+def get_recipe_details_from_api(recipe_id):
+    """Make an API call to Spoonacular to get recipe info"""
+
+    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
+                           + recipe_id + "/information?includeNutrition=false",
+                           headers={"X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
+                                    "Accept": "application/json"
+                                    }
+                           )
+    return response
 
 
 def parse_recipe_keywords(keyword_string):

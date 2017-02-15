@@ -91,18 +91,6 @@ def user_hashtag():
     return jsonify(recipes_by_hashtag)
 
 
-def get_search_results_from_api(url):
-    """Make an API call to Spoonacular to see recipe search results"""
-
-    response = unirest.get(url,
-                           headers={
-                               "X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
-                               "Accept": "application/json"
-                               }
-                           )
-    return response
-
-
 @app.route('/recipe_search')
 def search_recipes():
     """Parse html recipe search form to create request to search api for recipes"""
@@ -126,20 +114,9 @@ def search_recipes():
     if dish_type:
         url += "&type=" + dish_type
 
-    response = get_search_results_from_api(url)
+    response = get_recipe_briefs_from_api(url)
 
     return render_template("search_results.html", response=response.body)
-
-
-def get_recipe_from_api(recipe_id):
-    """Make an API call to Spoonacular to get recipe info"""
-    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
-                           + recipe_id + "/information?includeNutrition=false",
-                           headers={"X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
-                                    "Accept": "application/json"
-                                    }
-                           )
-    return response
 
 
 @app.route('/recipes/<recipe_id>', methods=['GET'])
@@ -147,7 +124,7 @@ def recipe_details(recipe_id):
     """Check db for recipe, if not there, add it, and either way, display it"""
     recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
     if not recipe:
-        response = get_recipe_from_api(recipe_id)
+        response = get_recipe_details_from_api(recipe_id)
         recipe_json = response.body
         # print recipe_json
         # add all recipe info to database

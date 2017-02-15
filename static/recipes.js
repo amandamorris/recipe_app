@@ -23,15 +23,15 @@ $.get('/user-hashtag-recipes.json', showHashRecipes);
 
 function showRecipe(result) {
     var recipe_id = result["recipe_id"];
-    $('#' + recipe_id).empty();
-     $('#' + recipe_id).append("<h4>" + result["recipe_name"] + "</h4>");
-            $('#' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
-            $('#' + recipe_id).append("<p>Ingredients:</p>");
+    $('#div-' + recipe_id).empty();
+     $('#div-' + recipe_id).append("<h4>" + result["recipe_name"] + "</h4>");
+            $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
+            $('#div-' + recipe_id).append("<p>Ingredients:</p>");
             for (var ingredient of result["ingredients"]) {
-                $('#' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
+                $('#div-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
             }
-            $('#' + recipe_id).append("<p>Instructions:</p>");
-            $('#' + recipe_id).append(result["steps"]);
+            $('#div-' + recipe_id).append("<p>Instructions:</p>");
+            $('#div-' + recipe_id).append(result["steps"]);
 }
 
 // $.get('/recipe.json', {"recipe_id": recipe.recipe_id}, showRecipe);

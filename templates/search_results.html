@@ -5,13 +5,15 @@ The search results!
 
 <ul>
 {% for result in response['results'] %}
-<div class='recipe'>
-<li class='recipe_name' id="{{ result['id'] }}">{{ result['title'] }}</li>
+<div class='recipe' id='div-{{ result['id'] }}'>
+    <!-- <div class='recipe' id='div2-{{ result['id'] }}'> -->
+    <li class='recipe_name' id="{{ result['id'] }}">{{ result['title'] }}</li>
     <ul>
         <li> Recipe Id: {{ result['id'] }}</li>
         <li> Ready in {{ result['readyInMinutes'] }} minutes</li>
         <li> Image URL: {{ response['baseUri'] }}{{ result['image'] }}</li>
     </ul>
+    <!-- </div> -->
 </div>
 {% endfor %}
 </ul>

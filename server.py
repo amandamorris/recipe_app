@@ -95,25 +95,29 @@ def user_hashtag():
 def search_recipes():
     """Parse html recipe search form to create request to search api for recipes"""
 
+    # save user's search parameters
     keywords = request.args.get("keywords")
     diet_type = request.args.get("diet_type")
     cuisine_types = request.args.getlist("cuisine")
     intolerances = request.args.getlist("intolerance")
     dish_type = request.args.get("dish_type")
 
-    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=3"
+    # base url
+    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=10"
 
+    # add search parameters to url, replacing space with +, and parsing out lists
     if keywords:
-        url += "&query=" + parse_recipe_keywords(keywords)
+        url += "&query=" + string_space_to_plus(keywords)
     if intolerances:
-        url += "&intolerances=" + parse_recipe_searchlist(intolerances)
+        url += "&intolerances=" + string_space_to_plus(parse_recipe_searchlist(intolerances))
     if cuisine_types:
-        url += "&cuisine=" + parse_recipe_searchlist(cuisine_types)
+        url += "&cuisine=" + string_space_to_plus(parse_recipe_searchlist(cuisine_types))
     if diet_type:
         url += "&diet=" + diet_type
     if dish_type:
-        url += "&type=" + dish_type
+        url += "&type=" + string_space_to_plus(dish_type)
 
+    # get search results from spoonacular api
     response = get_recipe_briefs_from_api(url)
 
     return render_template("search_results.html", response=response.body)
@@ -129,7 +133,7 @@ def view_recipe():
     if not recipe:
         response = get_recipe_details_from_api(recipe_id)
         recipe_json = response.body
-        # print recipe_json
+
         # add all recipe info to database
         add_recipe_to_db(recipe_json)
         add_ingredients_to_db(recipe_json)

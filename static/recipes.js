@@ -43,7 +43,7 @@ function getRecipeInfo(evt) {
     console.log("you clicked me");
     // console.log($( this ));
     // evt.preventDefault();
-    var recipe_id = $( this ).attr('id');
+    var recipe_id = $(this).attr('id');
     console.log(recipe_id);
     var formInput = {
         "recipe_id": recipe_id
@@ -55,10 +55,17 @@ $('.recipe_name').on('click', getRecipeInfo);
 
 function starRecipe(evt) {
     // evt.preventDefault();
+    console.log(evt);
     console.log("You have starred the recipe");
-    var button_id = $( this ).attr('id');
+    var button_id = this.id;
+
+    // debugger;
+    console.log(button_id);
     var formInput = {
         "button_id": button_id
     };
+
     $.post("/star_recipe.json", formInput, console.log("recipe starred"));
 }
+
+

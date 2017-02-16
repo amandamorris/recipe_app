@@ -5,14 +5,8 @@ function showHashRecipes(results) {
         var hashrecipes = results[hashtag];
         for (var recipe_name in hashrecipes) {
             var recipe = hashrecipes[recipe_name]
-            $('#' + hashtag).append("<h4>" + recipe_name + "</h4>");
-            $('#' + hashtag).append("<p>Total time required: " + recipe["time"] + " minutes</p>");
-            $('#' + hashtag).append("<p>Ingredients:</p>");
-            for (var ingredient of recipe["ingredients"]) {
-                $('#' + hashtag).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
-            $('#' + hashtag).append("<p>Instructions:</p>");
-            $('#' + hashtag).append(recipe["steps"]);
-            }
+
+            showRecipe(recipe);
         }
     }
 }
@@ -42,11 +36,7 @@ function showRecipe(result) {
 }
 
 function getRecipeInfo(evt) {
-    console.log("you clicked me");
-    // console.log($( this ));
-    // evt.preventDefault();
     var recipe_id = $(this).attr('id');
-    console.log(recipe_id);
     var formInput = {
         "recipe_id": recipe_id
     };

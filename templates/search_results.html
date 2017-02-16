@@ -6,8 +6,7 @@ The search results!
 <ul>
 {% for result in response['results'] %}
 <div class='recipe' id='div-{{ result['id'] }}'>
-    <!-- <div class='recipe' id='div2-{{ result['id'] }}'> -->
-    <!-- jinja if statement if username in session -->
+
     {% if 'username' in session %}
         <div class=userid data-user="{{ session['username'] }}"> </div>
     {% endif %}
@@ -22,7 +21,6 @@ The search results!
             <li> Image URL: {{ response['baseUri'] }}{{ result['image'] }}</li>
         </ul>
     </div>
-    <!-- </div> -->
 </div>
 {% endfor %}
 </ul>

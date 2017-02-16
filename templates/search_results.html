@@ -11,17 +11,13 @@ The search results!
         <div class=userid data-user="{{ session['username'] }}"> </div>
     {% endif %}
 
-    <li class='recipe_name' id="{{ result['id'] }}">{{ result['title'] }} </li>
+    <li class='recipe_name' id="{{ result['id'] }}">{{ result['title'] }} -
+        Ready in {{ result['readyInMinutes'] }} minutes </li>
+    <img src="{{ response['baseUri'] }}{{ result['image'] }}" height="150" width="150">
 
 
-    <div class='recipe_summary' id='summary-{{ result['id'] }}'>
-        <ul>
-            <li> Recipe Id: {{ result['id'] }}</li>
-            <li> Ready in {{ result['readyInMinutes'] }} minutes</li>
-            <li> Image URL: {{ response['baseUri'] }}{{ result['image'] }}</li>
-        </ul>
     </div>
-</div>
+    
 {% endfor %}
 </ul>
 

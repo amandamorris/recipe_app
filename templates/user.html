@@ -8,7 +8,8 @@
 
 {% for recipe in user.recipes %}
 <div class='recipe' id='div-{{ recipe.recipe_id }}'>
-    <li class='recipe_name' id="{{ recipe.recipe_id }}">{{ recipe.recipe_name }}
+    <li class='recipe_name' id="{{ recipe.recipe_id }}">{{ recipe.recipe_name }}</li>
+    <img src="{{ recipe.images[0].image_url }}" height="150" width="150">
 </div>
 {% endfor %}
 </ul>

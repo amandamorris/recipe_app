@@ -43,10 +43,19 @@ def parse_recipe_searchlist(searchlist):
     return mystring
 
 
+def add_starring_to_db(username, recipe_id):
+    """Add recipe starring to database"""
+
+    new_starring = Starring(recipe_id=recipe_id,
+                            username=username
+                            )
+    db.session.add(new_starring)
+    db.session.commit()
+
+
 def add_recipe_to_db(json_response):
     """Parse json recipe and add new recipe to db"""
-    """TODO: NEED TO MODIFY THIS FUNCTION TO ADD OTHER RECIPE INFO, LIKE
-    INGREDIENTS, CUISINES, DIETS, IMAGES, ETC"""
+
     recipe_id = json_response['id']  # get recipe id from response
     recipe_name = json_response['title']  # get recipe name from response
     recipe_steps = json_response['instructions']  # get recipe instructions/steps

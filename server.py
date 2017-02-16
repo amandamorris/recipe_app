@@ -140,6 +140,15 @@ def view_recipe():
     return jsonify(recipe)
 
 
+@app.route('/star_recipe.json', methods=['POST'])
+def star_recipe():
+    """Add a user starring to the db, if it's not already there"""
+    username = session['username']
+    star_button = request.form.get("button_id")
+    recipe_id = star_button[7:]
+    add_starring_to_db(username, recipe_id)
+    return "{star: star}"
+
 @app.route('/logout')
 def logout():
     """Logout - remove user from session and redirect to homepage"""

@@ -7,9 +7,14 @@ The search results!
 {% for result in response['results'] %}
 <div class='recipe' id='div-{{ result['id'] }}'>
     <!-- <div class='recipe' id='div2-{{ result['id'] }}'> -->
-    <li class='recipe_name' id="{{ result['id'] }}">{{ result['title'] }}
-    <button type="button">Star this recipe</button>
-    </li>
+    <!-- jinja if statement if username in session -->
+    {% if 'username' in session %}
+        <div class=userid data-user="{{ session['username'] }}"> </div>
+    {% endif %}
+
+    <li class='recipe_name' id="{{ result['id'] }}">{{ result['title'] }} </li>
+
+
     <div class='recipe_summary' id='summary-{{ result['id'] }}'>
         <ul>
             <li> Recipe Id: {{ result['id'] }}</li>

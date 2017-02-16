@@ -24,14 +24,16 @@ $.get('/user-hashtag-recipes.json', showHashRecipes);
 function showRecipe(result) {
     var recipe_id = result["recipe_id"];
     $('#summary-' + recipe_id).empty();
-     // $('#div-' + recipe_id).append("<div class='recipe_name'> <h4>" + result["recipe_name"] + "</h4> <p>Star this recipe </p> </div>");
-            $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
-            $('#div-' + recipe_id).append("<p>Ingredients:</p>");
-            for (var ingredient of result["ingredients"]) {
-                $('#div-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
-            }
-            $('#div-' + recipe_id).append("<p>Instructions:</p>");
-            $('#div-' + recipe_id).append(result["steps"]);
+    if ($('.userid').length != 0) {
+        $('#div-' + recipe_id).append("<button onclick='starRecipe()' type='button' id=button-" + recipe_id + " class='starButton'>Star this recipe!</button>")
+        }
+    $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
+    $('#div-' + recipe_id).append("<p>Ingredients:</p>");
+    for (var ingredient of result["ingredients"]) {
+        $('#div-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
+        }
+    $('#div-' + recipe_id).append("<p>Instructions:</p>");
+    $('#div-' + recipe_id).append(result["steps"]);
 }
 
 // $.get('/recipe.json', {"recipe_id": recipe.recipe_id}, showRecipe);
@@ -50,3 +52,13 @@ function getRecipeInfo(evt) {
 }
 
 $('.recipe_name').on('click', getRecipeInfo);
+
+function starRecipe(evt) {
+    // evt.preventDefault();
+    console.log("You have starred the recipe");
+    var button_id = $( this ).attr('id');
+    var formInput = {
+        "button_id": button_id
+    };
+    $.post("/star_recipe.json", formInput, console.log("recipe starred"));
+}

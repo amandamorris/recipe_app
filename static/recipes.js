@@ -25,7 +25,7 @@ function showRecipe(result) {
     var recipe_id = result["recipe_id"];
     $('#summary-' + recipe_id).empty();
     if ($('.userid').length != 0) {
-        $('#div-' + recipe_id).append("<button onclick='starRecipe()' type='button' id=button-" + recipe_id + " class='starButton'>Star this recipe!</button>")
+        $('#div-' + recipe_id).append("<button type='button' data-id=" + recipe_id + " class='starButton'>Star this recipe!</button>")
         }
     $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
     $('#div-' + recipe_id).append("<p>Ingredients:</p>");
@@ -34,6 +34,8 @@ function showRecipe(result) {
         }
     $('#div-' + recipe_id).append("<p>Instructions:</p>");
     $('#div-' + recipe_id).append(result["steps"]);
+
+    $('.starButton').on('click', starRecipe)
 }
 
 // $.get('/recipe.json', {"recipe_id": recipe.recipe_id}, showRecipe);
@@ -53,16 +55,14 @@ function getRecipeInfo(evt) {
 
 $('.recipe_name').on('click', getRecipeInfo);
 
-function starRecipe(evt) {
+function starRecipe() {
     // evt.preventDefault();
-    console.log(evt);
     console.log("You have starred the recipe");
-    var button_id = this.id;
+    var recipe_id = $( this ).data('id');
 
-    // debugger;
-    console.log(button_id);
+    console.log(recipe_id);
     var formInput = {
-        "button_id": button_id
+        "recipe_id": recipe_id
     };
 
     $.post("/star_recipe.json", formInput, console.log("recipe starred"));

@@ -144,8 +144,7 @@ def view_recipe():
 def star_recipe():
     """Add a user starring to the db, if it's not already there"""
     username = session['username']
-    star_button = request.form.get("button_id")
-    recipe_id = star_button[7:]
+    recipe_id = request.form.get("recipe_id")
     add_starring_to_db(username, recipe_id)
     return "{star: star}"
 

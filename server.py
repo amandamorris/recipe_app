@@ -22,8 +22,12 @@ MASHAPE_KEY = os.environ["MASHAPE_KEY"]
 @app.route('/')
 def index():
     """Homepage."""
-
-    return render_template("homepage.html")
+    cuisine_types = Cuisine.query.filter().all()
+    dish_types = DishType.query.filter().all()
+    return render_template("homepage.html",
+                           cuisine_types=cuisine_types,
+                           dish_types=dish_types
+                           )
 
 
 @app.route('/login')

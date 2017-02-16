@@ -12,12 +12,9 @@ function showHashRecipes(results) {
                 $('#' + hashtag).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
             $('#' + hashtag).append("<p>Instructions:</p>");
             $('#' + hashtag).append(recipe["steps"]);
-
             }
-
         }
     }
-    
 }
 $.get('/user-hashtag-recipes.json', showHashRecipes);
 
@@ -38,9 +35,6 @@ function showRecipe(result) {
     $('.starButton').on('click', starRecipe)
 }
 
-// $.get('/recipe.json', {"recipe_id": recipe.recipe_id}, showRecipe);
-// When you click on a recipe name, get the id for that recipe, and pass it to
-// view_recipe.json, return the jsonified recipe, and on return, call showRecipe
 function getRecipeInfo(evt) {
     console.log("you clicked me");
     // console.log($( this ));

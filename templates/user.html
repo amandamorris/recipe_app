@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<a href='/'>Home</a>
+
 <h2>Hello {{ user.username }}!</h2>
 
 <p>Your starred recipes:</p>
 <ul>
+
 {% for recipe in user.recipes %}
-    <li>{{ recipe.recipe_name }}
+<div class='recipe' id='div-{{ recipe.recipe_id }}'>
+    <li class='recipe_name' id="{{ recipe.recipe_id }}">{{ recipe.recipe_name }}
+</div>
 {% endfor %}
 </ul>
+
 
 <p>Your Hashtags:</p>
 <ul>

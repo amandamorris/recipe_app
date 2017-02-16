@@ -23,7 +23,6 @@ MASHAPE_KEY = os.environ["MASHAPE_KEY"]
 def index():
     """Homepage."""
 
-    # These code snippets use an open-source library. http://unirest.io/python
     return render_template("homepage.html")
 
 
@@ -62,15 +61,10 @@ def users(username):
 @app.route('/user-hashtag-recipes.json')
 def user_hashtag():
     """Recipes username tagged, by hashtag"""
-    # do request.args.get to get username and hashtag#
-    # username = request.args.get("username")  # the username
-    # my_hash = request.args.get("hashtag")  # the hashtag
+
     username = session['username']
     hashtag_list = User.query.get(username).hashtags
 
-    # user = User.query.get(user)  # the user object
-    # hashtag = db.session.query(Hashtag).filter((Hashtag.hashtag_name == my_hash) & (Hashtag.username == username)).first()
-    # print "try2 %s %s" % (username, hashtag)
     recipes_by_hashtag = {}
     for hashtag in hashtag_list:
         recipes = hashtag.recipes
@@ -79,14 +73,7 @@ def user_hashtag():
             recipe_dict = recipe.create_recipe_dictionary()
             recipes_info[recipe.recipe_name] = recipe_dict
         recipes_by_hashtag[hashtag.hashtag_name] = recipes_info
-            # recipes_info[recipe.recipe_name]["hashtag"] = hashtag
-        # recipes_info.append(recipe.create_recipe_dictionary())
-        # recipes_info["hashtag"] = my_hash
-        # print recipes_info
 
-    # list of dictionaries, but need a method in my class for getting a dictionary-like thing for a recipe
-    # for recipe in recipes:
-    #     recipe_info.add(recipe.recipe_name)
 
     return jsonify(recipes_by_hashtag)
 

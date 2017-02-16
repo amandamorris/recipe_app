@@ -25,7 +25,7 @@
     <div>
     <p>Cuisine type</p>
     {% for cuisine in cuisine_types %}
-        <input type="checkbox" name="cuisine" value="{{ cuisine.cuisine_name }}"> {{ cuisine.cuisine_name }}
+        <input type="radio" name="cuisine" value="{{ cuisine.cuisine_name }}"> {{ cuisine.cuisine_name }}
     {% endfor %}
     </div>
 

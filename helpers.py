@@ -67,7 +67,7 @@ def add_recipe_to_db(json_response):
         recipe_total_time = json_response['readyInMinutes']  # get cook time from response
     else:
         recipe_total_time = None
-    recipe_servings = json_response['servings']  # get servings from response
+    recipe_servings = json_response['servings']
     healthscore = json_response['healthScore']
     cheap = json_response['cheap']
     dairy_free = json_response['dairyFree']

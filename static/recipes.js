@@ -24,10 +24,16 @@ function showRecipe(result) {
     if ($('.userid').length != 0) {
         $('#div-' + recipe_id).append("<button type='button' data-id=" + recipe_id + " class='starButton'>Star this recipe!</button>")
         }
-    $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
+    if (typeof result["time"] != "undefined") {
+        $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
+    }  
     $('#div-' + recipe_id).append("<p>Ingredients:</p>");
     for (var ingredient of result["ingredients"]) {
-        $('#div-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
+        if (ingredient["unit"] != null) {
+            $('#div-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
+            } else {
+                $('#div-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>");
+            }
         }
     $('#div-' + recipe_id).append("<p>Instructions:</p>");
     $('#div-' + recipe_id).append(result["steps"]);

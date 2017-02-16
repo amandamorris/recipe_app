@@ -8,6 +8,7 @@
 <body>
   {% if 'username' in session %}
     <a href='/logout'>Logout</a>
+    <a href='/users/{{ session['username'] }}'>Starred recipes</a>
   {% else %}
     <a href='/register'>Register</a>
     <a href='/login'>Login</a>

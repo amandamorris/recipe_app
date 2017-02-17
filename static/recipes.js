@@ -51,7 +51,7 @@ function starRecipe() {
     console.log("You have starred the recipe");
     var recipe_id = $( this ).data('id');
 
-    console.log(recipe_id);
+    // console.log(recipe_id);
     var formInput = {
         "recipe_id": recipe_id
     };

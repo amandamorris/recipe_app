@@ -25,7 +25,7 @@ function showRecipe(result) {
     if (typeof result["time"] != "undefined") {
         $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
     }  
-    $('#div-' + recipe_id).append("<p>Ingredients:</p>");
+    $('#div-' + recipe_id).append("<a name={{ result['id'] }}><p>Ingredients:</p></a>");
     for (var ingredient of result["ingredients"]) {
         if (ingredient["unit"] != null) {
             $('#div-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");

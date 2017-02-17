@@ -108,6 +108,7 @@ def search_recipes():
     if dish_type:
         url += "&type=" + string_space_to_plus(dish_type)
 
+    print url
     # get search results from spoonacular api
     response = get_recipe_briefs_from_api(url)
 
@@ -137,7 +138,6 @@ def view_recipe():
         username = session['username']
     else:
         username = None
-    print username
     if Starring.query.filter_by(username=username, recipe_id=recipe_id).first():
         is_starring = "true"
     else:

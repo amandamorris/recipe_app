@@ -11,7 +11,7 @@ The search results!
         <div class=userid data-user="{{ session['username'] }}"> </div>
     {% endif %}
 
-    <li class='recipe_name' id="{{ result['id'] }}">{{ result['title'] }} -
+    <li class='recipe_name' id="{{ result['id'] }}"><a href="#{{ result['id'] }}">{{ result['title'] }} </a>-
         Ready in {{ result['readyInMinutes'] }} minutes </li>
     <img src="{{ response['baseUri'] }}{{ result['image'] }}" height="150" width="150">
 

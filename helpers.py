@@ -58,6 +58,11 @@ def add_recipe_to_db(json_response):
     recipe_id = json_response['id']  # get recipe id from response
     recipe_name = json_response['title']  # get recipe name from response
     recipe_steps = json_response['instructions']  # get recipe instructions/steps
+
+    category_index = recipe_steps.find("CATEGORIES:")
+    if category_index != 0:
+        recipe_steps = recipe_steps[:category_index]
+
     if 'preparationMinutes' in json_response:
         recipe_active_time = json_response['preparationMinutes']
     else:

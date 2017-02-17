@@ -135,6 +135,9 @@ def view_recipe():
     # if logged in, check to see if the user has already starred the recipe
     if 'username' in session:
         username = session['username']
+    else:
+        username = None
+    print username
     if Starring.query.filter_by(username=username, recipe_id=recipe_id).first():
         is_starring = "true"
     else:

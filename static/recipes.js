@@ -16,9 +16,12 @@ $.get('/user-hashtag-recipes.json', showHashRecipes);
 function showRecipe(result) {
     var recipe_id = result["recipe_id"];
     $('#summary-' + recipe_id).empty();
-    if ($('.userid').length != 0) {
-        $('#div-' + recipe_id).append("<button type='button' data-id=" + recipe_id + " class='starButton'>Star this recipe!</button>")
+    if (($('.userid').length != 0) & (result["is_starring"] === "false")) {
+            $('#div-' + recipe_id).append("<button type='button' data-id=" + recipe_id + " class='starButton'>Star this recipe!</button>")
         }
+    if (($('.userid').length != 0) & (result["is_starring"] === "true")) {
+        $('#div-' + recipe_id).append("<p>You've starred this recipe</p>")
+    }
     if (typeof result["time"] != "undefined") {
         $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
     }  
@@ -58,5 +61,11 @@ function starRecipe() {
 
     $.post("/star_recipe.json", formInput, console.log("recipe starred"));
 }
+//         function () {
+//         recipe_id = formInput.recipe_id
+//         $('[data-id=recipe_id]').innerHtml("Recipe starred");
+//     }
+//     );
+// }
 
 

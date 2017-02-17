@@ -132,6 +132,15 @@ def view_recipe():
         recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
     recipe = recipe.create_recipe_dictionary()
 
+    # if logged in, check to see if the user has already starred the recipe
+    if 'username' in session:
+        username = session['username']
+    if Starring.query.filter_by(username=username, recipe_id=recipe_id).first():
+        is_starring = "true"
+    else:
+        is_starring = "false"
+    recipe['is_starring'] = is_starring
+
     return jsonify(recipe)
 
 

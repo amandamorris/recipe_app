@@ -1,7 +1,6 @@
 from model import *
 import unirest
 
-
 def get_recipe_briefs_from_api(url):
     """Make an API call to Spoonacular to see recipe search results"""
 

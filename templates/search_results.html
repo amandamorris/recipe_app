@@ -13,6 +13,7 @@ The search results!
 
     <li class='recipe_name' id="{{ result['id'] }}"><a href="#{{ result['id'] }}">{{ result['title'] }} </a>-
         Ready in {{ result['readyInMinutes'] }} minutes </li>
+    <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
     <img src="{{ response['baseUri'] }}{{ result['image'] }}" height="150" width="150">
 
 

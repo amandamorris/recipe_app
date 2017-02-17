@@ -17,7 +17,8 @@ function showRecipe(result) {
     var recipe_id = result["recipe_id"];
     $('#summary-' + recipe_id).empty();
     if (($('.userid').length != 0) & (result["is_starring"] === "false")) {
-            $('#div-' + recipe_id).append("<button type='button' data-id=" + recipe_id + " class='starButton'>Star this recipe!</button>")
+            // $('#div-' + recipe_id).append("<button type='button' data-id=" + recipe_id + " class='starButton'>Star this recipe!</button>")
+        $('*[data-id='+recipe_id+"]").toggle();
         }
     if (($('.userid').length != 0) & (result["is_starring"] === "true")) {
         $('#div-' + recipe_id).append("<p>You've starred this recipe</p>")
@@ -35,9 +36,9 @@ function showRecipe(result) {
         }
     $('#div-' + recipe_id).append("<p>Instructions:</p>");
     $('#div-' + recipe_id).append(result["steps"]);
-
-    $('.starButton').on('click', starRecipe)
 }
+
+$('.starButton').on('click', starRecipe);
 
 function getRecipeInfo(evt) {
     var recipe_id = $(this).attr('id');
@@ -60,6 +61,7 @@ function starRecipe() {
     };
 
     $.post("/star_recipe.json", formInput, console.log("recipe starred"));
+    $('*[data-id='+recipe_id+"]").toggle();
 }
 //         function () {
 //         recipe_id = formInput.recipe_id

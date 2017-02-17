@@ -108,7 +108,6 @@ def search_recipes():
     if dish_type:
         url += "&type=" + string_space_to_plus(dish_type)
 
-    print url
     # get search results from spoonacular api
     response = get_recipe_briefs_from_api(url)
 
@@ -153,6 +152,7 @@ def star_recipe():
     username = session['username']
     recipe_id = request.form.get("recipe_id")
     add_starring_to_db(username, recipe_id)
+    print "starred"
     return "{star: star}"
 
 @app.route('/logout')

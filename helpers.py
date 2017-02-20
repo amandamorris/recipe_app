@@ -24,7 +24,6 @@ def get_recipe_details_from_api(recipe_id):
                            )
     return response
 
-
 def string_space_to_plus(keyword_string):
     """Replace whitespace with + for recipe search api request"""
     return keyword_string.replace(" ", "+")

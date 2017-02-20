@@ -357,14 +357,84 @@ class Hashtagization(db.Model):
 
 
 ##### Helper functions #####
-def connect_to_db(app):
+def connect_to_db(app, db_uri="postgresql:///recipeapp"):
     """Connect the database to my Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///recipeapp'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
+
+
+def example_data():
+    db.session.add_all([User(username='amanda', password='hi'),
+                        User(username='balloon', password='icorn'),
+                        User(username='honey', password='dew')
+                        ])
+    db.session.add_all([Ingredient(ingredient_name='pasta', ingredient_id=1),
+                        Ingredient(ingredient_name='cheese', ingredient_id=2),
+                        Ingredient(ingredient_name='basil', ingredient_id=3)
+                        ])
+    db.session.add_all([Recipe(recipe_id=1,
+                               recipe_name='macaroni and cheese',
+                               recipe_steps="mix mac and cheese",
+                               recipe_total_time=30
+                               ),
+                        Recipe(recipe_id=2,
+                               recipe_name="basil cheese",
+                               recipe_steps="combine basil and cheese",
+                               recipe_total_time=5
+                               )
+                        ])
+    db.session.add_all([DishType(dish_type_name='appetizer'),
+                        DishType(dish_type_name='entree')
+                        ])
+    db.session.add_all([Unit(unit_name='cup'),
+                        Unit(unit_name='ounce')
+                        ])
+    db.session.commit()
+    db.session.add_all([Hashtag(hashtag_name='thanksgiving', username='amanda'),
+                        Hashtag(hashtag_name='christmas', username='balloon'),
+                        Hashtag(hashtag_name='potluck', username='amanda'),
+                        Hashtag(hashtag_name='potluck', username='honey')
+                        ])
+    db.session.add_all([Starring(recipe_id=1, username='amanda'),
+                        Starring(recipe_id=2, username='balloon'),
+                        Starring(recipe_id=1, username='amanda')
+                        ])
+    db.session.add_all([RecipeIngredient(recipe_id=1,
+                                         ingredient_id=1,
+                                         quantity=3.0,
+                                         unit_name='cup'
+                                         ),
+                        RecipeIngredient(recipe_id=1,
+                                         ingredient_id=2,
+                                         quantity=0.5,
+                                         unit_name='ounce'
+                                         ),
+                        RecipeIngredient(recipe_id=2,
+                                         ingredient_id=2,
+                                         quantity=4,
+                                         unit_name='ounce'
+                                         ),
+                        RecipeIngredient(recipe_id=2,
+                                         ingredient_id=3,
+                                         quantity=.25,
+                                         unit_name='cup'
+                                         )
+                        ])
+    db.session.add_all([RecipeDishType(recipe_id=2, dish_type_name="appetizer"),
+                        RecipeDishType(recipe_id=1, dish_type_name="entree"),
+                        RecipeDishType(recipe_id=1, dish_type_name="appetizer")
+                        ])
+    db.session.commit()
+    db.session.add_all([Hashtagization(hashtag_id=1, recipe_id=2),
+                        Hashtagization(hashtag_id=2, recipe_id=2),
+                        Hashtagization(hashtag_id=3, recipe_id=1)
+                        ])
+
+    db.session.commit()
 
 
 if __name__ == "__main__":

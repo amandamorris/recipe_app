@@ -1,5 +1,6 @@
 from model import *
 import unirest
+import pprint
 
 def get_recipe_briefs_from_api(url):
     """Make an API call to Spoonacular to see recipe search results"""
@@ -12,7 +13,6 @@ def get_recipe_briefs_from_api(url):
                            )
     return response
 
-print get_recipe_briefs_from_api("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?cuisine=french&diet=vegetarian&excludeIngredients=coconut&instructionsRequired=true&intolerances=tree+nut&limitLicense=false&number=10&offset=0&query=cauliflower&type=soup")
 
 def get_recipe_details_from_api(recipe_id):
     """Make an API call to Spoonacular to get recipe info"""

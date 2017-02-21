@@ -1,6 +1,7 @@
 from model import *
 import unirest
 import pprint
+import os
 
 MASHAPE_KEY = os.environ["MASHAPE_KEY"]
 
@@ -125,6 +126,7 @@ def add_recipe_to_db(recipe_id):
     db.session.add(recipe)
     db.session.commit()
 
+    return json_response
 
 def add_recipe_properties_to_db(json_response):
     """Add recipe cuisines, dish types, images, to db"""

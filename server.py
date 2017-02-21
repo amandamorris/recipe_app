@@ -126,16 +126,16 @@ def view_recipe():
     and either way, then display info from db"""
 
     recipe_id = request.form.get("recipe_id")
-
     if not recipe_in_db(recipe_id):
-        response = get_recipe_details_from_api(recipe_id)
-        recipe_json = response.body
+        recipe_json = add_recipe_to_db(recipe_id)
+        # response = get_recipe_details_from_api(recipe_id)
+        # recipe_json = response.body
 
         # add all recipe info to database
-        add_recipe_to_db(recipe_json)
+        # add_recipe_to_db(recipe_json)
         add_ingredients_to_db(recipe_json)
         add_recipe_properties_to_db(recipe_json)
-        recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
+    recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
     recipe = recipe.create_recipe_dictionary()
 
     # if logged in, check to see if the user has already starred the recipe

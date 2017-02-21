@@ -165,9 +165,18 @@ def star_recipe():
 def add_hashtag():
     """Add a hashtag/user pair to the database"""
     username = session['username']
-    hashtag_name = request.form.get("hashtag")
+    hashtag_name = request.form.get("hashtag_name")
+    print hashtag_name
+    recipe_id = request.form.get("recipe_id")
 
-    add_hashtag_to_db(username, hashtag_name)
+    add_hashtag_to_db(username=username, hashtag_name=hashtag_name)
+
+    db_hashtag = Hashtag.query.filter_by(hashtag_name=hashtag_name,
+                                         username=username).first()
+    hashtag_id = db_hashtag.hashtag_id
+
+    add_hashtagization_to_db(recipe_id=recipe_id, hashtag_id=hashtag_id)
+
     return "{hashtag: hashtag}"
 
 

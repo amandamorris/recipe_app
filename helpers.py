@@ -194,10 +194,23 @@ def add_hashtag_to_db(username, hashtag_name):
 
     db_hashtag = Hashtag.query.filter_by(username=username,
                                          hashtag_name=hashtag_name
-                                         )
+                                         ).first()
     if not db_hashtag:
         new_hashtag = Hashtag(username=username,
                               hashtag_name=hashtag_name
                               )
         db.session.add(new_hashtag)
         db.session.commit()
+
+def add_hashtagization_to_db(recipe_id, hashtag_id):
+    """Check for recipeid, hashtagid in db, and if not there, add it"""
+
+    db_hashtagization = Hashtagization.query.filter_by(recipe_id=recipe_id,
+                                                       hashtag_id=hashtag_id
+                                                       ).first()
+    if not db_hashtagization:
+        new_hashtagization = Hashtagization(recipe_id=recipe_id,
+                                            hashtag_id=hashtag_id
+                                            )
+    db.session.add(new_hashtagization)
+    db.session.commit()

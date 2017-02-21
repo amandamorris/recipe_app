@@ -63,6 +63,18 @@ function starRecipe() {
     $.post("/star_recipe.json", formInput, console.log("recipe starred"));
     $('*[data-id='+recipe_id+"]").toggle();
 }
+
+function addHashtag() {
+    var recipe_id = $( this ).data('id');
+    var hashtag_name = $("input[name=hashtag-" + recipe_id + "]").val()
+    var formInput = {
+        "recipe_id": recipe_id,
+        "hashtag_name": hashtag_name
+    };
+    $.post("/add_hashtag.json", formInput, console.log("Hashtag added"));
+}
+
+$('.submit-button').on('click', addHashtag);
 //         function () {
 //         recipe_id = formInput.recipe_id
 //         $('[data-id=recipe_id]').innerHtml("Recipe starred");

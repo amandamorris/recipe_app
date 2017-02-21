@@ -16,17 +16,23 @@ The search results!
     <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
     <img src="{{ response['baseUri'] }}{{ result['image'] }}" height="150" width="150">
     {% if 'username' in session %}
-        <input type="text" name="hashtag" list="hashtaglist">
+        <p>Hashtag this recipe:
+        <input type="text" name="hashtag-{{ result['id'] }}" class="hashtag" list="hashtaglist">
         <datalist id="hashtaglist">
             {% for hashtag in hashtags %}
                 <option value="{{ hashtag.hashtag_name }}">
             {% endfor %}
         </datalist>
+        <input type="submit" class="submit-button" data-id="{{ result['id'] }}">
+        </p>
     {% endif %}
     </div>
-    
+<br>
 {% endfor %}
 </ul>
 
 
 {% endblock %}
+<script>
+
+</script>

@@ -15,8 +15,14 @@ The search results!
         Ready in {{ result['readyInMinutes'] }} minutes </li>
     <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
     <img src="{{ response['baseUri'] }}{{ result['image'] }}" height="150" width="150">
-
-
+    {% if 'username' in session %}
+        <input type="text" name="hashtag" list="hashtaglist">
+        <datalist id="hashtaglist">
+            {% for hashtag in hashtags %}
+                <option value="{{ hashtag.hashtag_name }}">
+            {% endfor %}
+        </datalist>
+    {% endif %}
     </div>
     
 {% endfor %}

@@ -110,8 +110,14 @@ def search_recipes():
 
     # get search results from spoonacular api
     response = get_recipe_briefs_from_api(url)
+    hashtags = []
+    if session['username']:
+        hashtags = User.query.get(session['username']).hashtags
 
-    return render_template("search_results.html", response=response.body)
+    return render_template("search_results.html",
+                           response=response.body,
+                           hashtags=hashtags
+                           )
 
 
 @app.route('/view_recipe.json', methods=['POST'])
@@ -154,6 +160,16 @@ def star_recipe():
     add_starring_to_db(username, recipe_id)
     print "starred"
     return "{star: star}"
+
+@app.route('/add_hashtag.json', methods=['POST'])
+def add_hashtag():
+    """Add a hashtag/user pair to the database"""
+    username = session['username']
+    hashtag_name = request.form.get("hashtag")
+
+    add_hashtag_to_db(username, hashtag_name)
+    return "{hashtag: hashtag}"
+
 
 @app.route('/logout')
 def logout():

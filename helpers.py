@@ -2,28 +2,30 @@ from model import *
 import unirest
 import pprint
 
+MASHAPE_KEY = os.environ["MASHAPE_KEY"]
+
 def get_recipe_briefs_from_api(url):
     """Make an API call to Spoonacular to see recipe search results"""
 
     response = unirest.get(url,
                            headers={
-                               "X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
+                               "X-Mashape-Key": MASHAPE_KEY,
                                "Accept": "application/json"
                                }
                            )
     return response
 
 
-def get_recipe_details_from_api(recipe_id):
-    """Make an API call to Spoonacular to get recipe info"""
+# def get_recipe_details_from_api(recipe_id):
+#     """Make an API call to Spoonacular to get recipe info"""
 
-    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
-                           + recipe_id + "/information?includeNutrition=false",
-                           headers={"X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
-                                    "Accept": "application/json"
-                                    }
-                           )
-    return response
+#     response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
+#                            + recipe_id + "/information?includeNutrition=false",
+#                            headers={"X-Mashape-Key": MASHAPE_KEY,
+#                                     "Accept": "application/json"
+#                                     }
+#                            )
+#     return response
 
 
 def string_space_to_plus(keyword_string):
@@ -53,8 +55,23 @@ def add_starring_to_db(username, recipe_id):
     db.session.commit()
 
 
-def add_recipe_to_db(json_response):
-    """Parse json recipe and add new recipe to db"""
+def recipe_in_db(recipe_id):
+    """Check if a recipe is in the db or not"""
+    recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
+    if not recipe:
+        return False
+    else:
+        return True
+
+def add_recipe_to_db(recipe_id):
+    """Make api request and add new recipe to db"""
+    response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
+                           + recipe_id + "/information?includeNutrition=false",
+                           headers={"X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
+                                    "Accept": "application/json"
+                                    }
+                           )
+    json_response = response.body
 
     recipe_id = json_response['id']  # get recipe id from response
     recipe_name = json_response['title']  # get recipe name from response

@@ -126,8 +126,8 @@ def view_recipe():
     and either way, then display info from db"""
 
     recipe_id = request.form.get("recipe_id")
-    recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
-    if not recipe:
+
+    if not recipe_in_db(recipe_id):
         response = get_recipe_details_from_api(recipe_id)
         recipe_json = response.body
 

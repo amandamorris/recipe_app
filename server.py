@@ -155,6 +155,7 @@ def star_recipe():
     print "starred"
     return "{star: star}"
 
+
 @app.route('/add_hashtag.json', methods=['POST'])
 def add_hashtag():
     """Add a hashtag/user pair to the database"""
@@ -164,7 +165,7 @@ def add_hashtag():
     recipe_id = request.form.get("recipe_id")
 
     if not recipe_in_db(recipe_id):
-        pass
+        get_recipe_and_add_to_db(recipe_id)
 
     add_hashtag_to_db(username=username, hashtag_name=hashtag_name)
 

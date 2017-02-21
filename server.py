@@ -127,14 +127,8 @@ def view_recipe():
 
     recipe_id = request.form.get("recipe_id")
     if not recipe_in_db(recipe_id):
-        recipe_json = add_recipe_to_db(recipe_id)
-        # response = get_recipe_details_from_api(recipe_id)
-        # recipe_json = response.body
-
-        # add all recipe info to database
-        # add_recipe_to_db(recipe_json)
-        add_ingredients_to_db(recipe_json)
-        add_recipe_properties_to_db(recipe_json)
+        # make api call, add all recipe info to db
+        get_recipe_and_add_to_db(recipe_id)
     recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
     recipe = recipe.create_recipe_dictionary()
 
@@ -168,6 +162,9 @@ def add_hashtag():
     hashtag_name = request.form.get("hashtag_name")
     print hashtag_name
     recipe_id = request.form.get("recipe_id")
+
+    if not recipe_in_db(recipe_id):
+        pass
 
     add_hashtag_to_db(username=username, hashtag_name=hashtag_name)
 

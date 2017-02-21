@@ -17,18 +17,6 @@ def get_recipe_briefs_from_api(url):
     return response
 
 
-# def get_recipe_details_from_api(recipe_id):
-#     """Make an API call to Spoonacular to get recipe info"""
-
-#     response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
-#                            + recipe_id + "/information?includeNutrition=false",
-#                            headers={"X-Mashape-Key": MASHAPE_KEY,
-#                                     "Accept": "application/json"
-#                                     }
-#                            )
-#     return response
-
-
 def string_space_to_plus(keyword_string):
     """Replace whitespace with + for recipe search api request"""
     return keyword_string.replace(" ", "+")
@@ -64,15 +52,20 @@ def recipe_in_db(recipe_id):
     else:
         return True
 
-def add_recipe_to_db(recipe_id):
-    """Make api request and add new recipe to db"""
+
+def get_recipe_details_from_api(recipe_id):
+    """Make api call to get recipe details"""
     response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
                            + recipe_id + "/information?includeNutrition=false",
-                           headers={"X-Mashape-Key": "wa0SHrWJ0RmshsmbMjqSjVvrUEWpp1YiqdujsnXNFScqFYHcjq",
+                           headers={"X-Mashape-Key": MASHAPE_KEY,
                                     "Accept": "application/json"
                                     }
                            )
-    json_response = response.body
+    return response.body
+
+
+def add_recipe_to_db(json_response):
+    """From API recipe json, add new recipe to db"""
 
     recipe_id = json_response['id']  # get recipe id from response
     recipe_name = json_response['title']  # get recipe name from response
@@ -206,6 +199,15 @@ def add_ingredients_to_db(json_response):
                                                      )
             db.session.add(new_recipe_ingredient)
             db.session.commit()
+
+
+def get_recipe_and_add_to_db(recipe_id):
+    """Make API call, call helper functions to add recipe info to db"""
+    recipe_json = get_recipe_details_from_api(recipe_id)
+
+    add_recipe_to_db(recipe_json)
+    add_ingredients_to_db(recipe_json)
+    add_recipe_properties_to_db(recipe_json)
 
 
 def add_hashtag_to_db(username, hashtag_name):

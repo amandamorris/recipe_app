@@ -187,3 +187,17 @@ def add_ingredients_to_db(json_response):
                                                      )
             db.session.add(new_recipe_ingredient)
             db.session.commit()
+
+
+def add_hashtag_to_db(username, hashtag_name):
+    """Check for the hashtag+username in the db, and if not there, add it"""
+
+    db_hashtag = Hashtag.query.filter_by(username=username,
+                                         hashtag_name=hashtag_name
+                                         )
+    if not db_hashtag:
+        new_hashtag = Hashtag(username=username,
+                              hashtag_name=hashtag_name
+                              )
+        db.session.add(new_hashtag)
+        db.session.commit()

@@ -92,6 +92,18 @@ class HelpersDBTestCase(unittest.TestCase):
     def test_example(self):
         print "here's my test"
 
+    def test_find_user(self):
+        """Can we find a user in the sample data?"""
+
+        balloon = User.query.filter(User.username == "balloon").first()
+        self.assertEqual(balloon.username, "balloon")
+
+    def test_user_recipes(self):
+        """Can we get a user's recipes?"""
+        balloon = User.query.filter(User.username == "balloon").first()
+        basilcheese = Recipe.query.get(2)
+        self.assertIn(basilcheese, balloon.recipes)
+
 
 if __name__ == '__main__':
     # If called like a script, run my tests

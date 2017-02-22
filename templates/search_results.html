@@ -30,8 +30,10 @@ The search results!
                 <option value="{{ hashtag.hashtag_name }}">
             {% endfor %}
         </datalist>
-        <input type="submit" class="submit-button" data-id="{{ result['id'] }}">
-        </p>
+        <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="add"></p>
+        </p>Remove a hashtag:
+        <input type="text" name="del_hashtag-{{ result['id'] }}" class="hashtag" list="hashtaglist">
+        <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="remove"></p>
     {% endif %}
     </div>
 <br>

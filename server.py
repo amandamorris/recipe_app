@@ -111,7 +111,7 @@ def search_recipes():
     # get search results from spoonacular api
     response = get_recipe_briefs_from_api(url).body
     hashtags = []
-    if session['username']:
+    if 'username' in session:
         username = session['username']
         hashtags = User.query.get(username).hashtags
         for recipe in response['results']:

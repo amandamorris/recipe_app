@@ -237,6 +237,16 @@ def add_hashtagization_to_db(recipe_id, hashtag_id):
     db.session.commit()
 
 
+def remove_hashtagization_from_db(recipe_id, hashtag_id):
+    """Delete a hashtagization from the db"""
+    db_hashtagization = Hashtagization.query.filter_by(recipe_id=recipe_id,
+                                                       hashtag_id=hashtag_id
+                                                       ).first()
+    if db_hashtagization:
+        db.session.delete(db_hashtagization)
+        db.session.commit()
+
+
 def get_recipe_hashtags(recipe_id, username):
     """Given a recipeid and username, fetch any hashtags that user has tagged the recipe with"""
     hashtags = []

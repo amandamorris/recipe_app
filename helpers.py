@@ -56,7 +56,7 @@ def recipe_in_db(recipe_id):
 def get_recipe_details_from_api(recipe_id):
     """Make api call to get recipe details"""
     response = unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
-                           + recipe_id + "/information?includeNutrition=false",
+                           + str(recipe_id) + "/information?includeNutrition=false",
                            headers={"X-Mashape-Key": MASHAPE_KEY,
                                     "Accept": "application/json"
                                     }
@@ -235,3 +235,26 @@ def add_hashtagization_to_db(recipe_id, hashtag_id):
                                             )
     db.session.add(new_hashtagization)
     db.session.commit()
+
+
+def get_recipe_hashtags(recipe_id, username):
+    """Given a recipeid and username, fetch any hashtags that user has tagged the recipe with"""
+    hashtags = []
+    # all hashtags for a recipe
+    all_hashtags = Recipe.query.get(recipe_id).hashtags
+    if all_hashtags:
+        for hashtag in all_hashtags:
+            if hashtag.username == username:
+                hashtags.append(hashtag.hashtag_name)
+    return hashtags
+
+
+# def get_users_hashed_recipes(username):
+#     """For a user, return a dictionary of the recipes they've hashed"""
+#     hashed_recipes = db.session.query(Hashtagization.recipe_id, Hashtagization.hashtag_id, Hashtag.hashtag_name).join(Hashtag)
+#     users_hashed_recipes = hashed_recipes.filter(Hashtag.username == username).all()
+#     recipes_hashtags = {}
+
+#     for recipehash in users_hashed_recipes:
+#         recipes_hashtags.
+

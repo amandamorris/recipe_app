@@ -16,6 +16,7 @@ The search results!
     <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
     <img src="{{ response['baseUri'] }}{{ result['image'] }}" height="150" width="150">
     {% if 'username' in session %}
+        <div id="hashtags-{{ result['id'] }}">Current Hashtags: {{ result['tags'] }}</div>
         <p>Hashtag this recipe:
         <input type="text" name="hashtag-{{ result['id'] }}" class="hashtag" list="hashtaglist">
         <datalist id="hashtaglist">

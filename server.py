@@ -109,13 +109,21 @@ def search_recipes():
         url += "&type=" + string_space_to_plus(dish_type)
 
     # get search results from spoonacular api
-    response = get_recipe_briefs_from_api(url)
+    response = get_recipe_briefs_from_api(url).body
     hashtags = []
     if session['username']:
-        hashtags = User.query.get(session['username']).hashtags
+        username = session['username']
+        hashtags = User.query.get(username).hashtags
+        for recipe in response['results']:
+            if not recipe_in_db(recipe['id']):
+                get_recipe_and_add_to_db(recipe['id'])
+            tags = get_recipe_hashtags(recipe['id'], username)
+            recipe['tags'] = tags
+
+        # hashtagizations = username.hashtags
 
     return render_template("search_results.html",
-                           response=response.body,
+                           response=response,
                            hashtags=hashtags
                            )
 
@@ -154,6 +162,17 @@ def star_recipe():
     add_starring_to_db(username, recipe_id)
     print "starred"
     return "{star: star}"
+
+
+@app.route('/display_hashtags.json', methods=['GET'])
+def display_hashtags():
+    """"""
+    username = session['username']
+    recipe_id = request.args.get("recipe_id")
+    hashtags = {}
+    hashtags[recipe_id] = get_recipe_hashtags(recipe_id, username)
+
+    return jsonify(hashtags)
 
 
 @app.route('/add_hashtag.json', methods=['POST'])

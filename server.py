@@ -194,7 +194,7 @@ def add_hashtag():
 
     add_hashtagization_to_db(recipe_id=recipe_id, hashtag_id=hashtag_id)
 
-    return "{hashtag: hashtag}"
+    return jsonify({"hashtag_name": hashtag_name, "recipe_id": recipe_id})
 
 @app.route('/del_hashtagization.json', methods=['POST'])
 def del_hashtagization():

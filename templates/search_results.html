@@ -16,13 +16,15 @@ The search results!
     <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
     <img src="{{ response['baseUri'] }}{{ result['image'] }}" height="150" width="150">
     {% if 'username' in session %}
+    <div>Current Hashtags:
+        <div  id="hashtags-{{ result['id'] }}">
         {% if result['tags'] %}
-            <div id="hashtags-{{ result['id'] }}">Current Hashtags:
                 {% for tag in result['tags'] %}
-                {{ tag }}
+                    {{ tag }}
                 {% endfor %}
-            </div>
+         </div>
         {% endif %}
+    </div>
 
         <datalist id="userhashtaglist">
         {% for hashtag in hashtags %}

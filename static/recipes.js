@@ -74,7 +74,13 @@ function addHashtag() {
         "recipe_id": recipe_id,
         "hashtag_name": hashtag_name
     };
-    $.post("/add_hashtag.json", formInput, console.log("Hashtag added"));
+    $.post("/add_hashtag.json", formInput, populateHash);
+}
+
+function populateHash(results) {
+    // console.log("populating the hash")
+    var recipe_id = results["recipe_id"]
+    $('#hashtags-' + recipe_id).append(results['hashtag_name']);
 }
 
 $('.submit-button').on('click', addHashtag);

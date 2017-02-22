@@ -1,17 +1,17 @@
 "use strict";
 
-function showHashRecipes(results) {
-    // Iterate through the recipes, and for each recipe...
-    for (var hashtag in results) {
-        var hashrecipes = results[hashtag];
-        for (var recipe_name in hashrecipes) {
-            var recipe = hashrecipes[recipe_name]
-            // ...call showRecipe to display the recipe
-            showRecipe(recipe);
-        }
-    }
-}
-$.get('/user-hashtag-recipes.json', showHashRecipes);
+// function showHashRecipes(results) {
+//     // Iterate through the recipes, and for each recipe...
+//     for (var hashtag in results) {
+//         var hashrecipes = results[hashtag];
+//         for (var recipe_name in hashrecipes) {
+//             var recipe = hashrecipes[recipe_name]
+//             // ...call showRecipe to display the recipe
+//             showRecipe(recipe);
+//         }
+//     }
+// }
+// $.get('/user-hashtag-recipes.json', showHashRecipes);
 
 
 function showRecipe(result) {

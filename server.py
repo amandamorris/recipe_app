@@ -164,15 +164,15 @@ def star_recipe():
     return "{star: star}"
 
 
-@app.route('/display_hashtags.json', methods=['GET'])
-def display_hashtags():
-    """"""
-    username = session['username']
-    recipe_id = request.args.get("recipe_id")
-    hashtags = {}
-    hashtags[recipe_id] = get_recipe_hashtags(recipe_id, username)
+# @app.route('/display_hashtags.json', methods=['GET'])
+# def display_hashtags():
+#     """"""
+#     username = session['username']
+#     recipe_id = request.args.get("recipe_id")
+#     hashtags = {}
+#     hashtags[recipe_id] = get_recipe_hashtags(recipe_id, username)
 
-    return jsonify(hashtags)
+#     return jsonify(hashtags)
 
 
 @app.route('/add_hashtag.json', methods=['POST'])

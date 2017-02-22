@@ -247,14 +247,3 @@ def get_recipe_hashtags(recipe_id, username):
             if hashtag.username == username:
                 hashtags.append(hashtag.hashtag_name)
     return hashtags
-
-
-# def get_users_hashed_recipes(username):
-#     """For a user, return a dictionary of the recipes they've hashed"""
-#     hashed_recipes = db.session.query(Hashtagization.recipe_id, Hashtagization.hashtag_id, Hashtag.hashtag_name).join(Hashtag)
-#     users_hashed_recipes = hashed_recipes.filter(Hashtag.username == username).all()
-#     recipes_hashtags = {}
-
-#     for recipehash in users_hashed_recipes:
-#         recipes_hashtags.
-

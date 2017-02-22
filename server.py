@@ -196,6 +196,25 @@ def add_hashtag():
 
     return "{hashtag: hashtag}"
 
+@app.route('/del_hashtagization.json', methods=['POST'])
+def del_hashtagization():
+    """Remove a hashtagization from the db"""
+    print "you want to reove a hashtag"
+    username = session['username']
+    hashtag_name = request.form.get("hashtag_name")
+    recipe_id = request.form.get("recipe_id")
+
+    print username, hashtag_name, recipe_id
+
+    db_hashtagization = db.session.query(Hashtag).join(Hashtagization).filter(Hashtag.hashtag_name == hashtag_name,
+                                                                              Hashtag.username == username).first()
+
+    hashtag_id = db_hashtagization.hashtag_id
+    remove_hashtagization_from_db(hashtag_id=hashtag_id,
+                                  recipe_id=recipe_id
+                                  )
+    return "{hashtag: hashtag}"
+
 
 @app.route('/logout')
 def logout():

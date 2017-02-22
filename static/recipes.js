@@ -79,6 +79,18 @@ function addHashtag() {
 
 $('.submit-button').on('click', addHashtag);
 
+function delHashtagization() {
+    var recipe_id = $( this ).data('id');
+    var hashtag_name = $("select[name=del_hashtag-" + recipe_id + "]").val()
+
+    var formInput = {
+        "recipe_id": recipe_id,
+        "hashtag_name": hashtag_name
+    };
+    $.post("/del_hashtagization.json", formInput, console.log("Hashtag deleted"));
+}
+$('#del_hashtag').on('click', delHashtagization);
+
 // function showHashtags() {
 //     if ($('.userid').length != 0)
 // }

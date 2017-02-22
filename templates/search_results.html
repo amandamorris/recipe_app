@@ -23,17 +23,21 @@ The search results!
                 {% endfor %}
             </div>
         {% endif %}
+
+        <datalist id="hashtaglist">
+        {% for hashtag in hashtags %}
+            <option value="{{ hashtag.hashtag_name }}">
+        {% endfor %}
+        </datalist>
+        
         <p>Add a hashtag:
         <input type="text" name="hashtag-{{ result['id'] }}" class="hashtag" list="hashtaglist">
-        <datalist id="hashtaglist">
-            {% for hashtag in hashtags %}
-                <option value="{{ hashtag.hashtag_name }}">
-            {% endfor %}
-        </datalist>
         <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="add"></p>
-        </p>Remove a hashtag:
-        <input type="text" name="del_hashtag-{{ result['id'] }}" class="hashtag" list="hashtaglist">
-        <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="remove"></p>
+        {% if result['tags'] %}
+            </p>Remove a hashtag:
+            <input type="text" name="del_hashtag-{{ result['id'] }}" class="hashtag" list="hashtaglist">
+            <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="remove"></p>
+        {% endif %}
     {% endif %}
     </div>
 <br>

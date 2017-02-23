@@ -141,13 +141,13 @@ class FlaskTests(unittest.TestCase):
     def test_login_process(self):
         """Can a user successfully login?"""
         result = self.client.post("/process_login",
-                              data={"username": "balloon", "password": "icorn"},
-                              follow_redirects=True)
+                                  data={"username": "balloon",
+                                        "password": "icorn"},
+                                  follow_redirects=True)
         self.assertIn("You have successfully logged in", result.data)
+        self.assertIn("<a href='/logout'>Logout</a>", result.data)
+        self.assertNotIn("<a href='/login'>Login</a>", result.data)
 
-    def test_login_page_header(self):
-        """"""
-        pass
 
 if __name__ == '__main__':
     # If called like a script, run my tests

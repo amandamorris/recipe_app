@@ -79,8 +79,8 @@ function addHashtag() {
 
 function populateHash(results) {
     // console.log("populating the hash")
-    var recipe_id = results["recipe_id"]
-    $('#hashtags-' + recipe_id).append(results['hashtag_name']);
+    var recipe_id = results["recipe_id"];
+    $('#hashtags-' + recipe_id).append(results['hashtag_name'] + " ");
 }
 
 $('.submit-button').on('click', addHashtag);
@@ -93,7 +93,18 @@ function delHashtagization() {
         "recipe_id": recipe_id,
         "hashtag_name": hashtag_name
     };
-    $.post("/del_hashtagization.json", formInput, console.log("Hashtag deleted"));
+    $.post("/del_hashtagization.json", formInput, updateDeletedHash);
+}
+
+function updateDeletedHash(results) {
+    var recipe_id = results["recipe_id"];
+    var hashtags = results["hashtags"];
+    $('#hashtags-' + recipe_id).empty()
+
+    for (var hashtag of hashtags) {
+        $('#hashtags-' + recipe_id).append(hashtag);
+        $('#hashtags-' + recipe_id).append(" ");
+    }
 }
 $('#del_hashtag').on('click', delHashtagization);
 

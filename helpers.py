@@ -271,3 +271,16 @@ def get_hashtag_recipes(hashtag_id):
         recipe_ids.append(recipe.recipe_id)
 
     return recipe_ids
+
+
+def format_dec_as_frac(quantity):
+    decimal_index = quantity.find(".")
+    if decimal_index >= 0:
+        py_fraction = Fraction(quantity[decimal_index:]).limit_denominator(10)
+        if py_fraction.numerator != 0:
+            fraction = "%s/%s" % (py_fraction.numerator, py_fraction.denominator)
+            quantity = quantity[0:decimal_index] + " " + fraction
+        else:
+            quantity = quantity[:decimal_index]
+    return quantity
+

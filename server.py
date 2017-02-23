@@ -140,6 +140,10 @@ def view_recipe():
     recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
     recipe = recipe.create_recipe_dictionary()
 
+    for ingredient in recipe['ingredients']:
+        quantity = str(ingredient['quantity'])
+        ingredient['quantity'] = format_dec_as_frac(quantity)
+
     # if logged in, check to see if the user has already starred the recipe
     if 'username' in session:
         username = session['username']
@@ -151,12 +155,6 @@ def view_recipe():
         is_starring = "false"
     recipe['is_starring'] = is_starring
 
-
-            # quantity = ingredient['amount']
-            # decimal_index = quantity.find(".")
-            # if decimal_index >= 0:
-            #     fraction = Fraction(quantity[decimal_index:]).limit_denominator(10)
-            #     quantity = quantity[0:decimal_index] + fraction
     return jsonify(recipe)
 
 

@@ -10,8 +10,8 @@ The search results!
             Ready in {{ result['readyInMinutes'] }} minutes </li>
         {% if 'username' in session %}
             <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
-            <div class=userid data-user="{{ session['username'] }}"> </div>
-            <div>Current Hashtags:
+            <div class="userid" data-user="{{ session['username'] }}"> </div>
+            <div class="hashtags">Current Hashtags:
                 <div id="hashtags-{{ result['id'] }}">
                 {% if result['tags'] %}
                         {% for tag in result['tags'] %}
@@ -19,7 +19,6 @@ The search results!
                         {% endfor %}
                  </div>
                 {% endif %}
-            </div>
 
             <datalist id="userhashtaglist">
             {% for hashtag in hashtags %}
@@ -36,15 +35,16 @@ The search results!
                         <option value="{{ tag }}">{{ tag }}</option>
                     {% endfor %}
                 <input type="submit" class="del_hashtag" data-id="{{ result['id'] }}" value="remove"></p>
+            </div>
         {% endif %}
-        </div>
+    </div>
 
 
     <div class='image'>
         <img src="{{ response['baseUri'] }}{{ result['image'] }}" height="150" width="150">
     </div>
 
-    <div class='recipe' id='div-{{ result['id'] }}'>
+    <div class='recipe' id='div-{{ result['id'] }}'> </div>
         
 <br>
 {% endfor %}

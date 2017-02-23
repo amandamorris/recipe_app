@@ -3,7 +3,7 @@
 
 <h2>Hello {{ user.username }}!</h2>
 
-<a href="#starrings">Your starred recipes:</a>
+<a href="#starrings"><p id="starrings">Your starred recipes:</p></a>
 <ul>
 
 {% for recipe in user.recipes %}
@@ -15,7 +15,7 @@
 </ul>
 
 
-<a href="#hashtags">Your Hashtags:</a>
+<a href="#hashtags"><p id="hashtags">Your Hashtags:</p></a>
 <ul>
 {% for hashtag in user.hashtags %}
     <!-- <li><a href="/users/{{ user.username }}/{{ hashtag.hashtag_name }}">{{ hashtag.hashtag_name }}</a></li> -->

@@ -106,7 +106,7 @@ function updateDeletedHash(results) {
         $('#hashtags-' + recipe_id).append(" ");
     }
 }
-$('#del_hashtag').on('click', delHashtagization);
+$('.del_hashtag').on('click', delHashtagization);
 
 // function showHashtags() {
 //     if ($('.userid').length != 0)

@@ -61,7 +61,7 @@ def users(username):
 
     return render_template("user.html", user=user)
 
-
+# Do I use this route???
 @app.route('/user-hashtag-recipes.json')
 def user_hashtag():
     """Recipes username tagged, by hashtag"""
@@ -151,6 +151,12 @@ def view_recipe():
         is_starring = "false"
     recipe['is_starring'] = is_starring
 
+
+            # quantity = ingredient['amount']
+            # decimal_index = quantity.find(".")
+            # if decimal_index >= 0:
+            #     fraction = Fraction(quantity[decimal_index:]).limit_denominator(10)
+            #     quantity = quantity[0:decimal_index] + fraction
     return jsonify(recipe)
 
 
@@ -164,16 +170,21 @@ def star_recipe():
     return "{star: star}"
 
 
-# @app.route('/display_hashtags.json', methods=['GET'])
-# def display_hashtags():
-#     """"""
-#     username = session['username']
-#     recipe_id = request.args.get("recipe_id")
-#     hashtags = {}
-#     hashtags[recipe_id] = get_recipe_hashtags(recipe_id, username)
+@app.route('/display_hashed_recipes.json', methods=['GET'])
+def display_hashed_recipes():
+    """For each hashtag a user has created, show their hashed recipes"""
+    print "display hashed recipes"
+    username = session['username']
+    hashtags = User.query.get(username).hashtags
+    hashed_recipes = {}
 
-#     return jsonify(hashtags)
+    for db_hashtag in hashtags:
+        hashtag_id = db_hashtag.hashtag_id
+        hashtag_name = db_hashtag.hashtag_name
+        hashed_recipes[hashtag_name] = get_hashtag_recipes(hashtag_id)
 
+
+    return jsonify(hashed_recipes)
 
 @app.route('/add_hashtag.json', methods=['POST'])
 def add_hashtag():

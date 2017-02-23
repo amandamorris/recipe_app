@@ -2,6 +2,7 @@ from model import *
 import unirest
 import pprint
 import os
+from fractions import Fraction
 
 MASHAPE_KEY = os.environ["MASHAPE_KEY"]
 
@@ -192,6 +193,7 @@ def add_ingredients_to_db(json_response):
         # check to see if recipeingredient is in the db, and if not, add it
         db_recipe_ingredient = RecipeIngredient.query.filter_by(recipe_id=json_response['id'], ingredient_id=ingredient['id']).first()
         if not db_recipe_ingredient:
+
             new_recipe_ingredient = RecipeIngredient(recipe_id=json_response['id'],
                                                      ingredient_id=ingredient['id'],
                                                      quantity=ingredient['amount'],
@@ -257,3 +259,15 @@ def get_recipe_hashtags(recipe_id, username):
             if hashtag.username == username:
                 hashtags.append(hashtag.hashtag_name)
     return hashtags
+
+
+def get_hashtag_recipes(hashtag_id):
+    """Given a hashtagid, return a list of recipeids that are tagged with
+    that hashtag"""
+    recipe_ids = []
+    recipes = Hashtag.query.get(hashtag_id).recipes
+
+    for recipe in recipes:
+        recipe_ids.append(recipe.recipe_id)
+
+    return recipe_ids

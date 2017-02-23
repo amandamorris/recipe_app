@@ -19,12 +19,12 @@
 <ul>
 {% for hashtag in user.hashtags %}
     <!-- <li><a href="/users/{{ user.username }}/{{ hashtag.hashtag_name }}">{{ hashtag.hashtag_name }}</a></li> -->
-    <li class="hashtag_bullet" data-hashtag-name="{{ hashtag.hashtag_name }}"
-        data-username="{{ user.username }}" data-recipes-showing="false">
+    <li class="hashtag_bullet" data-username="{{ user.username }}" data-recipes-showing="false">
             {{ hashtag.hashtag_name }}
         </li>
     <div class="hashtag_list" id="{{ hashtag.hashtag_name }}"></div>
 {% endfor %}
 </ul>
 
+<script src="../static/user.js"></script>
 {% endblock %}

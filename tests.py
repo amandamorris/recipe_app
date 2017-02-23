@@ -25,7 +25,6 @@ import unittest
 #     def test_string_space_to_plus_3(self):
 #         self.assertEqual(string_space_to_plus("kentucky hot brown"), "kentucky+hot+brown")
 
-    
 #     def test_parse_recipe_searchlist(self):
 #         self.assertEqual(parse_recipe_searchlist(["chinese", "japanese"]), "chinese%2C+japanese")
 
@@ -104,6 +103,19 @@ class HelpersDBTestCase(unittest.TestCase):
         basilcheese = Recipe.query.get(2)
         self.assertIn(basilcheese, balloon.recipes)
 
+    def test_recipe_in_db(self):
+        """Can we determine whether or not a recipe is in the db?"""
+
+        self.assertTrue(recipe_in_db(1))
+        self.assertFalse(recipe_in_db(20))
+
+
+    def test_add_hashtag_to_db(self):
+        """Can we add a hashtag to the db?"""
+
+        add_hashtag_to_db("honey", "healthy")
+        newhash = db.session.query(Hashtag).filter(Hashtag.hashtag_name == 'healthy', Hashtag.username == 'honey').first()
+        self.assertIsNotNone(newhash)
 
 if __name__ == '__main__':
     # If called like a script, run my tests

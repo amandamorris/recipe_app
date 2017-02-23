@@ -71,7 +71,6 @@ class HelpersDBTestCase(unittest.TestCase):
     """Unit tests for db updating functions in helpers.py"""
 
     def setUp(self):
-        print "setting up"
         connect_to_db(app)
 
         self.client = app.test_client()
@@ -84,12 +83,8 @@ class HelpersDBTestCase(unittest.TestCase):
 
     def tearDown(self):
         """Do at end of every test."""
-        print "tearing down"
         db.session.close()
         db.drop_all()
-
-    def test_example(self):
-        print "here's my test"
 
     def test_find_user(self):
         """Can we find a user in the sample data?"""
@@ -116,6 +111,43 @@ class HelpersDBTestCase(unittest.TestCase):
         add_hashtag_to_db("honey", "healthy")
         newhash = db.session.query(Hashtag).filter(Hashtag.hashtag_name == 'healthy', Hashtag.username == 'honey').first()
         self.assertIsNotNone(newhash)
+
+
+class FlaskTests(unittest.TestCase):
+    """Test client to test Flask routes"""
+
+    def setUp(self):
+        connect_to_db(app)
+
+        self.client = app.test_client()
+        app.config['TESTING'] = True
+        app.config['SECRET_KEY'] = 'key'
+
+        # Create tables and add sample data
+        db.create_all()
+        example_data()
+
+    def tearDown(self):
+        """Do at end of every test."""
+        db.session.close()
+        db.drop_all()
+
+    def test_homepage(self):
+        """Does the homepage render correctly?"""
+        result = self.client.get("/")
+        self.assertEqual(result.status_code, 200)
+        self.assertIn('<h2>Search, save, rate, comment</h2>', result.data)
+
+    def test_login_process(self):
+        """Can a user successfully login?"""
+        result = self.client.post("/process_login",
+                              data={"username": "balloon", "password": "icorn"},
+                              follow_redirects=True)
+        self.assertIn("You have successfully logged in", result.data)
+
+    def test_login_page_header(self):
+        """"""
+        pass
 
 if __name__ == '__main__':
     # If called like a script, run my tests

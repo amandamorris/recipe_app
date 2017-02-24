@@ -5,7 +5,7 @@ function showHashRecipes(results) {
         console.log(hashtag)
         for (var recipe of results[hashtag]) {
             console.log(recipe)
-            $('#' + hashtag).append("<p>" + recipe + "</p>")
+            $('#' + hashtag).append("<p>" + recipe[0] + "</p>")
         }
     }
 

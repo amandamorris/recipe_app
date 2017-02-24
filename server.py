@@ -214,10 +214,10 @@ def del_hashtagization():
     recipe_id = request.form.get("recipe_id")
 
     # get the row corresponding to the hashtagization
-    db_hashtagization = db.session.query(Hashtag).join(Hashtagization).filter(Hashtag.hashtag_name == hashtag_name,
-                                                                              Hashtag.username == username).first()
+    db_hashtag = db.session.query(Hashtag).filter(Hashtag.hashtag_name == hashtag_name,
+                                                  Hashtag.username == username).first()
     # from there, get the hashtag id
-    hashtag_id = db_hashtagization.hashtag_id
+    hashtag_id = db_hashtag.hashtag_id
 
     # delete the hastag from the db
     remove_hashtagization_from_db(hashtag_id=hashtag_id,

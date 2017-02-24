@@ -67,13 +67,14 @@ function populateHash(results) {
     // console.log("populating the hash")
     var recipe_id = results["recipe_id"];
     $('#hashtags-' + recipe_id).append(results['hashtag_name'] + " ");
+    $('#del-hashtag-' + recipe_id).append("<option value=" + results['hashtag_name'] + ">" + results['hashtag_name'] + "</option>")
 }
 
 $('.submit-button').on('click', addHashtag);
 
 function delHashtagization() {
     var recipe_id = $( this ).data('id');
-    var hashtag_name = $("select[name=del_hashtag-" + recipe_id + "]").val()
+    var hashtag_name = $('#del-hashtag-' + recipe_id).val()
 
     var formInput = {
         "recipe_id": recipe_id,

@@ -251,14 +251,6 @@ def remove_hashtagization_from_db(recipe_id, hashtag_id):
 
 def get_recipe_hashtags(recipe_id, username):
     """Given a recipeid and username, fetch any hashtags that user has tagged the recipe with"""
-    # think about querying from the user, their hashtagged recipes
-    # hashtags = []
-    # # all hashtags for a recipe
-    # all_hashtags = Recipe.query.get(recipe_id).hashtags
-    # if all_hashtags:
-    #     for hashtag in all_hashtags:
-    #         if hashtag.username == username:
-    #             hashtags.append(hashtag.hashtag_name)
 
     hashtags = db.session.query(Hashtagization.hashtag_id).join(Hashtag).join(User).filter(User.username == username,
                                                                                            Hashtagization.recipe_id == recipe_id

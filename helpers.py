@@ -274,13 +274,40 @@ def get_hashtag_recipes(hashtag_id):
 
 
 def format_dec_as_frac(quantity):
+    """Takes a float formatted as string and returns a string representation for recipes
+    >>> format_dec_as_frac("2.5")
+    '2 1/2'
+
+    >>> format_dec_as_frac(".3333333333")
+    '1/3'
+
+    >>> format_dec_as_frac("523")
+    '523'
+
+    >>> format_dec_as_frac("0.25")
+    '1/4'
+
+    >>> format_dec_as_frac("4.0")
+    '4'
+    """
+    # find the decimal point in the string, if there is one
     decimal_index = quantity.find(".")
-    if decimal_index >= 0:
+    # if there's a decimal point:
+    if decimal_index != -1:
+        # find the fractional part, as a Fraction object
         py_fraction = Fraction(quantity[decimal_index:]).limit_denominator(10)
+        # make sure the numerator isn't 0
         if py_fraction.numerator != 0:
             fraction = "%s/%s" % (py_fraction.numerator, py_fraction.denominator)
-            quantity = quantity[0:decimal_index] + " " + fraction
+            # if there's no whole number part, then the fraction is the whole quantity
+            if quantity[0] == '0' or decimal_index == 0:
+                quantity = fraction
+            # if there is a whole number part, we need to prepend it to the fraction
+            else:
+                quantity = quantity[:decimal_index] + " " + fraction
+        # if the numerator is 0, that means there are only zeros after the
+        # decimal, so we just want the whole number part
         else:
             quantity = quantity[:decimal_index]
+    # if there's no decimal, we just return back the original quantity
     return quantity
-

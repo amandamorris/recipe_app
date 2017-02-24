@@ -74,7 +74,9 @@ $('.submit-button').on('click', addHashtag);
 
 function delHashtagization() {
     var recipe_id = $( this ).data('id');
-    var hashtag_name = $('#del-hashtag-' + recipe_id).val()
+    var hashtag_name = $('#del-hashtag-' + recipe_id).val();
+    // Delete the removed hashtag from the "remove" options
+    $('#del-hashtag-' + recipe_id + " option[value=" + hashtag_name + ']').remove();
 
     var formInput = {
         "recipe_id": recipe_id,
@@ -86,8 +88,9 @@ function delHashtagization() {
 function updateDeletedHash(results) {
     var recipe_id = results["recipe_id"];
     var hashtags = results["hashtags"];
-    $('#hashtags-' + recipe_id).empty()
-
+    // empty the div populated with the recipe's hashtags
+    $('#hashtags-' + recipe_id).empty();
+    // repopulate the div with the updated list of hashtags
     for (var hashtag of hashtags) {
         $('#hashtags-' + recipe_id).append(hashtag);
         $('#hashtags-' + recipe_id).append(" ");

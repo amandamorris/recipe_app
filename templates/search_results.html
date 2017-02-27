@@ -5,50 +5,57 @@ The search results!
 
 <ul>
 {% for result in response['results'] %}
-    <div class='header'>
-        <li class='recipe_name' id="{{ result['id'] }}"><a href="#{{ result['id'] }}">{{ result['title'] }} </a>-
-            Ready in {{ result['readyInMinutes'] }} minutes </li>
-        {% if 'username' in session %}
-            <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
-            <div class="userid" data-user="{{ session['username'] }}"> </div>
-            <div class="hashtags">Current Hashtags:
-                <div id="hashtags-{{ result['id'] }}">
-                {% if result['tags'] %}
+    <div class='recipe' id='div-{{ result['id'] }}'>
+        <div class='header'>
+            <li class='recipe_name' id="{{ result['id'] }}"><a href="#{{ result['id'] }}">{{ result['title'] }}</a>
+                Ready in </li>
+            {% if 'username' in session %}
+                <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
+                <div class="userid" data-user="{{ session['username'] }}"> </div>
+                <div class="hashtags">Current Hashtags:
+                    <div id="hashtags-{{ result['id'] }}">
+                    {% if result['tags'] %}
+                            {% for tag in result['tags'] %}
+                                {{ tag[0] }}
+                            {% endfor %}
+                    {% endif %}
+                    </div>
+
+                <datalist id="userhashtaglist">
+                {% for hashtag in hashtags %}
+                    <option value="{{ hashtag.hashtag_name }}">
+                {% endfor %}
+                </datalist>
+                
+                <p>Add a hashtag:
+                    <input type="text" name="hashtag-{{ result['id'] }}" class="hashtag" list="userhashtaglist">
+                    <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="add"></p>
+                </p>Remove a hashtag:
+                    <select id="del-hashtag-{{ result['id'] }}" class="hashtag">
                         {% for tag in result['tags'] %}
-                            {{ tag[0] }}
+                            <option value="{{ tag[0] }}">{{ tag }}</option>
                         {% endfor %}
-                {% endif %}
+                    <input type="submit" class="del_hashtag" data-id="{{ result['id'] }}" value="remove"></p>
                 </div>
+            {% endif %}
+        </div>
 
-            <datalist id="userhashtaglist">
-            {% for hashtag in hashtags %}
-                <option value="{{ hashtag.hashtag_name }}">
-            {% endfor %}
-            </datalist>
-            
-            <p>Add a hashtag:
-                <input type="text" name="hashtag-{{ result['id'] }}" class="hashtag" list="userhashtaglist">
-                <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="add"></p>
-            </p>Remove a hashtag:
-                <select id="del-hashtag-{{ result['id'] }}" class="hashtag">
-                    {% for tag in result['tags'] %}
-                        <option value="{{ tag[0] }}">{{ tag }}</option>
-                    {% endfor %}
-                <input type="submit" class="del_hashtag" data-id="{{ result['id'] }}" value="remove"></p>
+    {% if result['image'] %}
+        <img src="https://spoonacular.com/recipeImages/{{ result['image'] }}" height="150" width="150">
+    {% endif %}
+
+        <div class="recipe" id="summary-{{ result['id'] }}">
+            <div class="recipe" id="time-{{ result['id'] }}">
+                Total time required:
             </div>
-        {% endif %}
+        </div>
+            <div class="ingredients" id="ingredients-{{ result['id'] }}"></div>
+            <div class="instructions" id="instructions-{{ result['id'] }}"></div>
     </div>
-
-
-    <div class='image'>
-        <img src="{{ response['baseUri'] }}{{ result['image'] }}" height="150" width="150">
-    </div>
-
-    <div class='recipe' id='div-{{ result['id'] }}'> </div>
         
 <br>
 {% endfor %}
 </ul>
 
-<script src="../static/recipes.js"></script>
+<!-- <script src="../static/recipes.js"></script> -->
 {% endblock %}

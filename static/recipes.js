@@ -13,18 +13,16 @@ function showRecipe(result) {
         }
     }
     if (typeof result["time"] != "undefined") {
-        $('#div-' + recipe_id).append("<p>Total time required: " + result["time"] + " minutes</p>");
+        $('#' + recipe_id).innerText.append("<span>" + result["time"] + " minutes</span>");
     }  
-    $('#div-' + recipe_id).append("<a name={{ result['id'] }}><p>Ingredients:</p></a>");
     for (var ingredient of result["ingredients"]) {
         if (ingredient["unit"] != null) {
-            $('#div-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
+            $('#ingredients-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
             } else {
-                $('#div-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>");
+                $('#ingredients-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>");
             }
         }
-    $('#div-' + recipe_id).append("<p>Instructions:</p>");
-    $('#div-' + recipe_id).append(result["steps"]);
+    $('#instructions-' + recipe_id).append(result["steps"]);
 }
 
 $('.starButton').on('click', starRecipe);
@@ -97,6 +95,20 @@ function updateDeletedHash(results) {
     }
 }
 $('.del_hashtag').on('click', delHashtagization);
+
+function showHashRecipes(results) {
+    for (var hashtag in results) {
+        for (var recipe of results[hashtag]) {
+            var formInput = {
+                "recipe_id": recipe[0]
+                };
+            $(".recipe").hide()
+            $.post("/view_recipe.json", formInput, showRecipe);
+        }
+    }
+
+}
+$.get('/display_hashed_recipes.json', showHashRecipes);
 
 // function showHashtags() {
 //     if ($('.userid').length != 0)

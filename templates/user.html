@@ -7,11 +7,24 @@
 <ul>
 
 {% for recipe in user.recipes %}
-<div class='recipe' id='div-{{ recipe.recipe_id }}'>
-    <li class='recipe_name' id="{{ recipe.recipe_id }}">{{ recipe.recipe_name }}</li>
-    {% if recipe.images %}
-        <img src="{{ recipe.images[0].image_url }}" height="150" width="150">
-    {% endif %}
+<div class="starring">
+    <div class="starring" id="div-{{ recipe.recipe_id }}">
+        <div class="starring" id="summary-{{ recipe.recipe_id }}">
+            {{ recipe.recipe_name }}
+            <div class="starring" id="time-{{ recipe.recipe_id }}">
+                Total time required:
+            </div>
+            {% if recipe.images %}
+                <img src="{{ recipe.images[0].image_url }}" height="150" width="150">
+            {% endif %}
+        </div>
+            <div class="ingredients" id="ingredients-{{ recipe.recipe_id }}">
+                Ingredients:
+            </div>
+            <div class="instructions" id="instructions-{{ recipe.recipe_id }}">
+                Instructions:
+            </div>
+        </div>
 </div>
 {% endfor %}
 </ul>
@@ -25,8 +38,31 @@
             {{ hashtag.hashtag_name }}
         </li>
     <div class="hashtag_list" id="{{ hashtag.hashtag_name }}"></div>
+        {% for recipe in hashtag.recipes %}
+            <div class='header'>
+                <li class='recipe_name' id="summary-{{ recipe.recipe_id }}"><a href="#{{ recipe.recipe_id }}">{{ recipe.recipe_name }} </a> - Ready in "{{ recipe.recipe_total_time }}" minutes</li>
+            </div>
+            <div class="recipe" id="div-{{ recipe.recipe_id }}">
+                <div class="recipe" id="{{ recipe.recipe_id }}">
+                    {{ recipe.recipe_name }}
+                    <div class="recipe" id="time-{{ recipe.recipe_id }}">
+                        Total time required:
+                    </div>
+                    {% if recipe.images %}
+                        <img src="{{ recipe.images[0].image_url }}" height="150" width="150">
+                    {% endif %}
+                </div>
+                    <div class="ingredients" id="ingredients-{{ recipe.recipe_id }}">
+                        Ingredients:
+                    </div>
+                    <div class="instructions" id="instructions-{{ recipe.recipe_id }}">
+                        Instructions:
+                    </div>
+                </div>
+            <!-- </div> -->
+        {% endfor %}
 {% endfor %}
 </ul>
 
-<script src="../static/user.js"></script>
+<!-- <script src="../static/user.js"></script> -->
 {% endblock %}

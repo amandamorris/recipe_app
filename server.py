@@ -121,7 +121,7 @@ def search_recipes():
             recipe['tags'] = tags
 
         # hashtagizations = username.hashtags
-
+    print response
     return render_template("search_results.html",
                            response=response,
                            hashtags=hashtags
@@ -181,8 +181,8 @@ def display_hashed_recipes():
         hashtag_name = db_hashtag.hashtag_name
         hashed_recipes[hashtag_name] = get_hashtag_recipes(hashtag_id)
 
-
     return jsonify(hashed_recipes)
+
 
 @app.route('/add_hashtag.json', methods=['POST'])
 def add_hashtag():

@@ -8,7 +8,7 @@ The search results!
     <div class='recipe' id='div-{{ result['id'] }}'>
         <div class='header'>
             <li class='recipe_name' id="{{ result['id'] }}"><a href="#{{ result['id'] }}">{{ result['title'] }}</a>
-                Ready in </li>
+                - ready in {{ result['readyInMinutes'] }} minutes</li>
             {% if 'username' in session %}
                 <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
                 <div class="userid" data-user="{{ session['username'] }}"> </div>

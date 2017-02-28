@@ -5,7 +5,7 @@ function displayRecipe(result, container_id) {
     // Called by fetchRecipe
 
     // console.log(result);
-    console.log("insertDiv", result,container_id);
+    // console.log("insertDiv", result,container_id);
     var container = $("#"+container_id);
     var ingredients = "";
     for (var ingredient of result.ingredients) {
@@ -20,9 +20,11 @@ function displayRecipe(result, container_id) {
     var steps = `<b>Instructions</b> <div>${result.steps}</div>`;
     var recipe_name = result.recipe_name;
     container.append(`
-        <h3>${recipe_name}</h3><span>Total time:${result.total_time} minutes</span>
-        <div><b>Ingredients</b></div><div>${ingredients}</div>
-        <div>${steps}</div>
+        <div id=recipe-${result.recipe_id}>
+            <h3>${recipe_name}</h3><span>Total time:${result.total_time} minutes</span>
+            <div><b>Ingredients</b></div><div>${ingredients}</div>
+            <div>${steps}</div>
+        </div>
         `);
 }
 function fetchRecipe(recipe_id, container_id) {
@@ -34,6 +36,7 @@ function fetchRecipe(recipe_id, container_id) {
                 "recipe_id": recipe_id,
                 "container_id": container_id
                 };
+    console.log(formInput);
     $.post("/view_recipe.json", formInput, function(results) {
             displayRecipe(results, container_id);
             });
@@ -59,6 +62,21 @@ function getHashRecipes(results) {
 }
 // Get list of user's hashtag (and for each, also hashtagged recipes)
 $.get('/display_hashed_recipes.json', getHashRecipes);
+
+function getStarredRecipes(results) {
+    // For each recipe a user starred, call fetchRecipe, sending
+    // the recipe_id and container_id for starrings
+    // Callback function for '/display_starred_recipes.json' get request
+    var container_id = "starring-container";
+    // console.log(container_id);
+    var starrings = results["recipes"];
+    // console.log(starrings);
+    for (var recipe_id of starrings) {
+        // console.log(recipe_id);
+        fetchRecipe(recipe_id, container_id);
+    }
+}
+$.get('/display_starred_recipes.json', getStarredRecipes);
 
 function getRecipeInfo(evt) {
     // Get recipe id from click event and get recipe details from server

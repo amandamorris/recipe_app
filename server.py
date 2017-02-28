@@ -193,6 +193,21 @@ def display_hashed_recipes():
     return jsonify(hashed_recipes)
 
 
+@app.route('/display_starred_recipes.json', methods=['GET'])
+def display_starred_recipes():
+    """Find all recipes a user has starred"""
+    username = session['username']
+    starred_recipes = User.query.get(username).recipes
+    starrings = []
+    for recipe in starred_recipes:
+        starrings.append(recipe.recipe_id)
+
+    starred_recipes = {}
+    for recipe in starrings:
+        starred_recipes["recipes"] = starrings
+
+    return jsonify(starred_recipes)
+
 @app.route('/add_hashtag.json', methods=['POST'])
 def add_hashtag():
     """Add a hashtag/user pair to the database"""

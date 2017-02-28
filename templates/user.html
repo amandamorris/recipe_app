@@ -4,30 +4,7 @@
 <h2>Hello {{ user.username }}!</h2>
 
 <a href="#starrings"><p id="starrings">Your starred recipes:</p></a>
-<ul>
-
-{% for recipe in user.recipes %}
-<div class="starring">
-    <div class="starring" id="div-{{ recipe.recipe_id }}">
-        <div class="starring" id="summary-{{ recipe.recipe_id }}">
-            {{ recipe.recipe_name }}
-            <div class="starring" id="time-{{ recipe.recipe_id }}">
-                Total time required:
-            </div>
-            {% if recipe.images %}
-                <img src="{{ recipe.images[0].image_url }}" height="150" width="150">
-            {% endif %}
-        </div>
-            <div class="ingredients" id="ingredients-{{ recipe.recipe_id }}">
-                Ingredients:
-            </div>
-            <div class="instructions" id="instructions-{{ recipe.recipe_id }}">
-                Instructions:
-            </div>
-        </div>
-</div>
-{% endfor %}
-</ul>
+<div id="starring-container"> </div>
 
 
 <a href="#hashtags"><p id="hashtags">Your Hashtags:</p></a>

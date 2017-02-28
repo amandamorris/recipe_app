@@ -33,14 +33,15 @@ function fetchRecipe(recipe_id, container_id) {
 }
 
 function getHashRecipes(results) {
-    var container = $("#hashtag-container");
-    // var hashtagLis = results.map(function() {
-    //     return `<li id=${this}>${this}</li>`
-    // }).get().join("");
-    // container.append(`<ul>${hashtagLis}</ul>`);
+    var hashContainer = $("#hashtag-container");
+    for (var hashtag in results) {
+        hashContainer.append(`
+            <div id=${results[hashtag].hashtag_id}>
+            <h2>${hashtag}</h2>
+            </div>`);
+        }
     for (var hashtag in results) {
         var container_id = results[hashtag]["hashtag_id"];
-        // console.log("show",container_id);
         for (var recipe of results[hashtag]["recipes"]) {
             fetchRecipe(recipe[0],container_id);
         }

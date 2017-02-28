@@ -155,6 +155,9 @@ def view_recipe():
         is_starring = "false"
     recipe['is_starring'] = is_starring
 
+    hashtag_id = request.form.get("container_id")
+    recipe["hashtag_id"] = hashtag_id
+
     return jsonify(recipe)
 
 
@@ -178,8 +181,14 @@ def display_hashed_recipes():
 
     for db_hashtag in hashtags:
         hashtag_id = db_hashtag.hashtag_id
+        print hashtag_id
         hashtag_name = db_hashtag.hashtag_name
-        hashed_recipes[hashtag_name] = get_hashtag_recipes(hashtag_id)
+        print hashtag_name
+        print get_hashtag_recipes(hashtag_id)
+
+        hashed_recipes[hashtag_name] = {}
+        hashed_recipes[hashtag_name]["recipes"] = get_hashtag_recipes(hashtag_id)
+        hashed_recipes[hashtag_name]["hashtag_id"] = hashtag_id
 
     return jsonify(hashed_recipes)
 

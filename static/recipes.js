@@ -1,5 +1,43 @@
 "use strict";
 
+function insertDiv(result, container) {
+    console.log(result);
+    console.log(container);
+    // console.log(result);
+    var ingredients;
+    // for (var ingredient of result["ingredients"]) {
+    //     if (ingredient["unit"] != null) {
+    //         ingredients.append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
+    //         } else {
+    //             ingredients.append("<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>");
+    //         }
+    //     }
+    var steps = result["steps"];
+    // ingredients.append(instructions)
+
+    container.append("<div>" + steps + "</div>");
+}
+
+function showHashRecipes(results) {
+    // console.log(results)
+    // insertDiv($('#22'), 10)
+    for (var hashtag in results) {
+        for (var recipe of results[hashtag]["recipes"]) {
+            var formInput = {
+                "recipe_id": recipe[0],
+                "container_id": results[hashtag]["hashtag_id"]
+                };
+            var container = $("#" + results[hashtag]["hashtag_id"]);
+            $.post("/view_recipe.json", formInput, function(results) {
+                insertDiv(results, container);
+            });
+        }
+    }
+
+}
+
+$.get('/display_hashed_recipes.json', showHashRecipes);
+
 function showRecipe(result) {
     var recipe_id = result["recipe_id"];
     $('#summary-' + recipe_id).empty();
@@ -96,19 +134,8 @@ function updateDeletedHash(results) {
 }
 $('.del_hashtag').on('click', delHashtagization);
 
-function showHashRecipes(results) {
-    for (var hashtag in results) {
-        for (var recipe of results[hashtag]) {
-            var formInput = {
-                "recipe_id": recipe[0]
-                };
-            $(".recipe").hide()
-            $.post("/view_recipe.json", formInput, showRecipe);
-        }
-    }
 
-}
-$.get('/display_hashed_recipes.json', showHashRecipes);
+
 
 // function showHashtags() {
 //     if ($('.userid').length != 0)

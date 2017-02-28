@@ -1,14 +1,14 @@
 "use strict";
 
-function insertDiv(result, container) {
-
+function insertDiv(result, container_id) {
+    console.log("insertDiv", result,container_id);
+    var container = $("#"+container_id);
     var ingredients = "";
     // console.log(result["ingredients"]);
     for (var ingredient of result["ingredients"]) {
-        // console.log(ingredient);
-        // var newIngred;
-        if (ingredient["unit"] != null) {
-            var newIngred = "<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>";
+        var newIngred;
+        if (ingredient.unit !== null) {
+            newIngred = "<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>";
             // console.log(newIngred);
             } else {
                 newIngred = "<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>";
@@ -16,42 +16,32 @@ function insertDiv(result, container) {
             // console.log(newIngred);
         ingredients += newIngred;
         }
-    // var steps = "Instructions " + result["steps"];
+    var steps = "Instructions " + result["steps"];
     // ingredients.append(instructions)
     container.append("<div>" + ingredients + "</div>");
-    // container.append("<div>" + steps + "</div>");
+    container.append("<div> XXX" + steps + "</div>");
 }
-
-function showHashRecipes(results) {
-    for (var hashtag in results) {
-        var container = $("#" + results[hashtag]["hashtag_id"]);
-        for (var recipe of results[hashtag]["recipes"]) {
-            var formInput = {
-                "recipe_id": recipe[0],
-                "container_id": container.value
+function fetchRecipe(recipe_id, container_id) {
+    var formInput = {
+                "recipe_id": recipe_id,
+                "container_id": container_id
                 };
-// TODO: look into how to make a synchronous ajax request - I'm getting a console log warning about this one 
-            $.ajax({
-                  type: 'POST',
-                  url: "/view_recipe.json",
-                  data: formInput,
-                  success: function(results) {
-                    // console.log(container);
-                    insertDiv(results, container);
-                    },
-                  async:false
-                });
-        }
-        //     $.post("/view_recipe.json", formInput, function(results) {
-        //         console.log(container);
-        //         insertDiv(results, container);
-        //     });
-        // }
-    }
-
+            $.post("/view_recipe.json", formInput, function(results) {
+                    insertDiv(results, container_id);
+                    });
 }
 
-$.get('/display_hashed_recipes.json', showHashRecipes);
+function getHashRecipes(results) {
+    for (var hashtag in results) {
+        var container_id = results[hashtag]["hashtag_id"];
+        console.log("show",container_id);
+        for (var recipe of results[hashtag]["recipes"]) {
+            fetchRecipe(recipe[0],container_id);
+        }
+    }
+}
+
+$.get('/display_hashed_recipes.json', getHashRecipes);
 
 function showRecipe(result) {
     var recipe_id = result["recipe_id"];

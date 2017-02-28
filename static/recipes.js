@@ -2,17 +2,24 @@
 
 function insertDiv(result, container) {
 
-    var ingredients;
-    // for (var ingredient of result["ingredients"]) {
-    //     if (ingredient["unit"] != null) {
-    //         ingredients.append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
-    //         } else {
-    //             ingredients.append("<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>");
-    //         }
-    //     }
-    var steps = "Instructions " + result["steps"];
+    var ingredients = "";
+    // console.log(result["ingredients"]);
+    for (var ingredient of result["ingredients"]) {
+        // console.log(ingredient);
+        // var newIngred;
+        if (ingredient["unit"] != null) {
+            var newIngred = "<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>";
+            // console.log(newIngred);
+            } else {
+                newIngred = "<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>";
+            }
+            // console.log(newIngred);
+        ingredients += newIngred;
+        }
+    // var steps = "Instructions " + result["steps"];
     // ingredients.append(instructions)
-    container.append("<div>" + steps + "</div>");
+    container.append("<div>" + ingredients + "</div>");
+    // container.append("<div>" + steps + "</div>");
 }
 
 function showHashRecipes(results) {
@@ -29,7 +36,7 @@ function showHashRecipes(results) {
                   url: "/view_recipe.json",
                   data: formInput,
                   success: function(results) {
-                    console.log(container);
+                    // console.log(container);
                     insertDiv(results, container);
                     },
                   async:false

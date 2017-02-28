@@ -38,7 +38,6 @@ function fetchRecipe(recipe_id, container_id) {
             displayRecipe(results, container_id);
             });
 }
-
 function getHashRecipes(results) {
     // For each of a user's hashtag, create a div (container) for that hashtag,
     // and for each recipe tagged with the hashtag, call fetchRecipe, sending
@@ -61,24 +60,18 @@ function getHashRecipes(results) {
 // Get list of user's hashtag (and for each, also hashtagged recipes)
 $.get('/display_hashed_recipes.json', getHashRecipes);
 
-function testFN(results) {
-    var recipe_id = results['recipe_id'];
-    var container_id = `div-${recipe_id}`
-    var formInput = {
-        "recipe_id": recipe_id,
-        "container_id": container_id
-    };
-    $.post("/view_recipe.json", formInput, function(results) {
-            displayRecipe(results, container_id);
-            });
-
-}
 function getRecipeInfo(evt) {
+    // Get recipe id from click event and get recipe details from server
+    // Callback function calls displayRecipe with the container_id=recipe_id
     var recipe_id = $(this).attr('id');
     var formInput = {
         "recipe_id": recipe_id
     };
-    $.post("/view_recipe.json", formInput, testFN);
+    $.post("/view_recipe.json", formInput, function(results) {
+        var recipe_id = results['recipe_id'];
+        var container_id = `div-${recipe_id}`
+        displayRecipe(results, container_id);
+    });
 }
 $('.recipe_name').on('click', getRecipeInfo);
 

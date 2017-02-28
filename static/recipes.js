@@ -1,6 +1,9 @@
 "use strict";
 
-function insertDiv(result, container_id) {
+function displayRecipe(result, container_id) {
+    // Adds html with recipe details to the html element with container_id
+    // Called by fetchRecipe
+
     // console.log(result);
     console.log("insertDiv", result,container_id);
     var container = $("#"+container_id);
@@ -23,16 +26,24 @@ function insertDiv(result, container_id) {
         `);
 }
 function fetchRecipe(recipe_id, container_id) {
+    // Given a recipe_id and container_id, get the recipe details from the
+    // server, and call displayRecipe, passing in the recipe details and
+    // container_id
+    // Called by gethashrecipes
     var formInput = {
                 "recipe_id": recipe_id,
                 "container_id": container_id
                 };
-            $.post("/view_recipe.json", formInput, function(results) {
-                    insertDiv(results, container_id);
-                    });
+    $.post("/view_recipe.json", formInput, function(results) {
+            displayRecipe(results, container_id);
+            });
 }
 
 function getHashRecipes(results) {
+    // For each of a user's hashtag, create a div (container) for that hashtag,
+    // and for each recipe tagged with the hashtag, call fetchRecipe, sending
+    // the recipe_id and container_id
+    // Callback function for '/display_hashed_recipes.json' get request
     var hashContainer = $("#hashtag-container");
     for (var hashtag in results) {
         hashContainer.append(`
@@ -47,8 +58,17 @@ function getHashRecipes(results) {
         }
     }
 }
-
+// Get list of user's hashtag (and for each, also hashtagged recipes)
 $.get('/display_hashed_recipes.json', getHashRecipes);
+
+function getRecipeInfo(evt) {
+    var recipe_id = $(this).attr('id');
+    var formInput = {
+        "recipe_id": recipe_id
+    };
+    $.post("/view_recipe.json", formInput, showRecipe);
+}
+$('.recipe_name').on('click', getRecipeInfo);
 
 function showRecipe(result) {
     var recipe_id = result["recipe_id"];
@@ -77,15 +97,7 @@ function showRecipe(result) {
 
 $('.starButton').on('click', starRecipe);
 
-function getRecipeInfo(evt) {
-    var recipe_id = $(this).attr('id');
-    var formInput = {
-        "recipe_id": recipe_id
-    };
-    $.post("/view_recipe.json", formInput, showRecipe);
-}
 
-$('.recipe_name').on('click', getRecipeInfo);
 
 function starRecipe() {
     // evt.preventDefault();

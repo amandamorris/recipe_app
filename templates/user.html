@@ -31,14 +31,14 @@
 
 
 <a href="#hashtags"><p id="hashtags">Your Hashtags:</p></a>
-
-<ul>
+<div id="hashtag-container"> </div>
+<!-- <ul>
 {% for hashtag in user.hashtags %}
     <li class="hashtag_bullet" id="{{ hashtag.hashtag_id }}" data-username="{{ user.username }}">
-            {{ hashtag.hashtag_name }}
+            <h2>{{ hashtag.hashtag_name }}</h2>
     </li>
 {% endfor %}
-</ul>
+</ul> -->
 
 <!-- <script src="../static/user.js"></script> -->
 {% endblock %}

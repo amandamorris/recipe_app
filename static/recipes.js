@@ -1,25 +1,26 @@
 "use strict";
 
 function insertDiv(result, container_id) {
+    // console.log(result);
     console.log("insertDiv", result,container_id);
     var container = $("#"+container_id);
     var ingredients = "";
-    // console.log(result["ingredients"]);
-    for (var ingredient of result["ingredients"]) {
+    for (var ingredient of result.ingredients) {
         var newIngred;
         if (ingredient.unit !== null) {
-            newIngred = "<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>";
-            // console.log(newIngred);
+            newIngred = `<p>${ingredient.quantity} ${ingredient.unit} ${ingredient.ingredient_name}</p>`;
             } else {
-                newIngred = "<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>";
+                newIngred =`<p>${ingredient.quantity} ${ingredient.ingredient_name}</p>`;
             }
-            // console.log(newIngred);
         ingredients += newIngred;
         }
-    var steps = "Instructions " + result["steps"];
-    // ingredients.append(instructions)
-    container.append("<div>" + ingredients + "</div>");
-    container.append("<div> XXX" + steps + "</div>");
+    var steps = `<b>Instructions</b> <div>${result.steps}</div>`;
+    var recipe_name = result.recipe_name;
+    container.append(`
+        <h3>${recipe_name}</h3><span>Total time:${result.total_time} minutes</span>
+        <div><b>Ingredients</b></div><div>${ingredients}</div>
+        <div>${steps}</div>
+        `);
 }
 function fetchRecipe(recipe_id, container_id) {
     var formInput = {
@@ -32,9 +33,14 @@ function fetchRecipe(recipe_id, container_id) {
 }
 
 function getHashRecipes(results) {
+    var container = $("#hashtag-container");
+    // var hashtagLis = results.map(function() {
+    //     return `<li id=${this}>${this}</li>`
+    // }).get().join("");
+    // container.append(`<ul>${hashtagLis}</ul>`);
     for (var hashtag in results) {
         var container_id = results[hashtag]["hashtag_id"];
-        console.log("show",container_id);
+        // console.log("show",container_id);
         for (var recipe of results[hashtag]["recipes"]) {
             fetchRecipe(recipe[0],container_id);
         }

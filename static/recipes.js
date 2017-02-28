@@ -68,8 +68,8 @@ function getRecipeInfo(evt) {
         "recipe_id": recipe_id
     };
     $.post("/view_recipe.json", formInput, function(results) {
-        var recipe_id = results['recipe_id'];
-        var container_id = `div-${recipe_id}`
+        var recipe_id = results.recipe_id;
+        var container_id = `div-${recipe_id}`;
         displayRecipe(results, container_id);
     });
 }

@@ -61,39 +61,51 @@ function getHashRecipes(results) {
 // Get list of user's hashtag (and for each, also hashtagged recipes)
 $.get('/display_hashed_recipes.json', getHashRecipes);
 
+function testFN(results) {
+    var recipe_id = results['recipe_id'];
+    var container_id = `div-${recipe_id}`
+    var formInput = {
+        "recipe_id": recipe_id,
+        "container_id": container_id
+    };
+    $.post("/view_recipe.json", formInput, function(results) {
+            displayRecipe(results, container_id);
+            });
+
+}
 function getRecipeInfo(evt) {
     var recipe_id = $(this).attr('id');
     var formInput = {
         "recipe_id": recipe_id
     };
-    $.post("/view_recipe.json", formInput, showRecipe);
+    $.post("/view_recipe.json", formInput, testFN);
 }
 $('.recipe_name').on('click', getRecipeInfo);
 
-function showRecipe(result) {
-    var recipe_id = result["recipe_id"];
-    $('#summary-' + recipe_id).empty();
-    if ($('.userid').length != 0) {
-        if (result["is_starring"] === "false") {
-                // $('#div-' + recipe_id).append("<button type='button' data-id=" + recipe_id + " class='starButton'>Star this recipe!</button>")
-            $('*[data-id='+recipe_id+"]").toggle();
-            }
-        if (result["is_starring"] === "true") {
-            $('#div-' + recipe_id).append("<p>You've starred this recipe</p>")
-        }
-    }
-    if (typeof result["time"] != "undefined") {
-        $('#' + recipe_id).innerText.append("<span>" + result["time"] + " minutes</span>");
-    }  
-    for (var ingredient of result["ingredients"]) {
-        if (ingredient["unit"] != null) {
-            $('#ingredients-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
-            } else {
-                $('#ingredients-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>");
-            }
-        }
-    $('#instructions-' + recipe_id).append(result["steps"]);
-}
+// function showRecipe(result) {
+//     var recipe_id = result["recipe_id"];
+//     $('#summary-' + recipe_id).empty();
+//     if ($('.userid').length != 0) {
+//         if (result["is_starring"] === "false") {
+//                 // $('#div-' + recipe_id).append("<button type='button' data-id=" + recipe_id + " class='starButton'>Star this recipe!</button>")
+//             $('*[data-id='+recipe_id+"]").toggle();
+//             }
+//         if (result["is_starring"] === "true") {
+//             $('#div-' + recipe_id).append("<p>You've starred this recipe</p>")
+//         }
+//     }
+//     if (typeof result["time"] != "undefined") {
+//         $('#' + recipe_id).innerText.append("<span>" + result["time"] + " minutes</span>");
+//     }  
+//     for (var ingredient of result["ingredients"]) {
+//         if (ingredient["unit"] != null) {
+//             $('#ingredients-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["unit"] + " " + ingredient["ingredient_name"] + "</p>");
+//             } else {
+//                 $('#ingredients-' + recipe_id).append("<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>");
+//             }
+//         }
+//     $('#instructions-' + recipe_id).append(result["steps"]);
+// }
 
 $('.starButton').on('click', starRecipe);
 

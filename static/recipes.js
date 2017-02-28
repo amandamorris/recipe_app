@@ -1,9 +1,7 @@
 "use strict";
 
 function insertDiv(result, container) {
-    console.log(result);
-    console.log(container);
-    // console.log(result);
+
     var ingredients;
     // for (var ingredient of result["ingredients"]) {
     //     if (ingredient["unit"] != null) {
@@ -12,26 +10,36 @@ function insertDiv(result, container) {
     //             ingredients.append("<p>" + ingredient["quantity"] + " " + ingredient["ingredient_name"] + "</p>");
     //         }
     //     }
-    var steps = result["steps"];
+    var steps = "Instructions " + result["steps"];
     // ingredients.append(instructions)
-
     container.append("<div>" + steps + "</div>");
 }
 
 function showHashRecipes(results) {
-    // console.log(results)
-    // insertDiv($('#22'), 10)
     for (var hashtag in results) {
+        var container = $("#" + results[hashtag]["hashtag_id"]);
         for (var recipe of results[hashtag]["recipes"]) {
             var formInput = {
                 "recipe_id": recipe[0],
-                "container_id": results[hashtag]["hashtag_id"]
+                "container_id": container.value
                 };
-            var container = $("#" + results[hashtag]["hashtag_id"]);
-            $.post("/view_recipe.json", formInput, function(results) {
-                insertDiv(results, container);
-            });
+// TODO: look into how to make a synchronous ajax request - I'm getting a console log warning about this one 
+            $.ajax({
+                  type: 'POST',
+                  url: "/view_recipe.json",
+                  data: formInput,
+                  success: function(results) {
+                    console.log(container);
+                    insertDiv(results, container);
+                    },
+                  async:false
+                });
         }
+        //     $.post("/view_recipe.json", formInput, function(results) {
+        //         console.log(container);
+        //         insertDiv(results, container);
+        //     });
+        // }
     }
 
 }

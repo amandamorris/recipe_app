@@ -94,7 +94,7 @@ def search_recipes():
     dish_type = request.args.get("dish_type")
 
     # base url
-    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=10"
+    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=1"
 
     # add search parameters to url, replacing space with +, and parsing out lists
     if keywords:

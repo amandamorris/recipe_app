@@ -5,8 +5,9 @@ function displayRecipe(result, container_id) {
     // Called by fetchRecipe
 
     // console.log(result);
-    console.log("insertDiv", result,container_id);
+    // console.log("insertDiv", result,container_id);
     var container = $("#"+container_id);
+    // console.log(container);
     var ingredients = "";
     for (var ingredient of result.ingredients) {
         var newIngred;
@@ -19,15 +20,24 @@ function displayRecipe(result, container_id) {
         }
     var steps = `<b>Instructions</b> <div>${result.steps}</div>`;
     var recipe_name = result.recipe_name;
-    container.append(`
+    var recipeDetails = `
         <div id=recipe-${result.recipe_id}>
             <h4><a href=#${recipe_name} data-toggle="collapse">${recipe_name}</a></h4><span>Total time:${result.total_time} minutes</span>
+        `;
+    // console.log(recipeDetails);
+    var searchHashtagInfo = `<div>!!Show this only in search results!!</div>`;
+    if (window.location.pathname.indexOf("recipe_search") > -1) {
+        recipeDetails += searchHashtagInfo;
+    }
+    // console.log("searchHashtagInfo", searchHashtagInfo);
+    recipeDetails += `
             <div id=${recipe_name} class=collapse>
                 <div><b>Ingredients</b></div><div>${ingredients}</div>
                 <div>${steps}</div>
             </div>
         </div>
-        `);
+        `;
+    container.append(recipeDetails);
 }
 function fetchRecipe(recipe_id, container_id) {
     // Given a recipe_id and container_id, get the recipe details from the
@@ -62,8 +72,7 @@ function getHashRecipes(results) {
         }
     }
 }
-// Get list of user's hashtag (and for each, also hashtagged recipes)
-$.get('/display_hashed_recipes.json', getHashRecipes);
+
 
 function getStarredRecipes(results) {
     // For each recipe a user starred, call fetchRecipe, sending
@@ -78,7 +87,11 @@ function getStarredRecipes(results) {
         fetchRecipe(recipe_id, container_id);
     }
 }
-$.get('/display_starred_recipes.json', getStarredRecipes);
+if (window.location.pathname.indexOf("users") > -1) {
+    $.get('/display_starred_recipes.json', getStarredRecipes);
+    // Get list of user's hashtag (and for each, also hashtagged recipes)
+    $.get('/display_hashed_recipes.json', getHashRecipes);
+    }
 
 function getRecipe(results) {
     // console.log(results);
@@ -88,14 +101,16 @@ function getRecipe(results) {
     displayRecipe(results, container_id);
 }
 
-$('.recipe-container').each(function() {
-  var recipe_id = $( this ).data("id");
-  var formInput = {
-    "recipe_id": recipe_id
-  };
-  // console.log(formInput);
-  $.post("/view_recipe.json", formInput, getRecipe);
-});
+if (window.location.pathname.indexOf("recipe_search") > -1) {
+    $('.recipe-container').each(function() {
+        var recipe_id = $( this ).data("id");
+        var formInput = {
+            "recipe_id": recipe_id
+        };
+    // console.log(formInput);
+        $.post("/view_recipe.json", formInput, getRecipe);
+        });
+    }
 
 function starRecipe() {
     // evt.preventDefault();

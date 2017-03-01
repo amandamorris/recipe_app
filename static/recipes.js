@@ -111,6 +111,7 @@ $('.starButton').on('click', starRecipe);
 function addHashtag() {
     var recipe_id = $( this ).data('id');
     var hashtag_name = $("input[name=hashtag-" + recipe_id + "]").val()
+    $("input[name=hashtag-" + recipe_id + "]").val('');
     var formInput = {
         "recipe_id": recipe_id,
         "hashtag_name": hashtag_name

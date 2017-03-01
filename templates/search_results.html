@@ -33,7 +33,7 @@ The search results!
                 </p>Remove a hashtag:
                     <select id="del-hashtag-{{ result['id'] }}" class="hashtag">
                         {% for tag in result['tags'] %}
-                            <option value="{{ tag[0] }}">{{ tag }}</option>
+                            <option value="{{ tag[0] }}">{{ tag[0] }}</option>
                         {% endfor %}
                     <input type="submit" class="del_hashtag" data-id="{{ result['id'] }}" value="remove"></p>
                 </div>

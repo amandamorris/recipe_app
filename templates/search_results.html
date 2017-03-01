@@ -6,10 +6,9 @@ The search results!
 <ul>
 {% for result in response['results'] %}
     <div class="recipe-container" data-id="{{ result['id'] }}">
-        <div class='header'>
-            <li class='recipe_name' id="rec-{{ result['id'] }}"><a href="#{{ result['id'] }}"><p id="p-{{ result['id'] }}">{{ result['title'] }}</p></a>
-                - ready in {{ result['readyInMinutes'] }} minutes</li>
-            {% if 'username' in session %}
+        <li><div id="div-{{ result['id'] }}"> </div></li>
+    </div>
+{% if 'username' in session %}
                 <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
                 <div class="userid" data-user="{{ session['username'] }}"> </div>
                 <div class="hashtags">Current Hashtags:
@@ -38,9 +37,6 @@ The search results!
                     <input type="submit" class="del_hashtag" data-id="{{ result['id'] }}" value="remove"></p>
                 </div>
             {% endif %}
-        </div>
-        <div id="div-{{ result['id'] }}"> </div>
-    </div>
 
 <!--     {% if result['image'] %}
         <img src="https://spoonacular.com/recipeImages/{{ result['image'] }}" height="150" width="150">
@@ -54,6 +50,7 @@ The search results!
 <br>
 {% endfor %}
 </ul>
+
 
 <!-- <script src="../static/recipes.js"></script> -->
 {% endblock %}

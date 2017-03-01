@@ -5,7 +5,7 @@ function displayRecipe(result, container_id) {
     // Called by fetchRecipe
 
     // console.log(result);
-    // console.log("insertDiv", result,container_id);
+    console.log("insertDiv", result,container_id);
     var container = $("#"+container_id);
     var ingredients = "";
     for (var ingredient of result.ingredients) {
@@ -80,29 +80,14 @@ function getStarredRecipes(results) {
 }
 $.get('/display_starred_recipes.json', getStarredRecipes);
 
-// function getRecipeInfo(evt) {
-//     // Get recipe id from click event and get recipe details from server
-//     // Callback function calls displayRecipe with the container_id=recipe_id
-//     var recipe_id = $(this).attr('id');
-//     var formInput = {
-//         "recipe_id": recipe_id
-//     };
-//     $.post("/view_recipe.json", formInput, function(results) {
-//         var recipe_id = results.recipe_id;
-//         var container_id = `div-${recipe_id}`;
-//         displayRecipe(results, container_id);
-//     });
-// }
-
 function getRecipe(results) {
     // console.log(results);
     var recipe_id = results.recipe_id;
     var container_id = `div-${recipe_id}`;
-    console.log(results, container_id);
+    // console.log(results, container_id);
     displayRecipe(results, container_id);
 }
 
-// $('.recipe_name').on('click', getRecipeInfo);
 $('.recipe-container').each(function() {
   var recipe_id = $( this ).data("id");
   var formInput = {
@@ -172,7 +157,3 @@ function updateDeletedHash(results) {
     }
 }
 $('.del_hashtag').on('click', delHashtagization);
-
-// document.ready(){
-//     $('.recipe_name').click();
-// };

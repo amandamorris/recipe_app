@@ -21,9 +21,11 @@ function displayRecipe(result, container_id) {
     var recipe_name = result.recipe_name;
     container.append(`
         <div id=recipe-${result.recipe_id}>
-            <h3>${recipe_name}</h3><span>Total time:${result.total_time} minutes</span>
-            <div><b>Ingredients</b></div><div>${ingredients}</div>
-            <div>${steps}</div>
+            <h4><a href=#${recipe_name} data-toggle="collapse">${recipe_name}</a></h4><span>Total time:${result.total_time} minutes</span>
+            <div id=${recipe_name} class=collapse>
+                <div><b>Ingredients</b></div><div>${ingredients}</div>
+                <div>${steps}</div>
+            </div>
         </div>
         `);
 }

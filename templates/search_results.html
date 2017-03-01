@@ -5,9 +5,9 @@ The search results!
 
 <ul>
 {% for result in response['results'] %}
-    <div class='recipe' id='div-{{ result['id'] }}'>
+    <div class="recipe-container" data-id="{{ result['id'] }}">
         <div class='header'>
-            <li class='recipe_name' id="{{ result['id'] }}"><a href="#{{ result['id'] }}">{{ result['title'] }}</a>
+            <li class='recipe_name' id="rec-{{ result['id'] }}"><a href="#{{ result['id'] }}"><p id="p-{{ result['id'] }}">{{ result['title'] }}</p></a>
                 - ready in {{ result['readyInMinutes'] }} minutes</li>
             {% if 'username' in session %}
                 <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
@@ -39,17 +39,18 @@ The search results!
                 </div>
             {% endif %}
         </div>
+        <div id="div-{{ result['id'] }}"> </div>
+    </div>
 
-    {% if result['image'] %}
+<!--     {% if result['image'] %}
         <img src="https://spoonacular.com/recipeImages/{{ result['image'] }}" height="150" width="150">
-    {% endif %}
+    {% endif %} -->
 
-    <div class="recipe" id="summary-{{ result['id'] }}">
+   <!--  <div class="recipe" id="summary-{{ result['id'] }}">
         </div>
             <div class="ingredients" id="ingredients-{{ result['id'] }}"></div>
-            <div class="instructions" id="instructions-{{ result['id'] }}"></div>
-    </div>
-        
+            <div class="instructions" id="instructions-{{ result['id'] }}"></div> -->
+    <!-- <div class="recipe-container" data-id="{{ result['id'] }}"> </div> -->
 <br>
 {% endfor %}
 </ul>

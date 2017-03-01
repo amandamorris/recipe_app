@@ -38,7 +38,7 @@ function fetchRecipe(recipe_id, container_id) {
                 "recipe_id": recipe_id,
                 "container_id": container_id
                 };
-    console.log(formInput);
+    // console.log(formInput);
     $.post("/view_recipe.json", formInput, function(results) {
             displayRecipe(results, container_id);
             });
@@ -80,24 +80,41 @@ function getStarredRecipes(results) {
 }
 $.get('/display_starred_recipes.json', getStarredRecipes);
 
-function getRecipeInfo(evt) {
-    // Get recipe id from click event and get recipe details from server
-    // Callback function calls displayRecipe with the container_id=recipe_id
-    var recipe_id = $(this).attr('id');
-    var formInput = {
-        "recipe_id": recipe_id
-    };
-    $.post("/view_recipe.json", formInput, function(results) {
-        var recipe_id = results.recipe_id;
-        var container_id = `div-${recipe_id}`;
-        displayRecipe(results, container_id);
-    });
+// function getRecipeInfo(evt) {
+//     // Get recipe id from click event and get recipe details from server
+//     // Callback function calls displayRecipe with the container_id=recipe_id
+//     var recipe_id = $(this).attr('id');
+//     var formInput = {
+//         "recipe_id": recipe_id
+//     };
+//     $.post("/view_recipe.json", formInput, function(results) {
+//         var recipe_id = results.recipe_id;
+//         var container_id = `div-${recipe_id}`;
+//         displayRecipe(results, container_id);
+//     });
+// }
+
+function getRecipe(results) {
+    // console.log(results);
+    var recipe_id = results.recipe_id;
+    var container_id = `div-${recipe_id}`;
+    console.log(results, container_id);
+    displayRecipe(results, container_id);
 }
-$('.recipe_name').on('click', getRecipeInfo);
+
+// $('.recipe_name').on('click', getRecipeInfo);
+$('.recipe-container').each(function() {
+  var recipe_id = $( this ).data("id");
+  var formInput = {
+    "recipe_id": recipe_id
+  };
+  // console.log(formInput);
+  $.post("/view_recipe.json", formInput, getRecipe);
+});
 
 function starRecipe() {
     // evt.preventDefault();
-    console.log("You have starred the recipe");
+    // console.log("You have starred the recipe");
     var recipe_id = $( this ).data('id');
 
     // console.log(recipe_id);
@@ -155,3 +172,7 @@ function updateDeletedHash(results) {
     }
 }
 $('.del_hashtag').on('click', delHashtagization);
+
+// document.ready(){
+//     $('.recipe_name').click();
+// };

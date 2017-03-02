@@ -3,10 +3,13 @@
 // function printHash(evt) {
 //     console.log('You clicked a hashtag');
 // }
-$('.add-hashtag').on('click', function() {
-    console.log('You clicked a hashtag');
-    }
-    );
+$('.recipe-container').on('click', "a.add-hashtag", function() { 
+    // $('.add-hashtag').on('click', function() {
+        console.log('You clicked a hashtag');
+        // }
+        // );
+});
+
 function displayRecipe(result, container_id) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe
@@ -28,8 +31,9 @@ function displayRecipe(result, container_id) {
     var steps = `<b>Instructions</b> <div>${result.steps}</div>`;
     var recipe_name = result.recipe_name;
     var recipeDetails = `
-        <div id=recipe-${result.recipe_id}>
-            <h4><a href=#${recipe_name} data-toggle="collapse">${recipe_name}</a></h4><span>Total time:${result.total_time} minutes</span>
+        <div class=recipe_details id=recipe-${result.recipe_id}>
+            <h4><a href=#${recipe_name} data-toggle="collapse">${recipe_name}
+            </a></h4><span>Total time:${result.total_time} minutes</span>
         `;
     // console.log(recipeDetails);
     var searchHashtagInfo = `<div id=hashtags-${result.recipe_id}>Current hashtags: </div>`;

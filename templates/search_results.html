@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-The search results!
-
 <ul>
 {% for result in response['results'] %}
     <div class="recipe-container" data-id="{{ result['id'] }}">

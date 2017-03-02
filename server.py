@@ -117,6 +117,7 @@ def search_recipes():
         for recipe in response['results']:
             if not recipe_in_db(recipe['id']):
                 get_recipe_and_add_to_db(recipe['id'])
+            # can I take tags out, since it will be handled in view recipe?
             tags = get_recipe_hashtags(recipe['id'], username)
             recipe['tags'] = tags
 
@@ -147,6 +148,12 @@ def view_recipe():
     # if logged in, check to see if the user has already starred the recipe
     if 'username' in session:
         username = session['username']
+        
+        recipe['username'] = username
+        recipe['user_hashtags'] = get_user_hashtags(username)
+        
+        tags = get_recipe_hashtags(recipe_id, username)
+        recipe['tags'] = tags
     else:
         username = None
     if Starring.query.filter_by(username=username, recipe_id=recipe_id).first():
@@ -154,6 +161,7 @@ def view_recipe():
     else:
         is_starring = "false"
     recipe['is_starring'] = is_starring
+
 
     hashtag_id = request.form.get("container_id")
     recipe["hashtag_id"] = hashtag_id

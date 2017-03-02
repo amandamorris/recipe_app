@@ -266,6 +266,14 @@ def get_hashtag_recipes(hashtag_id):
 
     return recipe_ids
 
+def get_user_hashtags(username):
+    """Given a username, return a list of their hashtag names"""
+
+    db_hashtags = User.query.get(username).hashtags
+    hashtags = []
+    for db_hashtag in db_hashtags:
+        hashtags.append(db_hashtag.hashtag_name)
+    return hashtags
 
 def format_dec_as_frac(quantity):
     """Takes a float formatted as string and returns a string representation for recipes

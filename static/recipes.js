@@ -1,5 +1,12 @@
 "use strict";
 
+// function printHash(evt) {
+//     console.log('You clicked a hashtag');
+// }
+$('.add-hashtag').on('click', function() {
+    console.log('You clicked a hashtag');
+    }
+    );
 function displayRecipe(result, container_id) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe
@@ -25,9 +32,25 @@ function displayRecipe(result, container_id) {
             <h4><a href=#${recipe_name} data-toggle="collapse">${recipe_name}</a></h4><span>Total time:${result.total_time} minutes</span>
         `;
     // console.log(recipeDetails);
-    var searchHashtagInfo = `<div>!!Show this only in search results!!</div>`;
-    if (window.location.pathname.indexOf("recipe_search") > -1) {
+    var searchHashtagInfo = `<div id=hashtags-${result.recipe_id}>Current hashtags: </div>`;
+    
+    if ((window.location.pathname.indexOf("recipe_search") > -1)
+        && (result.username)) {
+        // console.log(result.user_hashtags);
+        // console.log(result['tags']);
+        var recipe_hashtags = result.tags;
+        for (var hashtag of recipe_hashtags) {
+            searchHashtagInfo += `${hashtag} `;
+        }
+        
+
+        // userHashtagList += `</datalist>`;
+        // console.log(userHashtagList);
+
         recipeDetails += searchHashtagInfo;
+        if ('dropdownMenus' in result) {
+            recipeDetails += result['dropdownMenus'];
+            }
     }
     // console.log("searchHashtagInfo", searchHashtagInfo);
     recipeDetails += `
@@ -39,6 +62,8 @@ function displayRecipe(result, container_id) {
         `;
     container.append(recipeDetails);
 }
+
+
 function fetchRecipe(recipe_id, container_id) {
     // Given a recipe_id and container_id, get the recipe details from the
     // server, and call displayRecipe, passing in the recipe details and
@@ -87,6 +112,7 @@ function getStarredRecipes(results) {
         fetchRecipe(recipe_id, container_id);
     }
 }
+// If on a user's page, ajax call to get starred and hashed recipes
 if (window.location.pathname.indexOf("users") > -1) {
     $.get('/display_starred_recipes.json', getStarredRecipes);
     // Get list of user's hashtag (and for each, also hashtagged recipes)
@@ -98,9 +124,32 @@ function getRecipe(results) {
     var recipe_id = results.recipe_id;
     var container_id = `div-${recipe_id}`;
     // console.log(results, container_id);
+    // If user is logged in, create string html of dropdown hashtag menus
+    if (results.username) {
+        results['dropdownMenus'] = "";
+        var addHashDropdown = `
+            <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" id="menu1"
+                type="button" data-toggle="dropdown">
+            Add a hashtag <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+            `
+        // var userHashtagList = `<datalist id="userhashtaglist">`;
+        for (var hashtag of results.user_hashtags) {
+            addHashDropdown += `
+                <li role="presentation">
+                <a class="add-hashtag" role="menuitem" id=dropdown-${hashtag}
+                tabindex="-1" href="#">${hashtag}</a></li>
+                `;
+                // userHashtagList += `<option value=${hashtag}>`
+            }
+        
+        addHashDropdown += `</ul></div>`;
+        results['dropdownMenus'] += addHashDropdown
+        }
     displayRecipe(results, container_id);
 }
-
+// If on a recipe search, ajax call to view each recipe
 if (window.location.pathname.indexOf("recipe_search") > -1) {
     $('.recipe-container').each(function() {
         var recipe_id = $( this ).data("id");

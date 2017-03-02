@@ -11,16 +11,17 @@ The search results!
 {% if 'username' in session %}
                 <button hidden type='button' data-id="{{ result['id'] }}" class='starButton'>Star this recipe!</button>
                 <div class="userid" data-user="{{ session['username'] }}"> </div>
-                <div class="hashtags">Current Hashtags:
-                    <div id="hashtags-{{ result['id'] }}">
+                <div class="hashtags">
+                    <!-- Current Hashtags: -->
+<!--                     <div id="hashtags-{{ result['id'] }}">
                     {% if result['tags'] %}
                             {% for tag in result['tags'] %}
                                 {{ tag[0] }}
                             {% endfor %}
                     {% endif %}
-                    </div>
+                    </div> -->
 
-                <datalist id="userhashtaglist">
+                <!-- <datalist id="userhashtaglist">
                 {% for hashtag in hashtags %}
                     <option value="{{ hashtag.hashtag_name }}">
                 {% endfor %}
@@ -28,7 +29,7 @@ The search results!
                 
                 <p>Add a hashtag:
                     <input type="text" name="hashtag-{{ result['id'] }}" class="hashtag" list="userhashtaglist">
-                    <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="add"></p>
+                    <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="add"></p> -->
                 </p>Remove a hashtag:
                     <select id="del-hashtag-{{ result['id'] }}" class="hashtag">
                         {% for tag in result['tags'] %}

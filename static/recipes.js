@@ -3,13 +3,6 @@
 // function printHash(evt) {
 //     console.log('You clicked a hashtag');
 // }
-$('.recipe-container').on('click', "a.add-hashtag", function() { 
-    // $('.add-hashtag').on('click', function() {
-        console.log('You clicked a hashtag');
-        // }
-        // );
-});
-
 function displayRecipe(result, container_id) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe
@@ -143,16 +136,39 @@ function getRecipe(results) {
             addHashDropdown += `
                 <li role="presentation">
                 <a class="add-hashtag" role="menuitem" id=dropdown-${hashtag}
-                tabindex="-1" href="#">${hashtag}</a></li>
+                tabindex="-1" href="#" data-recipe_id=${recipe_id}>${hashtag}
+                </a></li>
                 `;
                 // userHashtagList += `<option value=${hashtag}>`
             }
-        
-        addHashDropdown += `</ul></div>`;
+        addHashDropdown += `
+            <input type="text" id="new-hashtag" placeholder="Create a hashtag"/></a>
+            `
+
+        //     <a class="add-hashtag" role="menuitem" id=dropdown-other tabindex="-1"
+        //     hred="#" data-recipe-id=${recipe_id} value="New hashtag">New hashtag</a>
+        //     `;
+        addHashDropdown += `
+            </ul></div>
+            <div id="new_hashtag"></div>
+            `;
+
         results['dropdownMenus'] += addHashDropdown
         }
     displayRecipe(results, container_id);
 }
+
+$('.recipe-container').on('click', "a.add-hashtag", function() {
+    console.log("clicked a hashtag");
+});
+$('.recipe-container').on('keypress', "#new-hashtag", function(evt) {
+    var key = evt.which;
+    if(key == 13)  // the enter key
+        {
+            console.log("added a new hashtag");
+        }
+}); 
+
 // If on a recipe search, ajax call to view each recipe
 if (window.location.pathname.indexOf("recipe_search") > -1) {
     $('.recipe-container').each(function() {
@@ -180,14 +196,17 @@ function starRecipe() {
 }
 $('.starButton').on('click', starRecipe);
 
+
 function addHashtag() {
-    var recipe_id = $( this ).data('id');
+    // console.log($( this ).val(''));
+    var recipe_id = $( this ).data('recipe_id');
     var hashtag_name = $("input[name=hashtag-" + recipe_id + "]").val()
     $("input[name=hashtag-" + recipe_id + "]").val('');
     var formInput = {
         "recipe_id": recipe_id,
         "hashtag_name": hashtag_name
     };
+    console.log(formInput);
     $.post("/add_hashtag.json", formInput, populateHash);
 }
 

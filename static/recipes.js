@@ -14,7 +14,7 @@ if (window.location.pathname.indexOf("recipe_search") > -1) {
     // console.log(formInput);
         $.post("/view_recipe.json", formInput, getRecipe);
         });
-    }
+}
 
 function displayRecipe(result, container_id) {
     // Adds html with recipe details to the html element with container_id
@@ -52,10 +52,6 @@ function displayRecipe(result, container_id) {
         for (var hashtag of recipe_hashtags) {
             searchHashtagInfo += `${hashtag} `;
         }
-        
-
-        // userHashtagList += `</datalist>`;
-        // console.log(userHashtagList);
 
         recipeDetails += searchHashtagInfo;
         if ('dropdownMenus' in result) {
@@ -72,7 +68,6 @@ function displayRecipe(result, container_id) {
         `;
     container.append(recipeDetails);
 }
-
 
 function fetchRecipe(recipe_id, container_id) {
     // Given a recipe_id and container_id, get the recipe details from the
@@ -218,7 +213,13 @@ $('.recipe-container').on('keypress', "#new-hashtag", function(evt) {
 $('.recipe-container').on('click', "a.del-hashtag", function(evt) {
     var hashtagName = $( this ).data("hashtag");
     var recipeId = $( this ).data("recipe_id");
-    delHashtagization(hashtagName, recipeId);
+
+    var formInput = {
+        "recipe_id": recipeId,
+        "hashtag_name": hashtagName
+    };
+    $.post("/del_hashtagization.json", formInput, updateDeletedHash);
+    // delHashtagization(hashtagName, recipeId);
 });
 
 function addHashtag(hashtagName, recipeId) {
@@ -237,22 +238,6 @@ function populateHash(results) {
     $('#del-hashtag-' + recipe_id).append("<option value=" + results['hashtag_name'] + ">" + results['hashtag_name'] + "</option>")
 }
 
-// $('.submit-button').on('click', addHashtag);
-
-function delHashtagization(hashtagName, recipeId) {
-    console.log("Almost deleted");
-    var recipe_id = $( this ).data('id');
-    var hashtag_name = $('#del-hashtag-' + recipe_id).val();
-    // Delete the removed hashtag from the "remove" options
-    $('#del-hashtag-' + recipe_id + " option[value=" + hashtag_name + ']').remove();
-
-    var formInput = {
-        "recipe_id": recipe_id,
-        "hashtag_name": hashtag_name
-    };
-    $.post("/del_hashtagization.json", formInput, updateDeletedHash);
-}
-
 function updateDeletedHash(results) {
     var recipe_id = results["recipe_id"];
     var hashtags = results["hashtags"];
@@ -264,7 +249,6 @@ function updateDeletedHash(results) {
         $('#hashtags-' + recipe_id).append(" ");
     }
 }
-// $('.del-hashtag').on('click', delHashtagization);
 
 function starRecipe() {
     // evt.preventDefault();

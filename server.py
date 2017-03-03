@@ -94,7 +94,7 @@ def search_recipes():
     dish_type = request.args.get("dish_type")
 
     # base url
-    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=1"
+    url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?instructionsRequired=true&number=10"
 
     # add search parameters to url, replacing space with +, and parsing out lists
     if keywords:
@@ -218,14 +218,14 @@ def display_starred_recipes():
 
 @app.route('/add_hashtag.json', methods=['POST'])
 def add_hashtag():
-    """Add a hashtag/user pair to the database"""
+    """Add a hashtagization to the database, adding hashtag if needed"""
     username = session['username']
     hashtag_name = request.form.get("hashtag_name")
     print hashtag_name
     recipe_id = request.form.get("recipe_id")
 
-    if not recipe_in_db(recipe_id):
-        get_recipe_and_add_to_db(recipe_id)
+    # if not recipe_in_db(recipe_id):
+        # get_recipe_and_add_to_db(recipe_id)
 
     add_hashtag_to_db(username=username, hashtag_name=hashtag_name)
 

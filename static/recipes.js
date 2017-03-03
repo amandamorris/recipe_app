@@ -3,6 +3,19 @@
 // function printHash(evt) {
 //     console.log('You clicked a hashtag');
 // }
+
+// If on a recipe search, ajax call to view each recipe
+if (window.location.pathname.indexOf("recipe_search") > -1) {
+    $('.recipe-container').each(function() {
+        var recipe_id = $( this ).data("id");
+        var formInput = {
+            "recipe_id": recipe_id
+        };
+    // console.log(formInput);
+        $.post("/view_recipe.json", formInput, getRecipe);
+        });
+    }
+
 function displayRecipe(result, container_id) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe
@@ -95,7 +108,6 @@ function getHashRecipes(results) {
     }
 }
 
-
 function getStarredRecipes(results) {
     // For each recipe a user starred, call fetchRecipe, sending
     // the recipe_id and container_id for starrings
@@ -120,93 +132,101 @@ function getRecipe(results) {
     // console.log(results);
     var recipe_id = results.recipe_id;
     var container_id = `div-${recipe_id}`;
+    // TODO: THINK ABOUT RENAMING RESULTS[TAGS] TO SOMETHING ELSE
+    var recipe_hashtags = results['tags'];
     // console.log(results, container_id);
     // If user is logged in, create string html of dropdown hashtag menus
+    // console.log(results);
     if (results.username) {
-        results['dropdownMenus'] = "";
-        var addHashDropdown = `
-            <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" id="menu1"
-                type="button" data-toggle="dropdown">
-            Add a hashtag <span class="caret"></span></button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-            `
-        // var userHashtagList = `<datalist id="userhashtaglist">`;
-        for (var hashtag of results.user_hashtags) {
-            addHashDropdown += `
-                <li role="presentation">
-                <a class="add-hashtag" role="menuitem" id=dropdown-${hashtag}
-                tabindex="-1" href="#" data-recipe_id=${recipe_id}>${hashtag}
-                </a></li>
-                `;
-                // userHashtagList += `<option value=${hashtag}>`
-            }
-        addHashDropdown += `
-            <input type="text" id="new-hashtag" placeholder="Create a hashtag"/></a>
-            `
-
-        //     <a class="add-hashtag" role="menuitem" id=dropdown-other tabindex="-1"
-        //     hred="#" data-recipe-id=${recipe_id} value="New hashtag">New hashtag</a>
-        //     `;
-        addHashDropdown += `
-            </ul></div>
-            <div id="new_hashtag"></div>
-            `;
-
-        results['dropdownMenus'] += addHashDropdown
+        results['dropdownMenus'] = createDropdowns(results.user_hashtags,
+                                                   recipe_id,
+                                                   recipe_hashtags
+                                                   );
         }
     displayRecipe(results, container_id);
 }
 
-$('.recipe-container').on('click', "a.add-hashtag", function() {
-    console.log("clicked a hashtag");
+function createDropdowns(user_hashtags, recipe_id, recipe_hashtags) {
+    // Create dropdown menus to add and delete a hashtag
+    // Called by getRecipe
+    var addHashDropdown = `
+        <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" id="menu1"
+            type="button" data-toggle="dropdown">
+        Add a hashtag <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+        `
+    // var userHashtagList = `<datalist id="userhashtaglist">`;
+    for (var hashtag of user_hashtags) {
+        addHashDropdown += `
+            <li role="presentation">
+            <a class="add-hashtag" role="menuitem" id=dropdown-${hashtag}
+            tabindex="-1" href="#" data-recipe_id=${recipe_id}
+            data-hashtag=${hashtag}>${hashtag}
+            </a></li>
+            `;
+            // userHashtagList += `<option value=${hashtag}>`
+        }
+    addHashDropdown += `
+        <input type="text" id="new-hashtag" data-recipe_id=${recipe_id}
+        placeholder="Create a hashtag"/></a>
+        </ul></div>
+        <div id="new_hashtag"></div>
+        `;
+
+    var delHashDropdown = `
+            <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" id="menu2"
+                type="button" data-toggle="dropdown">
+            Remove a hashtag <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">
+            `;
+    for (var hashtag of recipe_hashtags) {
+        delHashDropdown += `
+            <li role="presentation">
+            <a class="del-hashtag" role="menuitem" id=del-dropdown-${hashtag}
+            tabindex="-1" href="#" data-recipe_id=${recipe_id}
+            data-hashtag=${hashtag}>${hashtag}
+            </a></li>
+            `;
+        // console.log(hashtag[0]);
+    }
+
+    var bothDropdowns = addHashDropdown.concat(delHashDropdown);
+    return bothDropdowns;
+
+}
+// Add event listener for selecting a hashtag from dropdown menu
+$('.recipe-container').on('click', "a.add-hashtag", function(evt) {
+    var hashtagName = $( this ).data("hashtag");
+    var recipeId = $( this ).data("recipe_id");
+    addHashtag(hashtagName, recipeId);
 });
+
+// Add event listener for creating a new hashtag in text box
 $('.recipe-container').on('keypress', "#new-hashtag", function(evt) {
     var key = evt.which;
     if(key == 13)  // the enter key
         {
-            console.log("added a new hashtag");
+            var hashtagName = $(this).val();
+            var recipeId = $( this ).data("recipe_id");
+            addHashtag(hashtagName, recipeId);
         }
 }); 
 
-// If on a recipe search, ajax call to view each recipe
-if (window.location.pathname.indexOf("recipe_search") > -1) {
-    $('.recipe-container').each(function() {
-        var recipe_id = $( this ).data("id");
-        var formInput = {
-            "recipe_id": recipe_id
-        };
+// Add event listener for deleting hashtag from dropdown menu
+$('.recipe-container').on('click', "a.del-hashtag", function(evt) {
+    var hashtagName = $( this ).data("hashtag");
+    var recipeId = $( this ).data("recipe_id");
+    delHashtagization(hashtagName, recipeId);
+});
+
+function addHashtag(hashtagName, recipeId) {
+    var formInput = {
+        "recipe_id": recipeId,
+        "hashtag_name": hashtagName
+    };
     // console.log(formInput);
-        $.post("/view_recipe.json", formInput, getRecipe);
-        });
-    }
-
-function starRecipe() {
-    // evt.preventDefault();
-    // console.log("You have starred the recipe");
-    var recipe_id = $( this ).data('id');
-
-    // console.log(recipe_id);
-    var formInput = {
-        "recipe_id": recipe_id
-    };
-
-    $.post("/star_recipe.json", formInput, console.log("recipe starred"));
-    $('*[data-id='+recipe_id+"]").toggle();
-}
-$('.starButton').on('click', starRecipe);
-
-
-function addHashtag() {
-    // console.log($( this ).val(''));
-    var recipe_id = $( this ).data('recipe_id');
-    var hashtag_name = $("input[name=hashtag-" + recipe_id + "]").val()
-    $("input[name=hashtag-" + recipe_id + "]").val('');
-    var formInput = {
-        "recipe_id": recipe_id,
-        "hashtag_name": hashtag_name
-    };
-    console.log(formInput);
     $.post("/add_hashtag.json", formInput, populateHash);
 }
 
@@ -217,9 +237,10 @@ function populateHash(results) {
     $('#del-hashtag-' + recipe_id).append("<option value=" + results['hashtag_name'] + ">" + results['hashtag_name'] + "</option>")
 }
 
-$('.submit-button').on('click', addHashtag);
+// $('.submit-button').on('click', addHashtag);
 
-function delHashtagization() {
+function delHashtagization(hashtagName, recipeId) {
+    console.log("Almost deleted");
     var recipe_id = $( this ).data('id');
     var hashtag_name = $('#del-hashtag-' + recipe_id).val();
     // Delete the removed hashtag from the "remove" options
@@ -243,4 +264,19 @@ function updateDeletedHash(results) {
         $('#hashtags-' + recipe_id).append(" ");
     }
 }
-$('.del_hashtag').on('click', delHashtagization);
+// $('.del-hashtag').on('click', delHashtagization);
+
+function starRecipe() {
+    // evt.preventDefault();
+    // console.log("You have starred the recipe");
+    var recipe_id = $( this ).data('id');
+
+    // console.log(recipe_id);
+    var formInput = {
+        "recipe_id": recipe_id
+    };
+
+    $.post("/star_recipe.json", formInput, console.log("recipe starred"));
+    $('*[data-id='+recipe_id+"]").toggle();
+}
+$('.starButton').on('click', starRecipe);

@@ -28,13 +28,13 @@
                 <p>Add a hashtag:
                     <input type="text" name="hashtag-{{ result['id'] }}" class="hashtag" list="userhashtaglist">
                     <input type="submit" class="submit-button" data-id="{{ result['id'] }}" value="add"></p> -->
-                </p>Remove a hashtag:
+                <!-- </p>Remove a hashtag:
                     <select id="del-hashtag-{{ result['id'] }}" class="hashtag">
                         {% for tag in result['tags'] %}
                             <option value="{{ tag[0] }}">{{ tag[0] }}</option>
                         {% endfor %}
                     <input type="submit" class="del_hashtag" data-id="{{ result['id'] }}" value="remove"></p>
-                </div>
+                </div> -->
             {% endif %}
 
 <!--     {% if result['image'] %}

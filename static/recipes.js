@@ -67,6 +67,7 @@ function displayRecipe(result, container_id) {
         </div>
         `;
     container.append(recipeDetails);
+    console.log(container_id);
 }
 
 function fetchRecipe(recipe_id, container_id) {
@@ -186,6 +187,7 @@ function createDropdowns(user_hashtags, recipe_id, recipe_hashtags) {
             `;
         // console.log(hashtag[0]);
     }
+    delHashDropdown += `</div>`;
 
     var bothDropdowns = addHashDropdown.concat(delHashDropdown);
     return bothDropdowns;

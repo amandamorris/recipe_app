@@ -195,7 +195,13 @@ function createDropdowns(user_hashtags, recipe_id, recipe_hashtags) {
 $('.recipe-container').on('click', "a.add-hashtag", function(evt) {
     var hashtagName = $( this ).data("hashtag");
     var recipeId = $( this ).data("recipe_id");
-    addHashtag(hashtagName, recipeId);
+    var formInput = {
+        "recipe_id": recipeId,
+        "hashtag_name": hashtagName
+    };
+    // console.log(formInput);
+    $.post("/add_hashtag.json", formInput, populateHash);
+    // addHashtag(hashtagName, recipeId);
 });
 
 // Add event listener for creating a new hashtag in text box
@@ -205,7 +211,13 @@ $('.recipe-container').on('keypress', "#new-hashtag", function(evt) {
         {
             var hashtagName = $(this).val();
             var recipeId = $( this ).data("recipe_id");
-            addHashtag(hashtagName, recipeId);
+            var formInput = {
+                "recipe_id": recipeId,
+                "hashtag_name": hashtagName
+            };
+            // console.log(formInput);
+            $.post("/add_hashtag.json", formInput, populateHash);
+            // addHashtag(hashtagName, recipeId);
         }
 }); 
 
@@ -221,15 +233,6 @@ $('.recipe-container').on('click', "a.del-hashtag", function(evt) {
     $.post("/del_hashtagization.json", formInput, updateDeletedHash);
     // delHashtagization(hashtagName, recipeId);
 });
-
-function addHashtag(hashtagName, recipeId) {
-    var formInput = {
-        "recipe_id": recipeId,
-        "hashtag_name": hashtagName
-    };
-    // console.log(formInput);
-    $.post("/add_hashtag.json", formInput, populateHash);
-}
 
 function populateHash(results) {
     // console.log("populating the hash")

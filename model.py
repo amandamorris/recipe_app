@@ -112,6 +112,9 @@ class Recipe(db.Model):
         # recipe['ingredients'] = []
         ingrs = self.get_ingredient_list()
         recipe['ingredients'] = ingrs
+        recipe['images'] = []
+        for db_image in self.images:
+          recipe['images'].append(db_image.image_url)
 
         return recipe
 

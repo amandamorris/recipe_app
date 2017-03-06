@@ -20,7 +20,7 @@ function displayRecipe(result, container_id) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe
 
-    // console.log(result);
+    console.log(result);
     // console.log("insertDiv", result,container_id);
     var container = $("#"+container_id);
     // console.log(container);
@@ -53,14 +53,20 @@ function displayRecipe(result, container_id) {
         && (result.username)) {
         // console.log(result.user_hashtags);
         // console.log(result['tags']);
+        // if (result.is_starring === "false") {
+        //     recipeDetails += result.starButton;
+        // }
+        // if (result.is_starring === "true") {
+        //     recipeDetails += "Recipe starred";
+        // }
         recipeDetails += result.starButton;
+
         var recipe_hashtags = result.tags;
         for (var hashtag of recipe_hashtags) {
             searchHashtagInfo += `${hashtag} `;
         }
-
         recipeDetails += searchHashtagInfo;
-
+        
         recipeDetails += result['dropdownMenus'];
 
     }
@@ -73,6 +79,13 @@ function displayRecipe(result, container_id) {
         </div>
         `;
     container.append(recipeDetails);
+
+    if (result.is_starring === "false") {
+        $(`#star-button-${result.recipe_id}`).html("Star recipe");
+    }
+    if (result.is_starring === "true") {
+        $(`#star-button-${result.recipe_id}`).html("Recipe starred");
+    }
     // console.log(container_id);
 }
 
@@ -133,6 +146,7 @@ if (window.location.pathname.indexOf("users") > -1) {
 function getRecipe(results) {
     // console.log(results);
     var recipe_id = results.recipe_id;
+    var recipe_id = results.recipe_id;
     var container_id = `div-${recipe_id}`;
     // TODO: THINK ABOUT RENAMING RESULTS[TAGS] TO SOMETHING ELSE
     var recipe_hashtags = results['tags'];
@@ -145,8 +159,10 @@ function getRecipe(results) {
                                                    recipe_hashtags
                                                    );
         var starButton = `
-            <button type="button" class="star-btn btn btn-primary" data-id=${results.recipe_id}>
-            Star this recipe</button>
+            <button type="button"
+                class="star-btn btn btn-primary"
+                id=star-button-${recipe_id}
+                data-id=${recipe_id}></button>
             `;
         results['starButton'] = starButton;
         }
@@ -260,14 +276,14 @@ $('.recipe-container').on('click', '.star-btn', function(evt) {
     var formInput = {
         "recipe_id": recipe_id
     };
-
+    $( this ).html("Recipe starred");
     $.post("/star_recipe.json", formInput, console.log("recipe starred"));
 
 });
 
-$('.button1,.button2').click(function(){
-    $('.button1,.button2').toggle();
-});
+// $('.button1,.button2').click(function(){
+//     $('.button1,.button2').toggle();
+// });
 
 function populateHash(results) {
     // console.log("populating the hash")

@@ -41,8 +41,6 @@ function displayRecipe(result, container_id) {
             <h4><a href=#${recipe_name} data-toggle="collapse">${recipe_name}
             </a></h4>
             <span>Total time:${result.total_time} minutes</span>
-            <button type="button" class="star-btn" data-id=${result.recipe_id}>Star this recipe</button>
-            <div id=${result.recipe_id}-starred class=starred >Recipe starred </div>
             <div>
             <img src=${result.images} style=width:150px;height:150px;></div>
 
@@ -55,6 +53,7 @@ function displayRecipe(result, container_id) {
         && (result.username)) {
         // console.log(result.user_hashtags);
         // console.log(result['tags']);
+        recipeDetails += result.starButton;
         var recipe_hashtags = result.tags;
         for (var hashtag of recipe_hashtags) {
             searchHashtagInfo += `${hashtag} `;
@@ -145,6 +144,11 @@ function getRecipe(results) {
                                                    recipe_id,
                                                    recipe_hashtags
                                                    );
+        var starButton = `
+            <button type="button" class="star-btn btn btn-primary" data-id=${results.recipe_id}>
+            Star this recipe</button>
+            `;
+        results['starButton'] = starButton;
         }
     displayRecipe(results, container_id);
 }
@@ -248,7 +252,22 @@ $('.recipe-container').on('click', "a.del-hashtag", function(evt) {
     // delHashtagization(hashtagName, recipeId);
 });
 
-$('.recipe-container').on('click', $('.star-btn'), starRecipe);
+// $('.recipe-container').on('click', $('.star-btn'), starRecipe);
+$('.recipe-container').on('click', '.star-btn', function(evt) {
+    var recipe_id = $( this ).data('id');
+
+    // console.log(recipe_id);
+    var formInput = {
+        "recipe_id": recipe_id
+    };
+
+    $.post("/star_recipe.json", formInput, console.log("recipe starred"));
+
+});
+
+$('.button1,.button2').click(function(){
+    $('.button1,.button2').toggle();
+});
 
 function populateHash(results) {
     // console.log("populating the hash")
@@ -269,17 +288,17 @@ function updateDeletedHash(results) {
     }
 }
 
-function starRecipe() {
-    // evt.preventDefault();
-    // console.log("You have starred the recipe");
-    var recipe_id = $( this ).data('id');
+// function starRecipe() {
+//     // evt.preventDefault();
+//     // console.log("You have starred the recipe");
+//     var recipe_id = $( this ).data('id');
 
-    // console.log(recipe_id);
-    var formInput = {
-        "recipe_id": recipe_id
-    };
+//     // console.log(recipe_id);
+//     var formInput = {
+//         "recipe_id": recipe_id
+//     };
 
-    $.post("/star_recipe.json", formInput, console.log("recipe starred"));
-    // $('*[data-id='+recipe_id+"]").toggle();
-}
+//     $.post("/star_recipe.json", formInput, console.log("recipe starred"));
+//     // $('*[data-id='+recipe_id+"]").toggle();
+// }
 

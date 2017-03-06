@@ -4,19 +4,42 @@
   <title>RecipeApp</title>
   <script src="https://code.jquery.com/jquery.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/project.css" rel="stylesheet">
 </head>
 
 <body>
-  {% if 'username' in session %}
-    <a href='/logout'>Logout</a>
-    <a href='/users/{{ session['username'] }}#starrings'>Starred recipes</a>
-    <a href='/users/{{ session['username'] }}#hashtags'>My Hashtags</a>
-  {% else %}
-    <a href='/register'>Register</a>
-    <a href='/login'>Login</a>
-  {% endif %}
-  <a href='/'>Search</a>
+<div class="container-fluid">
+  <div id="background-div">
 
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Relishd</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        {% if 'username' in session %}
+          <li><a href='/logout'>Logout</a></li>
+          <li><a href='/users/{{ session['username'] }}#starrings'>Starred recipes</a></li>
+          <li><a href='/users/{{ session['username'] }}#hashtags'>My Hashtags</a></li>
+        {% else %}
+          <li><a href='/register'>Register</a></li>
+          <li><a href='/login'>Login</a></li>
+        {% endif %}
+          <li><a href='/'>Search</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
   <hr>
   <!-- Show flashed messages -->
   {% with messages = get_flashed_messages() %}
@@ -28,6 +51,8 @@
   {% block content %} put your content here {% endblock %}
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="../static/recipes.js"></script>
+</div>
+</div>
 </body>
 </html>
 

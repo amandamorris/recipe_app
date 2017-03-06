@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>Hello {{ user.username }}!</h2>
+<h1>Hello {{ user.username }}!</h2>
 
-<a href="#starrings"><p id="starrings">Your starred recipes:</p></a>
+<h2 class="darkblue"><a href="#starrings"><p id="starrings">Your starred recipes:</p></a></h2>
 <div id="starring-container"> </div>
 
 
-<a href="#hashtags"><p id="hashtags">Your Hashtags:</p></a>
+<h2 class="darkblue"><a href="#hashtags"><p id="hashtags">Your Hashtags:</p></a></h2>
 <div id="hashtag-container"> </div>
 
 <!-- <script src="../static/user.js"></script> -->

@@ -20,7 +20,7 @@ function displayRecipe(result, container_id) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe
 
-    console.log(result);
+    // console.log(result);
     // console.log("insertDiv", result,container_id);
     var container = $("#"+container_id);
     // console.log(container);

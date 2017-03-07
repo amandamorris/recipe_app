@@ -17,7 +17,8 @@
     
     <div id="hidden-advanced-search" class="collapse">
     <div class="form-group">
-        <label>Recipe type</label>
+        <br>
+        <p>Recipe type</p>
         <label class="radio-inline">
             <input type="radio" name="diet_type" value="pescatarian">Pescatarian
         </label>
@@ -31,21 +32,23 @@
 
 
 
-    <div>
-    <p>Dish type</p>
+    <div class="form-group">
+        <p>Dish type</p>
     {% for dish_type in dish_types %}
+        <label class="radio-inline">
         <input type="radio" name="dish_type" value="{{ dish_type.dish_type_name }}"> {{ dish_type.dish_type_name }}
+        </label>
     {% endfor %}
     </div>
 
-    <div>
-    <p>Cuisine type</p>
+    <div class="form-group">
+        <p> Cuisine type </p>
     {% for cuisine in cuisine_types %}
         <input type="radio" name="cuisine" value="{{ cuisine.cuisine_name }}"> {{ cuisine.cuisine_name }}
     {% endfor %}
     </div>
 
-    <div>
+    <div class="form-group">
     <p>Intolerances</p>
     <select multiple name="intolerance">
         <option value="dairy">Dairy</option>
@@ -61,7 +64,7 @@
         <option value="wheat">Wheat</option>
     </select>
     </div>
-    <p><input type="submit"></p>
+    <p><input type="submit" class="btn btn-success"></p>
 </form>
     </div>
 

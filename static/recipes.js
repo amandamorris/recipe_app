@@ -26,7 +26,7 @@ function displayRecipe(result, container_id) {
             </a></h4>
             <span>Total time:${result.total_time} minutes</span>
             <div class=row>
-                <div class="col-xs-2">
+                <div class="col-xs-3">
                     <img src=${result.images} style=width:150px;height:150px;>
                 </div>
         `;
@@ -46,7 +46,7 @@ function displayRecipe(result, container_id) {
     if ((window.location.pathname.indexOf("recipe_search") > -1)
         && (result.username)) {
 
-        recipeDetails += `<div class="col-xs-10">`;
+        recipeDetails += `<div class="col-xs-9">`;
         recipeDetails += result.starButton;
 
         var recipe_hashtags = result.tags;
@@ -59,7 +59,7 @@ function displayRecipe(result, container_id) {
         recipeDetails += `</div></div>`;
 
     } else {
-        recipeDetails += `<div class="col-xs-10"></div></div>`;
+        recipeDetails += `<div class="col-xs-9"></div></div>`;
     }
     recipeDetails += `
             <div id=${result.recipe_id} class=collapse>
@@ -163,7 +163,7 @@ function createDropdowns(user_hashtags, recipe_id, recipe_hashtags) {
     // Called by getRecipe
     var addHashDropdown = `
         <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" id="menu1"
+        <button class="btn btn-success dropdown-toggle" id="menu1"
             type="button" data-toggle="dropdown">
         Add a hashtag <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
@@ -188,7 +188,7 @@ function createDropdowns(user_hashtags, recipe_id, recipe_hashtags) {
 
     var delHashDropdown = `
             <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" id="menu2"
+            <button class="btn btn-danger dropdown-toggle" id="menu2"
                 type="button" data-toggle="dropdown">
             Remove a hashtag <span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">

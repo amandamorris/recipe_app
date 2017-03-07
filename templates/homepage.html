@@ -6,18 +6,30 @@
 
 <h2>Search, save, categorize</h2>
 
-<form action="/recipe_search" method="GET">
-    <p>
-        Search recipes by keyword:
-        <input type="text" name="keywords" id="keyword-search">
-    </p>
+<form action="/recipe_search" method="GET" role="role">
+    <div class="form-group">
+        <!-- <label>Search recipes by keyword:</label> -->
+        <input class="form-control" type="text" name="keywords"
+        placeholder="Search recipes by keyword" id="keyword-search">
+    </div>
     <button id="advanced-search-toggler" href="#hidden-advanced-search"
         data-toggle="collapse" type="button" class="btn btn-primary">Advanced Search</button>
+    
     <div id="hidden-advanced-search" class="collapse">
-    <p>Recipe type</p>
-    <input type="radio" name="diet_type" value="pescatarian">Pescatarian
-    <input type="radio" name="diet_type" value="vegan">Vegan
-    <input type="radio" name="diet_type" value="vegetarian">Vegetarian
+    <div class="form-group">
+        <label>Recipe type</label>
+        <label class="radio-inline">
+            <input type="radio" name="diet_type" value="pescatarian">Pescatarian
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="diet_type" value="vegan">Vegan
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="diet_type" value="vegetarian">Vegetarian
+        </label>
+    </div>
+
+
 
     <div>
     <p>Dish type</p>

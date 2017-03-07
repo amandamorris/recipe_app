@@ -21,7 +21,7 @@ body.homepage\.html {
     background-size: cover;
     background: url(light_toast.png) center center;
     /*background-repeat: repeat;*/
-}*/
+/*}*/
 body {
     color: black;
 }
@@ -46,4 +46,17 @@ h4>a {
 
 body {
     background-color: rgb(235, 238, 239);
+}
+
+.navbar-default {
+    background-color: rgb(168, 182, 112);
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: white;
+}
+
+.navbar-default .navbar-brand {
+    /*color: rgb(53, 83, 34);*/
+    color: white;
 }

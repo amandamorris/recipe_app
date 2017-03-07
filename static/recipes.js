@@ -68,6 +68,8 @@ function displayRecipe(result, container_id) {
         recipeDetails += result['dropdownMenus'];
         recipeDetails += `</div></div>`;
 
+    } else {
+        recipeDetails += `<div class="col-xs-10"></div></div>`;
     }
     // console.log("searchHashtagInfo", searchHashtagInfo);
     recipeDetails += `

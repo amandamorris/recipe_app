@@ -16,15 +16,31 @@
 #background-div {
     /*color: #FFE460;*/
 }
+html>body {
+    font-family: 'Roboto', sans-serif;
+}
 
 h1 {
-    color: #2CA3C1;
+    color: #215E34;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
 }
 
 h2>a {
-    color: #142572;
+    color: #358C46;
+}
+
+/*.navbar-default {
+    background-color: #B3CCA1;
+}
+
+.navbar-nav {
+    background-color: #B3CCA1;
 }
 
 .navbar {
-    background-color: #FFE460;
-}
+    background-color: #B3CCA1;
+}*/

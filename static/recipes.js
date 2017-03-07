@@ -1,9 +1,5 @@
 "use strict";
 
-// function printHash(evt) {
-//     console.log('You clicked a hashtag');
-// }
-
 // If on a recipe search, ajax call to view each recipe
 if (window.location.pathname.indexOf("recipe_search") > -1) {
     $('.recipe-container').each(function() {
@@ -38,7 +34,7 @@ function displayRecipe(result, container_id) {
     var recipe_name = result.recipe_name;
     var recipeDetails = `
         <div class=recipe_details id=recipe-${result.recipe_id}>
-            <h4><a href=#${recipe_name} data-toggle="collapse">${recipe_name}
+            <h4><a href=#${result.recipe_id} data-toggle="collapse">${recipe_name}
             </a></h4>
             <span>Total time:${result.total_time} minutes</span>
             <div>
@@ -72,7 +68,7 @@ function displayRecipe(result, container_id) {
     }
     // console.log("searchHashtagInfo", searchHashtagInfo);
     recipeDetails += `
-            <div id=${recipe_name} class=collapse>
+            <div id=${result.recipe_id} class=collapse>
                 <div><b>Ingredients</b></div><div>${ingredients}</div>
                 <div>${steps}</div>
             </div>
@@ -221,10 +217,6 @@ function createDropdowns(user_hashtags, recipe_id, recipe_hashtags) {
 
 }
 
-// $('.recipe-container').on('click', $('.star-recipe,.button2').click(function(){
-//     $('.button1,.button2').toggle();
-// });
-
 // Add event listener for selecting a hashtag from dropdown menu
 $('.recipe-container').on('click', "a.add-hashtag", function(evt) {
     var hashtagName = $( this ).data("hashtag");
@@ -281,10 +273,6 @@ $('.recipe-container').on('click', '.star-btn', function(evt) {
 
 });
 
-// $('.button1,.button2').click(function(){
-//     $('.button1,.button2').toggle();
-// });
-
 function populateHash(results) {
     // console.log("populating the hash")
     var recipe_id = results["recipe_id"];
@@ -303,18 +291,4 @@ function updateDeletedHash(results) {
         $('#hashtags-' + recipe_id).append(" ");
     }
 }
-
-// function starRecipe() {
-//     // evt.preventDefault();
-//     // console.log("You have starred the recipe");
-//     var recipe_id = $( this ).data('id');
-
-//     // console.log(recipe_id);
-//     var formInput = {
-//         "recipe_id": recipe_id
-//     };
-
-//     $.post("/star_recipe.json", formInput, console.log("recipe starred"));
-//     // $('*[data-id='+recipe_id+"]").toggle();
-// }
 

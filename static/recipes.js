@@ -37,10 +37,10 @@ function displayRecipe(result, container_id) {
             <h4><a href=#${result.recipe_id} data-toggle="collapse">${recipe_name}
             </a></h4>
             <span>Total time:${result.total_time} minutes</span>
-            <div>
-            <img src=${result.images} style=width:150px;height:150px;></div>
-
-
+            <div class=row>
+                <div class="col-xs-2">
+                    <img src=${result.images} style=width:150px;height:150px;>
+                </div>
         `;
     // console.log(recipeDetails);
     var searchHashtagInfo = `<div id=hashtags-${result.recipe_id}>Current hashtags: </div>`;
@@ -55,6 +55,8 @@ function displayRecipe(result, container_id) {
         // if (result.is_starring === "true") {
         //     recipeDetails += "Recipe starred";
         // }
+
+        recipeDetails += `<div class="col-xs-10">`;
         recipeDetails += result.starButton;
 
         var recipe_hashtags = result.tags;
@@ -64,6 +66,7 @@ function displayRecipe(result, container_id) {
         recipeDetails += searchHashtagInfo;
         
         recipeDetails += result['dropdownMenus'];
+        recipeDetails += `</div></div>`;
 
     }
     // console.log("searchHashtagInfo", searchHashtagInfo);

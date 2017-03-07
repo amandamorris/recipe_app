@@ -1,10 +1,29 @@
-.container-fluid {
+body {
+    background: url(fruit-and-veg-muted.jpeg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: pink;
+}
+
+/*#keyword-search {
+    background-color: rgba(255,255,255,1.0);
+}*/
+
+/*#fruit-and-veg-muted {*/
     /*background-color: red;*/
-    background-size: cover;
-    /*background: url(seigaiha.png) center center;*/
+/*    background-size: 100%;
+    background: url(fruit-and-veg-muted.png);
+    -moz-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%; 
+    background-size: 100% 100%;
+} */
     /*background: url(concrete_seamless.png) center center;*/
 
-}
+/*}*/
 /*Colors:
 #2CA3C1 - blue
 #111C49 - dark blue
@@ -43,4 +62,4 @@ h2>a {
 
 .navbar {
     background-color: #B3CCA1;
-}*/
+}

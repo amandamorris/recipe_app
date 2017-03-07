@@ -1,19 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<!-- a href=""></a> -->
 <!-- <img id="produce" src="/static/fruit-and-veg.jpg" height="150" width="150"> -->
-<h1>Relishd</h1>
+<h1>
+    <img src="http://eastmanscorner.com/2016site/wp-content/uploads/2015/01/cooking-icon.png" height=40px; width=40px;>
+    Relishd
+    <img src="http://eastmanscorner.com/2016site/wp-content/uploads/2015/01/cooking-icon.png" height=40px; width=40px;>
+</h1>
 
-<h2>Search, save, categorize</h2>
-
+<div> Use Relishd to search for recipes, save them for later, and categorize
+    recipes with hashtags
+</div>
+</br>
 <form action="/recipe_search" method="GET" role="role">
-    <div class="form-group">
-        <!-- <label>Search recipes by keyword:</label> -->
-        <input class="form-control" type="text" name="keywords"
-        placeholder="Search recipes by keyword" id="keyword-search">
+    <div class="form-group row">
+        <div class="col-xs-9">
+            <input class="form-control" type="text" name="keywords"
+            placeholder="Search recipes by keyword" id="keyword-search">
+        </div>
+        <div class="col-xs-3">
+            <button id="basic-search" class="btn btn-success">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+        </div>
     </div>
     <button id="advanced-search-toggler" href="#hidden-advanced-search"
-        data-toggle="collapse" type="button" class="btn btn-primary">Advanced Search</button>
+        data-toggle="collapse" type="button" class="btn btn-default">Advanced Search</button>
     
     <div id="hidden-advanced-search" class="collapse">
     <div class="form-group">

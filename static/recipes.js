@@ -71,8 +71,12 @@ function displayRecipe(result, container_id) {
     container.append(recipeDetails);
 
     if (result.is_starring === "false") {
-        $(`#star-button-${result.recipe_id}`).html("Star recipe");
+        $(`#star-button-${result.recipe_id}`).html(`
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            Star Recipe
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>`);
     }
+
     if (result.is_starring === "true") {
         $(`#star-button-${result.recipe_id}`).html("Recipe starred");
     }

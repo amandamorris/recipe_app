@@ -9,7 +9,7 @@
   <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto" rel="stylesheet"> -->
 </head>
 
-<body>
+<body class={{ self._TemplateReference__context.name }}>
 <div class="container-fluid">
   <div id="background-div">
 
@@ -30,7 +30,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         {% if 'username' in session %}
-          <li><a href='/logout'>Logout</a></li>
+          <li><a href='/logout' class="primary">Logout</a></li>
           <li><a href='/users/{{ session['username'] }}#starrings'>Starred recipes</a></li>
           <li><a href='/users/{{ session['username'] }}#hashtags'>My Hashtags</a></li>
         {% else %}

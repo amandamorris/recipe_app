@@ -1,4 +1,4 @@
-body {
+body.homepage\.html {
     background: url(fruit-and-veg-muted.jpeg);
     background-size: 100%;
     background-repeat: no-repeat;
@@ -6,60 +6,4 @@ body {
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: pink;
-}
-
-/*#keyword-search {
-    background-color: rgba(255,255,255,1.0);
-}*/
-
-/*#fruit-and-veg-muted {*/
-    /*background-color: red;*/
-/*    background-size: 100%;
-    background: url(fruit-and-veg-muted.png);
-    -moz-background-size: 100% 100%;
-    -o-background-size: 100% 100%;
-    -webkit-background-size: 100% 100%; 
-    background-size: 100% 100%;
-} */
-    /*background: url(concrete_seamless.png) center center;*/
-
-/*}*/
-/*Colors:
-#2CA3C1 - blue
-#111C49 - dark blue
-#CCCCCC - gray
-#FFFFFF - white
-#FFE460 - yellow
-*/
-
-/*#background-div {
-    /*color: #FFE460;*/
-/*}*//*
-html>body {
-    font-family: 'Roboto', sans-serif;
-}
-
-h1 {
-    color: #215E34;
-    font-family: 'Montserrat', sans-serif;
-}
-
-h2 {
-    font-family: 'Montserrat', sans-serif;
-}
-
-h2>a {
-    color: #358C46;
-}*/
-
-/*.navbar-default {
-    background-color: #B3CCA1;
-}
-
-.navbar-nav {
-    background-color: #B3CCA1;
-}
-
-.navbar {
-    background-color: #B3CCA1;
 }

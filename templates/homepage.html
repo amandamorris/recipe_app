@@ -6,15 +6,17 @@
 
 <h2>Search, save, categorize</h2>
 
-<p>Search a recipe</p>
 <form action="/recipe_search" method="GET">
-    <p>Keyword search: <input type="text" name="keywords"></p>
-    <div>
+    <p>
+        Search recipes by keyword:
+        <input type="text" name="keywords" id="keyword-search">
+    </p>
+    <button id="advanced-search-toggler" href="#hidden-advanced-search">Advanced Search</button>
+    <div id="hidden-advanced-search" class="hidden">
     <p>Recipe type</p>
     <input type="radio" name="diet_type" value="pescatarian">Pescatarian
     <input type="radio" name="diet_type" value="vegan">Vegan
     <input type="radio" name="diet_type" value="vegetarian">Vegetarian
-    </div>
 
     <div>
     <p>Dish type</p>
@@ -48,5 +50,7 @@
     </div>
     <p><input type="submit"></p>
 </form>
+    </div>
+
 
 {% endblock %}

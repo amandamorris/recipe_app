@@ -11,7 +11,13 @@ if (window.location.pathname.indexOf("recipe_search") > -1) {
         $.post("/view_recipe.json", formInput, getRecipe);
         });
 }
+$('#advanced-search-toggler').attr("data-toggle", "collapse");
+$('#hidden-advanced-search').attr("class", "collapse");
 
+// function showAdvancedSearch() {
+//     console.log("Showing advanced search");
+//     $('#hidden-advanced-search').toggle();
+// }
 function displayRecipe(result, container_id) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe

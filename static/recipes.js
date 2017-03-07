@@ -153,7 +153,7 @@ function getRecipe(results) {
                                                    );
         var starButton = `
             <button type="button"
-                class="star-btn btn btn-primary"
+                class="star-btn btn btn-success"
                 id=star-button-${recipe_id}
                 data-id=${recipe_id}></button>
             `;
@@ -167,7 +167,7 @@ function createDropdowns(user_hashtags, recipe_id, recipe_hashtags) {
     // Called by getRecipe
     var addHashDropdown = `
         <div class="dropdown">
-        <button class="btn btn-success dropdown-toggle" id="menu1"
+        <button class="btn btn-warning dropdown-toggle" id="menu1"
             type="button" data-toggle="dropdown">
         Add a hashtag <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">

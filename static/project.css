@@ -17,11 +17,33 @@ body.homepage\.html {
   color: black;
 }
 
-body.user\.html {
+/*body.user\.html {
     background-size: cover;
     background: url(light_toast.png) center center;
     /*background-repeat: repeat;*/
-}
+}*/
 body {
     color: black;
+}
+
+h1 {
+    color: black;
+    /*color: rgb(53, 83, 34);*/
+}
+
+#main-heading {
+    color: rgb(53, 83, 34);
+}
+
+h2>a {
+    /*color: rgb(79, 120, 59);*/
+    color: rgb(53, 83, 34);
+}
+
+h4>a {
+    color: rgb(79, 120, 59);
+}
+
+body {
+    background-color: rgb(235, 238, 239);
 }

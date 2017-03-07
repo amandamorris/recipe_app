@@ -16,21 +16,9 @@ function displayRecipe(result, container_id) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe
 
-    // console.log(result);
     // console.log("insertDiv", result,container_id);
     var container = $("#"+container_id);
-    // console.log(container);
-    var ingredients = "";
-    for (var ingredient of result.ingredients) {
-        var newIngred;
-        if (ingredient.unit !== null) {
-            newIngred = `<p>${ingredient.quantity} ${ingredient.unit} ${ingredient.ingredient_name}</p>`;
-            } else {
-                newIngred =`<p>${ingredient.quantity} ${ingredient.ingredient_name}</p>`;
-            }
-        ingredients += newIngred;
-        }
-    var steps = `<b>Instructions</b> <div>${result.steps}</div>`;
+
     var recipe_name = result.recipe_name;
     var recipeDetails = `
         <div class=recipe_details id=recipe-${result.recipe_id}>
@@ -44,17 +32,19 @@ function displayRecipe(result, container_id) {
         `;
     // console.log(recipeDetails);
     var searchHashtagInfo = `<div id=hashtags-${result.recipe_id}>Current hashtags: </div>`;
-    
+    var ingredients = "";
+    for (var ingredient of result.ingredients) {
+        var newIngred;
+        if (ingredient.unit !== null) {
+            newIngred = `<p>${ingredient.quantity} ${ingredient.unit} ${ingredient.ingredient_name}</p>`;
+            } else {
+                newIngred =`<p>${ingredient.quantity} ${ingredient.ingredient_name}</p>`;
+            }
+        ingredients += newIngred;
+        }
+    var steps = `<b>Instructions</b> <div>${result.steps}</div>`;
     if ((window.location.pathname.indexOf("recipe_search") > -1)
         && (result.username)) {
-        // console.log(result.user_hashtags);
-        // console.log(result['tags']);
-        // if (result.is_starring === "false") {
-        //     recipeDetails += result.starButton;
-        // }
-        // if (result.is_starring === "true") {
-        //     recipeDetails += "Recipe starred";
-        // }
 
         recipeDetails += `<div class="col-xs-10">`;
         recipeDetails += result.starButton;
@@ -71,7 +61,6 @@ function displayRecipe(result, container_id) {
     } else {
         recipeDetails += `<div class="col-xs-10"></div></div>`;
     }
-    // console.log("searchHashtagInfo", searchHashtagInfo);
     recipeDetails += `
             <div id=${result.recipe_id} class=collapse>
                 <div><b>Ingredients</b></div><div>${ingredients}</div>
@@ -87,7 +76,6 @@ function displayRecipe(result, container_id) {
     if (result.is_starring === "true") {
         $(`#star-button-${result.recipe_id}`).html("Recipe starred");
     }
-    // console.log(container_id);
 }
 
 function fetchRecipe(recipe_id, container_id) {

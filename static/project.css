@@ -5,7 +5,7 @@ body.homepage\.html {
 }
 
 #keyword-search::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: black;
+  color: rgb(64, 64, 64);
 }
 ::-moz-placeholder { /* Firefox 19+ */
   color: black;
@@ -23,7 +23,7 @@ body.homepage\.html {
     /*background-repeat: repeat;*/
 /*}*/
 body {
-    color: black;
+    color: rgb(64, 64, 64);;
 }
 
 h1 {
@@ -59,4 +59,8 @@ body {
 .navbar-default .navbar-brand {
     /*color: rgb(53, 83, 34);*/
     color: white;
+}
+
+.btn:focus {
+  outline: none;
 }

@@ -258,7 +258,10 @@ def del_hashtagization():
                                   )
     # fetch updated hashtag list from db
     recipe_hashtags = get_recipe_hashtags(recipe_id=recipe_id, username=username)
-    return jsonify({"hashtags": recipe_hashtags, "recipe_id": recipe_id})
+    return jsonify({"hashtags": recipe_hashtags,
+                    "recipe_id": recipe_id,
+                    "del_tag": hashtag_name
+                    })
 
 
 @app.route('/logout')

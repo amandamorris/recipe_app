@@ -31,7 +31,7 @@ function displayRecipe(result, container_id) {
                 </div>
         `;
     // console.log(recipeDetails);
-    var searchHashtagInfo = `<div id=hashtags-${result.recipe_id}>Current hashtags: </div>`;
+    var searchHashtagInfo = `<div>Current hashtags: <span id=hashtags-${result.recipe_id}>`;
     var ingredients = "";
     for (var ingredient of result.ingredients) {
         var newIngred;
@@ -53,6 +53,7 @@ function displayRecipe(result, container_id) {
         for (var hashtag of recipe_hashtags) {
             searchHashtagInfo += `${hashtag} `;
         }
+        searchHashtagInfo += `</span></div>`;
         recipeDetails += searchHashtagInfo;
         
         recipeDetails += result['dropdownMenus'];
@@ -192,10 +193,10 @@ function createDropdowns(user_hashtags, recipe_id, recipe_hashtags) {
 
     var delHashDropdown = `
             <div class="dropdown">
-            <button class="btn btn-danger dropdown-toggle" id="menu2"
+            <button class="btn btn-danger dropdown-toggle" id=$(#del-hashtag-${recipe_id})
                 type="button" data-toggle="dropdown">
             Remove a hashtag <span class="caret"></span></button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">
+            <ul class="dropdown-menu" role="menu" aria-labelledby=$(#del-hashtag-${recipe_id})>
             `;
     for (var hashtag of recipe_hashtags) {
         delHashDropdown += `
@@ -271,15 +272,24 @@ $('.recipe-container').on('click', '.star-btn', function(evt) {
 });
 
 function populateHash(results) {
-    // console.log("populating the hash")
+    console.log("populating the hash")
     var recipe_id = results["recipe_id"];
-    $('#hashtags-' + recipe_id).append(results['hashtag_name'] + " ");
+    var hashtag = results['hashtag_name'];
+    if (typeof $('#hashtags-' + recipe_id).innerHTML != 'undefined') {
+            $('#hashtags-' + recipe_id).innerHTML = $('#hashtags-' + recipe_id).innerHTML + results['hashtag_name'] + " ";
+    } else {
+        $('#hashtags-' + recipe_id).innerHTML = `Current hashtags: ${hashtag} `;
+    }
+
     $('#del-hashtag-' + recipe_id).append("<option value=" + results['hashtag_name'] + ">" + results['hashtag_name'] + "</option>")
 }
 
 function updateDeletedHash(results) {
+    console.log(results);
     var recipe_id = results["recipe_id"];
     var hashtags = results["hashtags"];
+    var del_tag = results["del_tag"];
+    // console.log(recipe_id, hashtags);
     // empty the div populated with the recipe's hashtags
     $('#hashtags-' + recipe_id).empty();
     // repopulate the div with the updated list of hashtags

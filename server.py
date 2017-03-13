@@ -7,6 +7,7 @@ from helpers import *
 import sqlalchemy
 import unirest
 import os
+import hashlib
 
 
 app = Flask(__name__)
@@ -41,7 +42,7 @@ def process_login():
     """Check if username/password combo is valid, and if so, login"""
 
     username = request.form.get("username")
-    password = request.form.get("password")
+    password = hashlib.sha256(request.form.get("password")).hexdigest()
 
     user = User.query.filter(User.username == username).first()
 
@@ -280,7 +281,7 @@ def process_registration():
     """Check if the given username is in the database, and if not, add it"""
 
     username = request.form.get("username")
-    password = request.form.get("password")
+    password = hashlib.sha256(request.form.get("password")).hexdigest()
 
     if User.query.filter(User.username == username).first():
         flash("User already exists - please login or try a different username")

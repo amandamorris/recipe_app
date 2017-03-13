@@ -23,15 +23,17 @@ body.homepage\.html {
     /*background-repeat: repeat;*/
 /*}*/
 body {
-    color: rgb(64, 64, 64);;
+    color: rgb(64, 64, 64);
 }
 
 h1 {
-    color: black;
+    /*color: black;*/
+    color: rgb(64, 64, 64);
     /*color: rgb(53, 83, 34);*/
 }
 
 #main-heading {
+    /*color: rgb(64, 64, 64);*/
     color: rgb(53, 83, 34);
 }
 

@@ -1,8 +1,11 @@
 "use strict";
 // TODO: look into import/export statements for javascript
 
+var is_user_page = (window.location.pathname.indexOf("users") > -1);
+var is_search_results_page = (window.location.pathname.indexOf("recipe_search") > -1);
+
 // If on a recipe search, ajax call to view each recipe
-if (window.location.pathname.indexOf("recipe_search") > -1) {
+if (is_search_results_page) {
     $('.recipe-container').each(function() {
         var recipe_id = $( this ).data("id");
         var formInput = {
@@ -17,7 +20,6 @@ function displayRecipe(result, container_id, hashtag_name) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe
 
-    // TODO: think about having "var is_on_user_page"
     // console.log("insertDiv", result,container_id, hashtag_name);
     var container = $("#"+container_id);
 
@@ -27,7 +29,7 @@ function displayRecipe(result, container_id, hashtag_name) {
 
     var div_id;
     // If on user page, div id is dependent on hashtag/starring
-    if (window.location.pathname.indexOf("users") > -1) {
+    if (is_user_page) {
         if (!hashtag_name) {
             div_id = "starring-" + recipe_id;
         } else {
@@ -46,7 +48,6 @@ function displayRecipe(result, container_id, hashtag_name) {
                     <img src=${result.images} style=width:150px;height:150px;>
                 </div>
         `;
-    // console.log(recipeDetails);
     var searchHashtagInfo = `<div>Current hashtags: <span id=hashtags-${result.recipe_id}>`;
     var ingredients = "";
     for (var ingredient of result.ingredients) {
@@ -59,8 +60,7 @@ function displayRecipe(result, container_id, hashtag_name) {
         ingredients += newIngred;
         }
     var steps = `<b>Instructions</b> <div>${result.steps}</div>`;
-    if ((window.location.pathname.indexOf("recipe_search") > -1)
-        && (result.username)) {
+    if ((is_search_results_page) && (result.username)) {
 
         recipeDetails += `<div class="col-xs-9">`;
         recipeDetails += result.starButton;
@@ -149,7 +149,7 @@ function getStarredRecipes(results) {
     }
 }
 // If on a user's page, ajax call to get starred and hashed recipes
-if (window.location.pathname.indexOf("users") > -1) {
+if (is_user_page) {
     $.get('/display_starred_recipes.json', getStarredRecipes);
     // Get list of user's hashtag (and for each, also hashtagged recipes)
     $.get('/display_hashed_recipes.json', getHashRecipes);
@@ -290,7 +290,6 @@ $('.recipe-container').on('click', '.star-btn', function(evt) {
 });
 
 function populateHash(results) {
-    console.log("populating the hash")
     var recipe_id = results["recipe_id"];
     var hashtag = results['hashtag_name'];
     if (typeof $('#hashtags-' + recipe_id).innerHTML != 'undefined') {
@@ -303,7 +302,6 @@ function populateHash(results) {
 }
 
 function updateDeletedHash(results) {
-    console.log(results);
     var recipe_id = results["recipe_id"];
     var hashtags = results["hashtags"];
     var del_tag = results["del_tag"];

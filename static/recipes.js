@@ -28,11 +28,14 @@ function displayRecipe(result, container_id, hashtag_name) {
     var div_id;
     // If on user page, div id is dependent on hashtag/starring
     if (window.location.pathname.indexOf("users") > -1) {
-        div_id = hashtag_name + "-" + recipe_id;
+        if (!hashtag_name) {
+            div_id = "starring-" + recipe_id;
+        } else {
+            div_id = hashtag_name + "-" + recipe_id;
+        }
     } else {
         div_id = "recipe-" + recipe_id;
     }
-    console.log(div_id);
     var recipeDetails = `
         <div class=recipe_details id=${div_id}>
             <h4><a href=#details-${div_id} data-toggle="collapse">${recipe_name}
@@ -82,7 +85,6 @@ function displayRecipe(result, container_id, hashtag_name) {
             </div>
         </div>
         `;
-    console.log(container);
     container.append(recipeDetails);
 
     if (result.is_starring === "false") {

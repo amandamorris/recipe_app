@@ -1,4 +1,5 @@
 "use strict";
+// TODO: look into import/export statements for javascript
 
 // If on a recipe search, ajax call to view each recipe
 if (window.location.pathname.indexOf("recipe_search") > -1) {
@@ -12,17 +13,29 @@ if (window.location.pathname.indexOf("recipe_search") > -1) {
         });
 }
 
-function displayRecipe(result, container_id) {
+function displayRecipe(result, container_id, hashtag_name) {
     // Adds html with recipe details to the html element with container_id
     // Called by fetchRecipe
 
-    // console.log("insertDiv", result,container_id);
+    // TODO: think about having "var is_on_user_page"
+    // console.log("insertDiv", result,container_id, hashtag_name);
     var container = $("#"+container_id);
 
     var recipe_name = result.recipe_name;
+
+    var recipe_id = result.recipe_id.toString();
+
+    var div_id;
+    // If on user page, div id is dependent on hashtag/starring
+    if (window.location.pathname.indexOf("users") > -1) {
+        div_id = hashtag_name + "-" + recipe_id;
+    } else {
+        div_id = "recipe-" + recipe_id;
+    }
+    console.log(div_id);
     var recipeDetails = `
-        <div class=recipe_details id=recipe-${result.recipe_id}>
-            <h4><a href=#${result.recipe_id} data-toggle="collapse">${recipe_name}
+        <div class=recipe_details id=${div_id}>
+            <h4><a href=#details-${div_id} data-toggle="collapse">${recipe_name}
             </a></h4>
             <span>Total time:${result.total_time} minutes</span>
             <div class=row>
@@ -63,12 +76,13 @@ function displayRecipe(result, container_id) {
         recipeDetails += `<div class="col-xs-9"></div></div>`;
     }
     recipeDetails += `
-            <div id=${result.recipe_id} class=collapse>
+            <div id=details-${div_id} class=collapse>
                 <div><b>Ingredients</b></div><div>${ingredients}</div>
                 <div>${steps}</div>
             </div>
         </div>
         `;
+    console.log(container);
     container.append(recipeDetails);
 
     if (result.is_starring === "false") {
@@ -83,18 +97,20 @@ function displayRecipe(result, container_id) {
     }
 }
 
-function fetchRecipe(recipe_id, container_id) {
+function fetchRecipe(recipe_id, container_id, hashtag) {
     // Given a recipe_id and container_id, get the recipe details from the
     // server, and call displayRecipe, passing in the recipe details and
     // container_id
     // Called by gethashrecipes
+
+    //  TODO: check if I need this
     var formInput = {
                 "recipe_id": recipe_id,
                 "container_id": container_id
                 };
     // console.log(formInput);
     $.post("/view_recipe.json", formInput, function(results) {
-            displayRecipe(results, container_id);
+            displayRecipe(results, container_id, hashtag);
             });
 }
 function getHashRecipes(results) {
@@ -112,7 +128,7 @@ function getHashRecipes(results) {
     for (var hashtag in results) {
         var container_id = results[hashtag]["hashtag_id"];
         for (var recipe of results[hashtag]["recipes"]) {
-            fetchRecipe(recipe[0],container_id);
+            fetchRecipe(recipe[0],container_id, hashtag);
         }
     }
 }
